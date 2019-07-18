@@ -41,6 +41,7 @@ class CBformat:
 #class ALU
 
 #step 2: 
+PC = 0
 #instruction decode
 
 #if statement for each option, add, sub, addi
