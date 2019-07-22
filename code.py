@@ -48,34 +48,56 @@ PC = 0
 #ib (instriction bit)
 
 if self.opcode == 1112:
-    self.instruction = ("ADD")
+    self.type = ("ADD")
     self.alucontrol = 0010
+    self.aluop = 10
     #add
     pass
 elif self.opcode == 1624:
+    self.type = "SUB"
+    self.alucontrol = 0110
+    self.aluop = 10
     #for SUB
     pass
 elif self.opcode == 580:
+    self.type = "ADDI"
     #addi
     pass
 elif self.opcode == 836:
+    self.type = "SUBI"
     #subi
     pass
 elif self.opcode == 1986:
+    self.type = "LDUR"
+    self.alucontrol = 0010
+    self.aluop = 00
     #ldur
 elif self.opcode == 1984:
+    self.type = "STUR"
+    self.alucontrol = 0010
+    self.aluop = 00
     #stur
     pass
 elif self.opcode == 1104:
+    self.type = "AND"
+    self.alucontrol = 0000
+    self.aluop = 10
     #and
     pass
 elif self.opcode == 1360:
+    self.type = "ORR"
+    self.alucontrol = 0001
+    self.aluop = 10
     #orr
     pass
 elif self.opcode > 1439 && self.opcode < 1448:
+    self.type = "CBZ"
+    self.alucontrol = 0111
+    self.aluop = 10
     #cbz
     pass
 elif self.opcode > 159 && self.opcode < 192:
+    self.type = "B"
     #b
     pass
 else:
