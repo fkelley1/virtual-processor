@@ -4,7 +4,7 @@
 
 #class Rformat
 class Rformat:
-    def __init__(self,inctruction):
+    def __init__(self,instruction):
         self.opcode = instruction.digits(31,21)
         self.rm =instruction.digits(20,16)
         self.shmnt = instruction.digits(15,10)
