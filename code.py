@@ -125,7 +125,7 @@ if self.format == "R":
     if self.type == "ADD":
         writeReg = reg1 + reg2
         pass
-    elif self.type =- "SUB":
+    elif self.type == "SUB":
         writeReg = reg1 - reg2
         pass
     elif self.type == "AND":
