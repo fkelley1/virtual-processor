@@ -52,64 +52,66 @@ PC = PC + 4
 
 #if statement for each option, add, sub, addi
 #ib (instriction bit)
+class instrcutiondecode:
+    def __init__(self, instrcution):
+        if self.opcode == 1112:
+            self.format = "R"
+            self.type = "ADD"
+            self.alucontrol = 0b0010
+            self.aluop = 10
+        #add
+        elif self.opcode == 1624:
+            self.type = "R"
+            self.type = "SUB"
+            self.alucontrol = 0b0110
+            self.aluop = 10
+        #for SUB
+        elif self.opcode == 580:
+            self.format = "I"
+            self.type = "ADDI"
+        #addi
+        elif self.opcode == 836:
+            self.format = "I"
+            self.type = "SUBI"
+        #subi
+        elif self.opcode == 1986:
+            self.format = "D"
+            self.type = "LDUR"
+            self.alucontrol = 0b0010
+            self.aluop = 00
+         #ldur
+        elif self.opcode == 1984:
+            self.format = "D"
+            self.type = "STUR"
+            self.alucontrol = 0b0010
+            self.aluop = 00
+        #stur
+        elif self.opcode == 1104:
+            self.format = "R"
+            self.type = "AND"
+            self.alucontrol = 0000
+            self.aluop = 10
+        #and
+        elif self.opcode == 1360:
+            self.format = "R"
+            self.type = "ORR"
+            self.alucontrol = 0b0001
+            self.aluop = 10
+        #orr
+        elif self.opcode > 1439 and self.opcode < 1448:
+            self.format = "CB"
+            self.type = "CBZ"
+            self.alucontrol = 0b0111
+            self.aluop = 10
+        #cbz
+        elif self.opcode > 159 and self.opcode < 192:
+            self.format = "CB"
+            self.type = "B"
+        #b
+        else:
+            #everything else
 
-if self.opcode == 1112:
-    self.format = "R"
-    self.type = "ADD"
-    self.alucontrol = 0010
-    self.aluop = 10
-    #add
-elif self.opcode == 1624:
-    self.type = "R"
-    self.type = "SUB"
-    self.alucontrol = 0110
-    self.aluop = 10
-    #for SUB
-elif self.opcode == 580:
-    self.format = "I"
-    self.type = "ADDI"
-    #addi
-elif self.opcode == 836:
-    self.format = "I"
-    self.type = "SUBI"
-    #subi
-elif self.opcode == 1986:
-    self.format = "D"
-    self.type = "LDUR"
-    self.alucontrol = 0010
-    self.aluop = 00
-    #ldur
-elif self.opcode == 1984:
-    self.format = "D"
-    self.type = "STUR"
-    self.alucontrol = 0010
-    self.aluop = 00
-    #stur
-elif self.opcode == 1104:
-    self.format = "R"
-    self.type = "AND"
-    self.alucontrol = 0000
-    self.aluop = 10
-    #and
-elif self.opcode == 1360:
-    self.format = "R"
-    self.type = "ORR"
-    self.alucontrol = 0001
-    self.aluop = 10
-    #orr
-elif self.opcode > 1439 and self.opcode < 1448:
-   self.format = "CB"
-    self.type = "CBZ"
-    self.alucontrol = 0111
-    self.aluop = 10
-    #cbz
-elif self.opcode > 159 and self.opcode < 192:
-    self.format = "CB"
-    self.type = "B"
-    #b
-else:
-
-#register fetch
+        #register fetch
 if self.format == "R":
     reg1 = #get value
     reg2 =
