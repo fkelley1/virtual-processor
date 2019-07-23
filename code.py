@@ -1,5 +1,7 @@
 #code for stupid stuff
-
+file = open('input.txt', 'r')
+for each in file:
+    print(each)
 #step 1:
 
 #class Rformat
@@ -110,8 +112,8 @@ else:
 #register fetch
 if self.format == "R":
     reg1 = #get value
-    reg2 = 
-    
+    reg2 =
+
     if self.type == "ADD":
         writeReg = reg1 + reg2
     elif self.type == "SUB":
