@@ -105,9 +105,7 @@ elif self.opcode > 159 and self.opcode < 192:
     self.format = "CB"
     self.type = "B"
     #b
-    pass
 else:
-    pass
 
 #register fetch
 if self.format == "R":
@@ -116,31 +114,23 @@ if self.format == "R":
     
     if self.type == "ADD":
         writeReg = reg1 + reg2
-        pass
     elif self.type == "SUB":
         writeReg = reg1 - reg2
-        pass
     elif self.type == "AND":
-        pass
     else:
         #ORR
-        pass
-    
-    pass
+
 elif self.format == "I":
     imm = int(self.immediate, 2)
     reg1 = #get value
 
     if self.type == "ADDI":
         writeReg = reg1 + imm
-        pass
     else:
         #SUBI
         writeReg = reg1 - imm
-        pass
-    pass
 else self.format == "CB":
-    pass
+
 #step 3:
 
 #execute
