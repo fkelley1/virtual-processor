@@ -108,32 +108,39 @@ class instrcutiondecode:
             self.format = "CB"
             self.type = "B"
         #b
-        else:
-            #everything else
+        #everything else
 
         #register fetch
-if self.format == "R":
-    reg1 = #get value
-    reg2 =
+class registerfetch:
+    def __init__(self, instruction):
+        if self.format == "R":
+            #reg1 = #get value
+            #reg2 =
 
-    if self.type == "ADD":
-        writeReg = reg1 + reg2
-    elif self.type == "SUB":
-        writeReg = reg1 - reg2
-    elif self.type == "AND":
-    else:
-        #ORR
+            if self.type == "ADD":
+                #writeReg = reg1 + reg2
+            elif self.type == "SUB":
+                #writeReg = reg1 - reg2
+            elif self.type == "AND":
+            else:
+                #ORR
 
-elif self.format == "I":
-    imm = int(self.immediate, 2)
-    reg1 = #get value
+        elif self.format == "I":
+            imm = int(self.immediate, 2)
+            #reg1 = #get value
+            if self.type == "ADDI":
+                #writeReg = reg1 + imm
+            else:
+                #SUBI
+                #writeReg = reg1 - imm
+        else :
+            target = self.address
+            if self.type == "B":
+                #do stuff
+            else:
+                #CBZ
 
-    if self.type == "ADDI":
-        writeReg = reg1 + imm
-    else:
-        #SUBI
-        writeReg = reg1 - imm
-else self.format == "CB":
+
 
 #step 3:
 
