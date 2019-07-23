@@ -57,24 +57,20 @@ if self.opcode == 1112:
     self.alucontrol = 0010
     self.aluop = 10
     #add
-    pass
 elif self.opcode == 1624:
     self.type = "R"
     self.type = "SUB"
     self.alucontrol = 0110
     self.aluop = 10
     #for SUB
-    pass
 elif self.opcode == 580:
     self.format = "I"
     self.type = "ADDI"
     #addi
-    pass
 elif self.opcode == 836:
     self.format = "I"
     self.type = "SUBI"
     #subi
-    pass
 elif self.opcode == 1986:
     self.format = "D"
     self.type = "LDUR"
@@ -87,29 +83,25 @@ elif self.opcode == 1984:
     self.alucontrol = 0010
     self.aluop = 00
     #stur
-    pass
 elif self.opcode == 1104:
     self.format = "R"
     self.type = "AND"
     self.alucontrol = 0000
     self.aluop = 10
     #and
-    pass
 elif self.opcode == 1360:
     self.format = "R"
     self.type = "ORR"
     self.alucontrol = 0001
     self.aluop = 10
     #orr
-    pass
-elif self.opcode > 1439 && self.opcode < 1448:
+elif self.opcode > 1439 and self.opcode < 1448:
    self.format = "CB"
     self.type = "CBZ"
     self.alucontrol = 0111
     self.aluop = 10
     #cbz
-    pass
-elif self.opcode > 159 && self.opcode < 192:
+elif self.opcode > 159 and self.opcode < 192:
     self.format = "CB"
     self.type = "B"
     #b
