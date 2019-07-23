@@ -49,11 +49,11 @@ PC = PC + 4
 #step 2: 
 
 #instruction decode
-
 #if statement for each option, add, sub, addi
 #ib (instriction bit)
 class instrcutiondecode:
     def __init__(self, instrcution):
+        #instrcution.split() split on white space to get instrcution breakbown
         if self.opcode == 1112:
             self.format = "R"
             self.type = "ADD"
