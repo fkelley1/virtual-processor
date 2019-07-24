@@ -10,12 +10,13 @@ class Rformat:
     rm = 0
     rn = 0
     rd = 0
-    def __init__(self, bRM, bRN, bRD, bOpcode):
+    def __init__(self, bRM, bRN, bRD, bOpcode, itype):
         self.opcode  = bOpcode
         self.rm = bRM
         self.shmnt = format(0, '#02b')
         self.rn = bRN
         self.rd = bRD
+        self.type = itype
         self.writebackValue = 0
 
 #class Iformat
@@ -24,11 +25,12 @@ class Iformat:
     immediate = 0
     rn = 0
     rd = 0
-    def __init__(self, op, im, brn, brd):
+    def __init__(self, op, im, brn, brd, itype):
         self.opcode = op
         self.immediate = im
         self.rn = brn
         self.rd = brd
+        self.type = itype
         self.writebackValue = 0
 
 #class Dformat
@@ -43,6 +45,7 @@ class Dformat:
         self.op2 = format(0, '#02b')
         self.rn = bRN
         self.rt = bRT
+        self.type = itype
         self.writebackValue = 0
 
 #class CBformat
@@ -54,6 +57,7 @@ class CBformat:
         self.opcode = o
         self.address = ad
         self.rt = r
+        self.type = "CBZ"
 
 #class b format
 class Bformat:
@@ -61,6 +65,8 @@ class Bformat:
     add = 0
     def __init__(self, o, adr):
         self.address = adr
+        self.type = "B"
+
 #step 1: instrcution fetch
 #Could all be put into a function but i wasn't feeling it
 for each in file:
@@ -84,7 +90,7 @@ for each in file:
             # bSA = format(shiftAmt,'#08b')
             Opcode = 1112
             print(RN + RD + RM)
-            r = Rformat(RM, RN, RD, Opcode)
+            r = Rformat(RM, RN, RD, Opcode, instructionType)
             instructionList.append(r)
         #Same concept is used for all instructions
         elif instructionType == 'ADDI':
@@ -94,17 +100,16 @@ for each in file:
             IMM = int(IMM)
             Opcode = 580
             print(RN + RD + IMM)
-            Im = Iformat(Opcode, IMM, RN, RD)
+            Im = Iformat(Opcode, IMM, RN, RD, instructionType)
             instructionList.append(Im)
         elif instructionType == 'SUB':
             instructionType, RM, RN, RD = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
-            # bSA = format(shiftAmt,'#08b')
             Opcode = 1624
             print(RN + RD + RM)
-            r = Rformat(RM,RN,RD,Opcode)
+            r = Rformat(RM,RN,RD,Opcode, instructionType)
             instructionList.append(r)
         elif instructionType == 'SUBI':
             instructionType, IMM, RN, RD = each.split()
@@ -113,7 +118,7 @@ for each in file:
             IMM = int(IMM)
             Opcode = 836
             print(RN + RD + IMM)
-            Im = Iformat(Opcode, IMM, RN, RD)
+            Im = Iformat(Opcode, IMM, RN, RD, instructionType)
             instructionList.append(Im)
         elif instructionType == 'ORR':
             instructionType, RM, RN, RD = each.split()
@@ -121,31 +126,31 @@ for each in file:
             RD = int(RD)
             RM = int(RM)
             Opcode = 1360
+            r = Rformat(RM, RN, RD, Opcode, instructionType)
         elif instructionType == 'AND':
             instructionType, RM, RN, RD = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
             Opcode = 1104
+            r = Rformat(RM, RN, RD, Opcode, instructionType)
         elif instructionType == 'LDUR':
             instructionType, ADD, RN, RT = each.split()
             RT = int(RT)
             RN = int(RN)
             ADD = int(ADD)
-            # bOP = format(OP2, '#04b')
             bOpcode = 1986
             print(RT + RN + ADD)
-            d = Dformat(Opcode, ADD, RN, RT)
+            d = Dformat(Opcode, ADD, RN, RT, instructionType)
             instructionList.append(d)
         elif instructionType == 'STUR':
             instructionType, ADD, RN, RT = each.split()
             RT = int(RT)
             RN = int(RN)
             ADD = int(ADD)
-             # bOP = format(OP2, '#04b')
             Opcode = 1984
             print(RT + RD + ADD)
-            d = Dformat(Opcode, ADD, RN, RT)
+            d = Dformat(Opcode, ADD, RN, RT, instructionType)
             instructionList.append(d)
         elif instructionType == 'CBZ':
             instructionType, ADD, RT = each.split()
@@ -211,13 +216,14 @@ class instrcutiondecode:
 #address calc for loads/stores
 class memoryaccess:
     def __init__(self, PC):
-        if self.opcode == 5:
+        if self.type == "B":
             PC = PC - 4 + self.address
 
 # step 5:
 # write back
 # only loads and R format
-
+class writeback:
+    def __init__(self):
 
 for i in range(len(instructionList)):
     print(instructionList[i].opcode)
