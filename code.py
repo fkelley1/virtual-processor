@@ -99,36 +99,51 @@ for each in file:
 
 #class Rformat
 class Rformat:
+    opcode = 0
+    rm = 0
+    rn = 0
+    rd = 0
     def __init__(self, bRM, bRN, bRD, bOpcode):
-        self.opcode
-        self.rm
+        self.opcode  = bOpcode
+        self.rm = bRM
         self.shmnt = format(0, '#02b')
-        self.rn
-        self.rd
+        self.rn = bRN
+        self.rd = bRD
 
 #class Iformat
 class Iformat:
-    def __init__(self,):
-        self.opcode
-        self.immediate
-        self.rn
-        self.rd
+    opcode = 0
+    immediate = 0
+    rn = 0
+    rd = 0
+    def __init__(self, op, im, brn, brd):
+        self.opcode = op
+        self.immediate = im
+        self.rn = brn
+        self.rd = brd
 
 #class Dformat
 class Dformat:
-    def __init__(self,):
-        self.opcode
-        self.address
+    opcode = 0
+    address = 0
+    rn = 0
+    rt = 0
+    def __init__(self, o, ad, brn, brt):
+        self.opcode = o
+        self.address = ad
         self.op2 = format(0, '#02b')
-        self.rn
-        self.rt
+        self.rn = brn
+        self.rt = brt
 
 #class CBformat
 class CBformat:
-    def __init__(self,instruction):
-        self.opcode
-        self.address
-        self.rt
+    opcode = 0
+    address = 0
+    rt = 0
+    def __init__(self, o, ad, r):
+        self.opcode = o
+        self.address = ad
+        self.rt = r
 
 #class MUX
 
