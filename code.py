@@ -161,45 +161,40 @@ PC = PC + 4
 #ib (instriction bit)
 class instrcutiondecode:
     def __init__(self):
+        #add
         if self.opcode == 1112:
             storedValues[self.rd] = storedValues[self.rn] + storedValues[self.rm]
-        #add
+        #sub
         elif self.opcode == 1624:
             storedValues[self.rd] = storedValues[self.rn] - storedValues[self.rm]
-        #for SUB
-        elif self.opcode == 580:
-            writeValue = storedValues[self.rn] + storedValues[self.immediate]
         #addi
-        elif self.opcode == 836:
-            writeValue = storedValues[self.rn] - storedValues[self.immediate]
+        elif self.opcode == 580:
+            storedValues[self.rd] = storedValues[self.rn] + storedValues[self.immediate]
         #subi
+        elif self.opcode == 836:
+            storedValues[self.rd]= storedValues[self.rn] - storedValues[self.immediate]
+        #ldur
         elif self.opcode == 1986:
 
             self.alucontrol = 0b0010
-            self.aluop = 00
-         #ldur
+            self.aluop = 0
+        #stur
         elif self.opcode == 1984:
-
             self.alucontrol = 0b0010
             self.aluop = 00
-        #stur
-        elif self.opcode == 1104:
-            writeValue = storedValues[self.rn] and storedValues[self.rm]
         #and
-        elif self.opcode == 1360:
-            writeValue = storedValues[self.rn] or storedValues[self.rm]
+        elif self.opcode == 1104:
+            storedValues[self.rd] = storedValues[self.rn] and storedValues[self.rm]
         #orr
-        elif self.opcode > 1439 and self.opcode < 1448:
-            self.format = "CB"
-            self.type = "CBZ"
-            self.alucontrol = 0b0111
-            self.aluop = 10
+        elif self.opcode == 1360:
+            storedValues[self.rd] = storedValues[self.rn] or storedValues[self.rm]
         #cbz
-        elif self.opcode > 159 and self.opcode < 192:
-            self.format = "CB"
-            self.type = "B"
+        elif self.opcode > 1439 and self.opcode < 1448:
+
+            self.type = "CBZ"
         #b
-        #everything else
+        else:
+            self.type = "B"
 
         #register fetch
 
