@@ -114,7 +114,6 @@ class Rformat:
 
 #class Iformat
 class Iformat:
-<<<<<<< HEAD
     opcode = 0
     immediate = 0
     rn = 0
@@ -131,29 +130,15 @@ class Dformat:
     address = 0
     rn = 0
     rt = 0
-    def __init__(self, o, ad, brn, brt):
-        self.opcode = o
-        self.address = ad
-=======
-    def __init__(self, bOpcode, bImm, bRN, bRD):
-        self.opcode
-        self.immediate
-        self.rn
-        self.rd
-
-#class Dformat
-class Dformat:
     def __init__(self, bOpcode, dAddress, bRN, bRT):
         self.opcode
         self.address
->>>>>>> 025d2dd1fdb0a8fc5e319491153e9cf471edd235
         self.op2 = format(0, '#02b')
-        self.rn = brn
-        self.rt = brt
+        self.rn = bRN
+        self.rt = bRT
 
 #class CBformat
 class CBformat:
-<<<<<<< HEAD
     opcode = 0
     address = 0
     rt = 0
@@ -161,12 +146,6 @@ class CBformat:
         self.opcode = o
         self.address = ad
         self.rt = r
-=======
-    def __init__(self, bOpcode, bAddress, bRT):
-        self.opcode
-        self.address
-        self.rt
->>>>>>> 025d2dd1fdb0a8fc5e319491153e9cf471edd235
 
 #class MUX
 
