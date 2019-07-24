@@ -17,11 +17,10 @@ for each in file:
             tempRN = int(RN)
             tempRD = int(RD)# Type is Str and can't be set straight to Binary so have to do int first
             tempRM = int(RM)
-            bSA = format(shiftAmt,'#08b')
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')# Convert To Binary
             bRM = format(tempRM, '#07b')
-            bOpcode = format(1112, '#011b')
+            bOpcode = format(1112, '#013b')
             print(bRN + bRD + bRM)
         #Same concept is used for all instructions
         elif instructionType == 'ADDI':
@@ -32,18 +31,17 @@ for each in file:
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')
             bIMM = format(tempIMM, '#014b')
-            bOpcode = format(580, '#010b')
+            bOpcode = format(580, '#012b')
             print(bRN + bRD + bIMM)
         elif instructionType == 'SUB':
             instructionType, RM, RN, RD = each.split()
             tempRN = int(RN)
             tempRD = int(RD)
             tempRM = int(RM)
-            bSA = format(shiftAmt,'#08b')
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')
             bRM = format(tempRM, '#07b')
-            bOpcode = format(1624, '#011b')
+            bOpcode = format(1624, '#013b')
             print(bRN + bRD + bRM)
         elif instructionType == 'SUBI':
             instructionType, IMM, RN, RD = each.split()
@@ -53,12 +51,26 @@ for each in file:
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')
             bIMM = format(tempIMM, '#014b')
-            bOpcode = format(836, '#010b')
+            bOpcode = format(836, '#012b')
             print(bRN + bRD + bIMM)
         elif instructionType == 'ORR':
-            bOpcode = format(1360, '#011b')
+            instructionType, RM, RN, RD = each.split()
+            tempRN = int(RN)
+            tempRD = int(RD)
+            tempRM = int(RM)
+            bRN = format(tempRN, '#07b')
+            bRD = format(tempRD, '#07b')
+            bRM = format(tempRM, '#07b')
+            bOpcode = format(1360, '#013b')
         elif instructionType == 'AND':
-            bOpcode = format(1104, '#011b')
+            instructionType, RM, RN, RD = each.split()
+            tempRN = int(RN)
+            tempRD = int(RD)
+            tempRM = int(RM)
+            bRN = format(tempRN, '#07b')
+            bRD = format(tempRD, '#07b')
+            bRM = format(tempRM, '#07b')
+            bOpcode = format(1104, '#013b')
         elif instructionType == 'LDUR':
             instructionType, ADD, RN, RT = each.split()
             tempRT = int(RT)
@@ -68,7 +80,7 @@ for each in file:
             bRT = format(tempRT,'#07b')
             bRN = format(tempRN,'#07b')
             bADD = format(tempADD, '#011b')
-            bOpcode = format(1986, '#011b')
+            bOpcode = format(1986, '#013b')
             print(bRT + bRN + bADD)
         elif instructionType == 'STUR':
             instructionType, ADD, RN, RT = each.split()
@@ -79,7 +91,7 @@ for each in file:
             bRT = format(tempRT,'#07b')
             bRN = format(tempRN,'#07b')
             bADD = format(tempADD, '#011b')
-            bOpcode = format(1984, '#011b')
+            bOpcode = format(1984, '#013b')
             print(bRT + bRD + bADD)
         elif instructionType == 'CBZ':
             instructionType, ADD, RT = each.split()
@@ -87,6 +99,7 @@ for each in file:
             tempADD = int(ADD)
             bRT = format(tempRT,'#07b')
             bADD = format(tempADD,'#021b')
+            bOpcode = format()
             print(bRT + bADD)
         elif instructionType == 'B':
             instructionType, ADD = each.split()
@@ -103,7 +116,7 @@ class Rformat:
     def __init__(self, bRM, bRN, bRD, bOpcode):
         self.opcode
         self.rm
-        self.shmnt = format(0, '#02b')
+        self.shmnt = format(0, '#08b')
         self.rn
         self.rd
 
