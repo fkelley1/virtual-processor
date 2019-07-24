@@ -22,6 +22,7 @@ for each in file:
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')# Convert To Binary
             bRM = format(tempRM, '#07b')
+            #self.opcode= format(1112, '#011b')
             print(bRN + bRD + bRM)
         #Same concept is used for all instructions
         elif instructionType == 'ADDI':
@@ -32,6 +33,7 @@ for each in file:
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')
             bIMM = format(tempIMM, '#014b')
+            # self.opcode= format(580, '#010b')
             print(bRN + bRD + bIMM)
         elif instructionType == 'SUB':
             instructionType, RM, RN, RD = each.split()
@@ -43,6 +45,7 @@ for each in file:
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')
             bRM = format(tempRM, '#07b')
+            #self.opcode= format(1624, '#011b')
             print(bRN + bRD + bRM)
         elif instructionType == 'SUBI':
             instructionType, IMM, RN, RD = each.split()
@@ -52,6 +55,7 @@ for each in file:
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')
             bIMM = format(tempIMM, '#014b')
+            # self.opcode= format(836, '#010b')
             print(bRN + bRD + bIMM)
         elif instructionType == 'LDUR':
             instructionType, ADD, RN, RT = each.split()
@@ -99,35 +103,35 @@ for each in file:
 #class Rformat
 class Rformat:
     def __init__(self,instruction):
-        self.opcode = instruction.digits(31,21)
-        self.rm =instruction.digits(20,16)
-        self.shmnt = instruction.digits(15,10)
-        self.rn = instruction.digits(9,5)
-        self.rd = instruction.digits(4,0)
+        self.opcode
+        self.rm
+        self.shmnt = format(0, '#02b')
+        self.rn
+        self.rd
 
 #class Iformat
 class Iformat:
     def __init__(self,instruction):
-        self.opcode = instruction.digits(31,22)
-        self.immediate = instruction.digits(21,10)
-        self.rn = instruction.digits(9,5)
-        self.rd = instruction.digits(4,0)
+        self.opcode
+        self.immediate
+        self.rn
+        self.rd
 
 #class Dformat
 class Dformat:
     def __init__(self,instruction):
-        self.opcode = instruction.digits(31,21)
-        self.address = instruction.digits(20,12)
-        self.op2 = instruction.digits(11,10)
-        self.rn = instruction.digits(9,5)
-        self.rt = instruction.digits(4,0)
+        self.opcode
+        self.address
+        self.op2 = format(0, '#02b')
+        self.rn
+        self.rt
 
 #class CBformat
 class CBformat:
     def __init__(self,instruction):
-        self.opcode = instruction.digits(31,24)
-        self.address = instruction.digits(23,5)
-        self.rt = instruction.digits(4,0)
+        self.opcode
+        self.address
+        self.rt
 
 #class MUX
 
@@ -136,7 +140,6 @@ PC = 0
 #step 1: instrcution fetch
 PC = PC + 4
 #instrcution memory
-
 
 #step 2: 
 
@@ -147,8 +150,6 @@ class instrcutiondecode:
     def __init__(self, instrcution):
         #instrcution.split() split on white space to get instrcution breakbown
         if self.opcode == 1112:
-            self.format = "R"
-            self.type = "ADD"
             self.alucontrol = 0b0010
             self.aluop = 10
         #add
@@ -203,36 +204,6 @@ class instrcutiondecode:
         #everything else
 
         #register fetch
-""" class registerfetch:
-    def __init__(self, instruction):
-        if self.format == "R":
-            #reg1 = #get value
-            #reg2 =
-
-            if self.type == "ADD":
-                #writeReg = reg1 + reg2
-            elif self.type == "SUB":
-                #writeReg = reg1 - reg2
-            elif self.type == "AND":
-            else:
-                #ORR
-
-        elif self.format == "I":
-            imm = int(self.immediate, 2)
-            #reg1 = #get value
-            if self.type == "ADDI":
-                #writeReg = reg1 + imm
-            else:
-                #SUBI
-                #writeReg = reg1 - imm
-        else :
-            target = self.address
-            if self.type == "B":
-                #do stuff
-            else:
-                #CBZ """
-
-
 
 #step 3:
 
