@@ -1,4 +1,7 @@
 #code for stupid stuff
+storedValues = []
+for x in 32:
+    storedValues[x] = 0
 instructionList = []
 file = open('input.txt', 'r')
 #Could all be put into a function but i wasn't feeling it
@@ -112,10 +115,6 @@ for each in file:
 
 #class Rformat
 class Rformat:
-    opcode = 0
-    rm = 0
-    rn = 0
-    rd = 0
     def __init__(self, bRM, bRN, bRD, bOpcode):
         self.opcode  = bOpcode
         self.rm = bRM
@@ -160,38 +159,33 @@ PC = PC + 4
 #if statement for each option, add, sub, addi
 #ib (instriction bit)
 class instrcutiondecode:
-    def __init__(self, instrcution):
+    def __init__(self):
         if self.opcode == 1112:
-            self.alucontrol = format(10, '#04b')
-            self.aluop = 10
+            valuern = storedvalues[self.rn]
+
+            writeValue = self.rn + self.rm
         #add
         elif self.opcode == 1624:
-            self.alucontrol = 0b0110
-            self.aluop = 10
+            writeValue = self.rn - self.rm
         #for SUB
         elif self.opcode == 580:
-            self.format = "I"
-            self.type = "ADDI"
+            writeValue = self.rn + self.immediate
         #addi
         elif self.opcode == 836:
-            self.format = "I"
-            self.type = "SUBI"
+
         #subi
         elif self.opcode == 1986:
-            self.format = "D"
-            self.type = "LDUR"
+
             self.alucontrol = 0b0010
             self.aluop = 00
          #ldur
         elif self.opcode == 1984:
-            self.format = "D"
-            self.type = "STUR"
+
             self.alucontrol = 0b0010
             self.aluop = 00
         #stur
         elif self.opcode == 1104:
-            self.format = "R"
-            self.type = "AND"
+
             self.alucontrol = 0000
             self.aluop = 10
         #and
