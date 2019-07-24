@@ -242,5 +242,12 @@ for i in range(len(instructionList)):
         # print(instructionList[i].rd)
         print("this is stored value")
         print(storedValues[instructionList[i].rd])
-
+    elif instructionList[i].opcode == 1624:
+        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - storedValues[instructionList[i].rm]
+        print("testing sub: ")
+        print(storedValues[instructionList[i].rd])
+#    elif instructionList[i].opcode == 580:
+#        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - storedValues[instructionList[i].immediate]
+#        print("testing addi: ")
+#        print(storedValues[instructionList[i].rd])
 
