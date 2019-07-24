@@ -1,8 +1,100 @@
 #code for stupid stuff
 file = open('input.txt', 'r')
+#Could all be put into a function but i wasn't feeling it
 for each in file:
-    print(each)
+    if not each.strip():#Skips any line that is empty
+        placeholder = 1
+    else:
+        instructionType = each.split(' ')[0]#Takes first variable
+        each = each.replace(',','')#Removes all ,
+        each = each.replace('X','')#Removes all X
+        each = each.replace('[','')
+        each = each.replace(']','')
+        each = each.replace('#','')
+        each = each.replace('ZR','0')
+        if instructionType == 'ADD':
+            instructionType, RM, RN, RD = each.split()#Sets the 4 parts to invdividual variables
+            tempRN = int(RN)
+            tempRD = int(RD)# Type is Str and can't be set straight to Binary so have to do int first
+            tempRM = int(RM)
+            shiftAmt = 0
+            bSA = format(shiftAmt,'#08b')
+            bRN = format(tempRN,'#07b')
+            bRD = format(tempRD, '#07b')# Convert To Binary
+            bRM = format(tempRM, '#07b')
+            print(bRN + bRD + bRM)
+        #Same concept is used for all instructions
+        elif instructionType == 'ADDI':
+            instructionType, IMM, RN, RD = each.split()
+            tempRN = int(RN)
+            tempRD = int(RD)
+            tempIMM = int(IMM)
+            bRN = format(tempRN,'#07b')
+            bRD = format(tempRD, '#07b')
+            bIMM = format(tempIMM, '#014b')
+            print(bRN + bRD + bIMM)
+        elif instructionType == 'SUB':
+            instructionType, RM, RN, RD = each.split()
+            tempRN = int(RN)
+            tempRD = int(RD)
+            tempRM = int(RM)
+            shiftAmt = 0
+            bSA = format(shiftAmt,'#08b')
+            bRN = format(tempRN,'#07b')
+            bRD = format(tempRD, '#07b')
+            bRM = format(tempRM, '#07b')
+            print(bRN + bRD + bRM)
+        elif instructionType == 'SUBI':
+            instructionType, IMM, RN, RD = each.split()
+            tempRN = int(RN)
+            tempRD = int(RD)
+            tempIMM = int(IMM)
+            bRN = format(tempRN,'#07b')
+            bRD = format(tempRD, '#07b')
+            bIMM = format(tempIMM, '#014b')
+            print(bRN + bRD + bIMM)
+        elif instructionType == 'LDUR':
+            instructionType, ADD, RN, RT = each.split()
+            tempRT = int(RT)
+            tempRN = int(RN)
+            tempADD = int(ADD)
+            OP2 = 0
+            bOP = format(OP2, '#04b')
+            bRT = format(tempRT,'#07b')
+            bRN = format(tempRN,'#07b')
+            bADD = format(tempADD, '#011b')
+            print(bRT + bRN + bADD)
+        elif instructionType == 'STUR':
+            instructionType, ADD, RN, RT = each.split()
+            tempRT = int(RT)
+            tempRN = int(RN)
+            tempADD = int(ADD)
+            OP2 = 0
+            bOP = format(OP2, '#04b')
+            bRT = format(tempRT,'#07b')
+            bRN = format(tempRN,'#07b')
+            bADD = format(tempADD, '#011b')
+            print(bRT + bRD + bADD)
+        elif instructionType == 'CBZ':
+            instructionType, ADD, RT = each.split()
+            tempRT = int(RT)
+            tempADD = int(ADD)
+            bRT = format(tempRT,'#07b')
+            bADD = format(tempADD,'#021b')
+            print(bRT + bADD)
+        elif instructionType == 'B':
+            instructionType, ADD = each.split()
+            tempADD = int(ADD)
+            bADD = format(tempADD,'#028b')
+            print(bADD)
+        else:
+            print('no instruction match')
+
+    
+
+
 #step 1:
+
 
 #class Rformat
 class Rformat:
@@ -111,7 +203,7 @@ class instrcutiondecode:
         #everything else
 
         #register fetch
-class registerfetch:
+""" class registerfetch:
     def __init__(self, instruction):
         if self.format == "R":
             #reg1 = #get value
@@ -138,7 +230,7 @@ class registerfetch:
             if self.type == "B":
                 #do stuff
             else:
-                #CBZ
+                #CBZ """
 
 
 
@@ -152,3 +244,4 @@ class registerfetch:
 
 #step 5:
 #write back
+
