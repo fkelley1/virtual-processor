@@ -3,7 +3,41 @@ storedValues = []
 for x in 32:
     storedValues[x] = 0
 instructionList = []
-file = open('input.txt', 'r')
+file = open('input.txt', 'r')#class Rformat
+class Rformat:
+    def __init__(self, bRM, bRN, bRD, bOpcode):
+        self.opcode  = bOpcode
+        self.rm = bRM
+        self.shmnt = format(0, '#04b')
+        self.rn = bRN
+        self.rd = bRD
+        self.writebackValue = 0
+
+#class Iformat
+class Iformat:
+    def __init__(self, op, im, brn, brd):
+        self.opcode = op
+        self.immediate = im
+        self.rn = brn
+        self.rd = brd
+        self.writebackValue = 0
+
+#class Dformat
+class Dformat:
+    def __init__(self, o, ad, brn, brt):
+        self.opcode = o
+        self.op2 = format(0, '#02b')
+        self.rn = brn
+        self.rt = brt
+        self.writebackValue = 0
+
+#class CBformat
+class CBformat:
+    def __init__(self, o, ad, r):
+        self.opcode = o
+        self.address = ad
+        self.rt = r
+
 #Could all be put into a function but i wasn't feeling it
 for each in file:
     if not each.strip():#Skips any line that is empty
@@ -114,40 +148,7 @@ for each in file:
 
 #step 1:
 
-#class Rformat
-class Rformat:
-    def __init__(self, bRM, bRN, bRD, bOpcode):
-        self.opcode  = bOpcode
-        self.rm = bRM
-        self.shmnt = format(0, '#04b')
-        self.rn = bRN
-        self.rd = bRD
-        self.writebackValue = 0
 
-#class Iformat
-class Iformat:
-    def __init__(self, op, im, brn, brd):
-        self.opcode = op
-        self.immediate = im
-        self.rn = brn
-        self.rd = brd
-        self.writebackValue = 0
-
-#class Dformat
-class Dformat:
-    def __init__(self, o, ad, brn, brt):
-        self.opcode = o
-        self.op2 = format(0, '#02b')
-        self.rn = brn
-        self.rt = brt
-        self.writebackValue = 0
-
-#class CBformat
-class CBformat:
-    def __init__(self, o, ad, r):
-        self.opcode = o
-        self.address = ad
-        self.rt = r
 
 #class MUX
 
@@ -169,10 +170,10 @@ class instrcutiondecode:
             writebackValue = storedValues[self.rn] + storedValues[self.rm]
         #sub
         elif self.opcode == 1624:
-            writebackValue  = storedValues[self.rn] - storedValues[self.rm]
+            writebackValue = storedValues[self.rn] - storedValues[self.rm]
         #addi
         elif self.opcode == 580:
-            writebackValue  = storedValues[self.rn] + storedValues[self.immediate]
+            writebackValue = storedValues[self.rn] + storedValues[self.immediate]
         #subi
         elif self.opcode == 836:
             writebackValue = storedValues[self.rn] - storedValues[self.immediate]
@@ -187,12 +188,12 @@ class instrcutiondecode:
             self.aluop = 00
         #and
         elif self.opcode == 1104:
-            storedValues[self.rd] = storedValues[self.rn] and storedValues[self.rm]
+            writebackValue = storedValues[self.rn] and storedValues[self.rm]
         #orr
         elif self.opcode == 1360:
-            storedValues[self.rd] = storedValues[self.rn] or storedValues[self.rm]
+            writebackValue = storedValues[self.rn] or storedValues[self.rm]
         #cbz
-        elif self.opcode > 1439 and self.opcode < 1448:
+        elif self.opcode == 180:
 
             self.type = "CBZ"
         #b
