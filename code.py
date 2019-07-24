@@ -39,7 +39,7 @@ class Dformat:
     address = 0
     rn = 0
     rt = 0
-    def __init__(self, bOpcode, dAddress, bRN, bRT):
+    def __init__(self, bOpcode, dAddress, bRN, bRT, itype):
         self.opcode = bOpcode
         self.address = dAddress
         self.op2 = format(0, '#02b')
@@ -224,6 +224,7 @@ class memoryaccess:
 # only loads and R format
 class writeback:
     def __init__(self):
+        test = placeholder
 
 for i in range(len(instructionList)):
     print(instructionList[i].opcode)
