@@ -17,6 +17,7 @@ class Rformat:
         self.rn = bRN
         self.rd = bRD
         self.type = itype
+        self.format = "R"
         self.writebackValue = 0
 
 #class Iformat
@@ -31,6 +32,7 @@ class Iformat:
         self.rn = brn
         self.rd = brd
         self.type = itype
+        self.format = "I"
         self.writebackValue = 0
 
 #class Dformat
@@ -39,13 +41,14 @@ class Dformat:
     address = 0
     rn = 0
     rt = 0
-    def __init__(self, bOpcode, dAddress, bRN, bRT):
+    def __init__(self, bOpcode, dAddress, bRN, bRT, itype):
         self.opcode = bOpcode
         self.address = dAddress
         self.op2 = format(0, '#02b')
         self.rn = bRN
         self.rt = bRT
         self.type = itype
+        self.format = "D"
         self.writebackValue = 0
 
 #class CBformat
@@ -57,7 +60,7 @@ class CBformat:
         self.opcode = o
         self.address = ad
         self.rt = r
-        self.type = "CBZ"
+        self.format = "CBZ"
 
 #class b format
 class Bformat:
@@ -65,7 +68,7 @@ class Bformat:
     add = 0
     def __init__(self, o, adr):
         self.address = adr
-        self.type = "B"
+        self.format = "B"
 
 #step 1: instrcution fetch
 #Could all be put into a function but i wasn't feeling it
@@ -175,34 +178,36 @@ for each in file:
 class instrcutiondecode:
     def __init__(self):
         #add
-        if self.opcode == 1112:
+        if self.type == "ADD":
             writebackValue = storedValues[self.rn] + storedValues[self.rm]
         #sub
-        elif self.opcode == 1624:
+        elif self.type == "SUB":
             writebackValue = storedValues[self.rn] - storedValues[self.rm]
         #addi
-        elif self.opcode == 580:
+        elif self.type == "ADDI":
             writebackValue = storedValues[self.rn] + storedValues[self.immediate]
         #subi
-        elif self.opcode == 836:
+        elif self.type == "SUBI":
             writebackValue = storedValues[self.rn] - storedValues[self.immediate]
         #ldur
-        elif self.opcode == 1986:
-
+        elif self.type == "LDUR":
+        #need to do
             self.alucontrol = 0b0010
             self.aluop = 0
         #stur
-        elif self.opcode == 1984:
+        elif self.type == "STUR":
+            #NEED TO DO
             self.alucontrol = 0b0010
             self.aluop = 00
         #and
-        elif self.opcode == 1104:
+        elif self.type == "AND":
             writebackValue = storedValues[self.rn] and storedValues[self.rm]
         #orr
-        elif self.opcode == 1360:
+        elif self.type == "ORR":
             writebackValue = storedValues[self.rn] or storedValues[self.rm]
         #cbz
-        elif self.opcode == 180:
+        elif self.type == "CBZ":
+            #NEED TO DO
 
             self.type = "CBZ"
         #b
@@ -218,12 +223,16 @@ class memoryaccess:
     def __init__(self, PC):
         if self.type == "B":
             PC = PC - 4 + self.address
+        #TO DO FOR LOADS/STORES
 
 # step 5:
 # write back
 # only loads and R format
 class writeback:
     def __init__(self):
+        if self.format == "R":
+            storedValues[self.rt] = self.writebackValue
+        #TO DO FOR LOADS(STORES??) IDK WHICH ONE
 
 for i in range(len(instructionList)):
     print(instructionList[i].opcode)
