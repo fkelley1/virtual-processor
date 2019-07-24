@@ -1,5 +1,5 @@
 #code for stupid stuff
-storedValues = [0] * 32
+storedValues = [10] * 32
 globals()
 PC = 0
 instructionList = []
@@ -144,7 +144,7 @@ for each in file:
             ADD = int(ADD)
             bOpcode = 1986
             print(RT + RN + ADD)
-            d = Dformat(Opcode, ADD, RN, RT, instructionType)
+            d = Dformat(bOpcode, ADD, RN, RT, instructionType)
             instructionList.append(d)
         elif instructionType == 'STUR':
             instructionType, ADD, RN, RT = each.split()
@@ -152,7 +152,7 @@ for each in file:
             RN = int(RN)
             ADD = int(ADD)
             Opcode = 1984
-            print(RT + RD + ADD)
+            print(RT + RN + ADD)
             d = Dformat(Opcode, ADD, RN, RT, instructionType)
             instructionList.append(d)
         elif instructionType == 'CBZ':
@@ -235,9 +235,12 @@ class writeback:
         #TO DO FOR LOADS(STORES??) IDK WHICH ONE
 
 for i in range(len(instructionList)):
-    print(instructionList[i].opcode)
+    # print(instructionList[i].opcode)
     #figure out how to run
-
-
+    if instructionList[i].opcode == 1112:
+        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rm] + storedValues[instructionList[i].rn]
+        # print(instructionList[i].rd)
+        print("this is stored value")
+        print(storedValues[instructionList[i].rd])
 
 
