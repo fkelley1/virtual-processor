@@ -1,4 +1,5 @@
 #code for stupid stuff
+instructionList = []
 file = open('input.txt', 'r')
 #Could all be put into a function but i wasn't feeling it
 for each in file:
