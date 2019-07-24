@@ -116,7 +116,7 @@ for each in file:
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
-            Opcode = format(1360, '#013b')
+            Opcode = 1360
         elif instructionType == 'AND':
             instructionType, RM, RN, RD = each.split()
             RN = int(RN)
