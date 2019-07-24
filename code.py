@@ -23,7 +23,7 @@ for each in file:
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')# Convert To Binary
             bRM = format(tempRM, '#07b')
-            #self.opcode= format(1112, '#011b')
+            bOpcode = format(1112, '#011b')
             print(bRN + bRD + bRM)
         #Same concept is used for all instructions
         elif instructionType == 'ADDI':
@@ -34,7 +34,7 @@ for each in file:
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')
             bIMM = format(tempIMM, '#014b')
-            # self.opcode= format(580, '#010b')
+            bOpcode = format(580, '#010b')
             print(bRN + bRD + bIMM)
         elif instructionType == 'SUB':
             instructionType, RM, RN, RD = each.split()
@@ -46,7 +46,7 @@ for each in file:
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')
             bRM = format(tempRM, '#07b')
-            #self.opcode= format(1624, '#011b')
+            bOpcode = format(1624, '#011b')
             print(bRN + bRD + bRM)
         elif instructionType == 'SUBI':
             instructionType, IMM, RN, RD = each.split()
@@ -56,7 +56,7 @@ for each in file:
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')
             bIMM = format(tempIMM, '#014b')
-            # self.opcode= format(836, '#010b')
+            bOpcode = format(836, '#010b')
             print(bRN + bRD + bIMM)
         elif instructionType == 'LDUR':
             instructionType, ADD, RN, RT = each.split()
@@ -95,15 +95,11 @@ for each in file:
         else:
             print('no instruction match')
 
-    
-
-
 #step 1:
-
 
 #class Rformat
 class Rformat:
-    def __init__(self,instruction):
+    def __init__(self, bRM, bRN, bRD, bOpcode):
         self.opcode
         self.rm
         self.shmnt = format(0, '#02b')
@@ -112,7 +108,7 @@ class Rformat:
 
 #class Iformat
 class Iformat:
-    def __init__(self,instruction):
+    def __init__(self,):
         self.opcode
         self.immediate
         self.rn
@@ -120,7 +116,7 @@ class Iformat:
 
 #class Dformat
 class Dformat:
-    def __init__(self,instruction):
+    def __init__(self,):
         self.opcode
         self.address
         self.op2 = format(0, '#02b')
@@ -149,14 +145,11 @@ PC = PC + 4
 #ib (instriction bit)
 class instrcutiondecode:
     def __init__(self, instrcution):
-        #instrcution.split() split on white space to get instrcution breakbown
         if self.opcode == 1112:
-            self.alucontrol = 0b0010
+            self.alucontrol = format(10, '#04b')
             self.aluop = 10
         #add
         elif self.opcode == 1624:
-            self.type = "R"
-            self.type = "SUB"
             self.alucontrol = 0b0110
             self.aluop = 10
         #for SUB
