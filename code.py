@@ -38,6 +38,8 @@ class CBformat:
         self.address = ad
         self.rt = r
 
+instructionList = []
+file = open('input.txt', 'r')
 #Could all be put into a function but i wasn't feeling it
 for each in file:
     if not each.strip():#Skips any line that is empty
@@ -55,6 +57,7 @@ for each in file:
             tempRN = int(RN)
             tempRD = int(RD)# Type is Str and can't be set straight to Binary so have to do int first
             tempRM = int(RM)
+            # bSA = format(shiftAmt,'#08b')
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')# Convert To Binary
             bRM = format(tempRM, '#07b')
@@ -76,6 +79,7 @@ for each in file:
             tempRN = int(RN)
             tempRD = int(RD)
             tempRM = int(RM)
+            # bSA = format(shiftAmt,'#08b')
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')
             bRM = format(tempRM, '#07b')
@@ -114,6 +118,7 @@ for each in file:
             tempRT = int(RT)
             tempRN = int(RN)
             tempADD = int(ADD)
+            # bOP = format(OP2, '#04b')
             bRT = format(tempRT,'#07b')
             bRN = format(tempRN,'#07b')
             bADD = format(tempADD, '#011b')
@@ -124,6 +129,7 @@ for each in file:
             tempRT = int(RT)
             tempRN = int(RN)
             tempADD = int(ADD)
+             # bOP = format(OP2, '#04b')
             bRT = format(tempRT,'#07b')
             bRN = format(tempRN,'#07b')
             bADD = format(tempADD, '#011b')
@@ -147,8 +153,6 @@ for each in file:
             print('no instruction match')
 
 #step 1:
-
-
 
 #class MUX
 
