@@ -122,6 +122,7 @@ class Rformat:
         self.shmnt = format(0, '#04b')
         self.rn = bRN
         self.rd = bRD
+        self.writebackValue = 0
 
 #class Iformat
 class Iformat:
@@ -130,6 +131,7 @@ class Iformat:
         self.immediate = im
         self.rn = brn
         self.rd = brd
+        self.writebackValue = 0
 
 #class Dformat
 class Dformat:
@@ -138,6 +140,7 @@ class Dformat:
         self.op2 = format(0, '#02b')
         self.rn = brn
         self.rt = brt
+        self.writebackValue = 0
 
 #class CBformat
 class CBformat:
@@ -163,16 +166,16 @@ class instrcutiondecode:
     def __init__(self):
         #add
         if self.opcode == 1112:
-            storedValues[self.rd] = storedValues[self.rn] + storedValues[self.rm]
+            writebackValue = storedValues[self.rn] + storedValues[self.rm]
         #sub
         elif self.opcode == 1624:
-            storedValues[self.rd] = storedValues[self.rn] - storedValues[self.rm]
+            writebackValue  = storedValues[self.rn] - storedValues[self.rm]
         #addi
         elif self.opcode == 580:
-            storedValues[self.rd] = storedValues[self.rn] + storedValues[self.immediate]
+            writebackValue  = storedValues[self.rn] + storedValues[self.immediate]
         #subi
         elif self.opcode == 836:
-            storedValues[self.rd]= storedValues[self.rn] - storedValues[self.immediate]
+            writebackValue = storedValues[self.rn] - storedValues[self.immediate]
         #ldur
         elif self.opcode == 1986:
 
@@ -208,4 +211,5 @@ class instrcutiondecode:
 
 #step 5:
 #write back
+#only loads and R format
 
