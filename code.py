@@ -101,11 +101,12 @@ for each in file:
             tempADD = int(ADD)
             bRT = format(tempRT,'#07b')
             bADD = format(tempADD,'#021b')
-            bOpcode = format()
+            bOpcode = format(180, '#010b')
             print(bRT + bADD)
         elif instructionType == 'B':
             instructionType, ADD = each.split()
             tempADD = int(ADD)
+            bOpcode = format(5, '#08b')
             bADD = format(tempADD,'#028b')
             print(bADD)
         else:
@@ -161,18 +162,16 @@ PC = PC + 4
 class instrcutiondecode:
     def __init__(self):
         if self.opcode == 1112:
-            valuern = storedvalues[self.rn]
-
-            writeValue = self.rn + self.rm
+            storedValues[self.rd] = storedValues[self.rn] + storedValues[self.rm]
         #add
         elif self.opcode == 1624:
-            writeValue = self.rn - self.rm
+            storedValues[self.rd] = storedValues[self.rn] - storedValues[self.rm]
         #for SUB
         elif self.opcode == 580:
-            writeValue = self.rn + self.immediate
+            writeValue = storedValues[self.rn] + storedValues[self.immediate]
         #addi
         elif self.opcode == 836:
-
+            writeValue = storedValues[self.rn] - storedValues[self.immediate]
         #subi
         elif self.opcode == 1986:
 
@@ -185,15 +184,10 @@ class instrcutiondecode:
             self.aluop = 00
         #stur
         elif self.opcode == 1104:
-
-            self.alucontrol = 0000
-            self.aluop = 10
+            writeValue = storedValues[self.rn] and storedValues[self.rm]
         #and
         elif self.opcode == 1360:
-            self.format = "R"
-            self.type = "ORR"
-            self.alucontrol = 0b0001
-            self.aluop = 10
+            writeValue = storedValues[self.rn] or storedValues[self.rm]
         #orr
         elif self.opcode > 1439 and self.opcode < 1448:
             self.format = "CB"
