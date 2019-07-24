@@ -38,6 +38,59 @@ class CBformat:
 
 instructionList = []
 file = open('input.txt', 'r')
+#class Rformat
+class Rformat:
+    opcode = 0
+    rm = 0
+    rn = 0
+    rd = 0
+    def __init__(self, bRM, bRN, bRD, bOpcode):
+        self.opcode  = bOpcode
+        self.rm = bRM
+        self.shmnt = format(0, '#02b')
+        self.rn = bRN
+        self.rd = bRD
+
+#class Iformat
+class Iformat:
+    opcode = 0
+    immediate = 0
+    rn = 0
+    rd = 0
+    def __init__(self, op, im, brn, brd):
+        self.opcode = op
+        self.immediate = im
+        self.rn = brn
+        self.rd = brd
+
+#class Dformat
+class Dformat:
+    opcode = 0
+    address = 0
+    rn = 0
+    rt = 0
+    def __init__(self, bOpcode, dAddress, bRN, bRT):
+        self.opcode = bOpcode
+        self.address = dAddress
+        self.op2 = format(0, '#02b')
+        self.rn = bRN
+        self.rt = bRT
+
+#class CBformat
+class CBformat:
+    opcode = 0
+    address = 0
+    rt = 0
+    def __init__(self, o, ad, r):
+        self.opcode = o
+        self.address = ad
+        self.rt = r
+#class b format
+class Bformat:
+    opcode = format(5, '#07b')
+    add = 0
+    def __init__(self, adr):
+        self.add = adr
 #Could all be put into a function but i wasn't feeling it
 for each in file:
     if not each.strip():#Skips any line that is empty
@@ -61,6 +114,8 @@ for each in file:
             bRM = format(tempRM, '#07b')
             bOpcode = format(1112, '#013b')
             print(bRN + bRD + bRM)
+            r = Rformat(bRM, bRN, bRD, bOpcode)
+            instructionList.append(r)
         #Same concept is used for all instructions
         elif instructionType == 'ADDI':
             instructionType, IMM, RN, RD = each.split()
@@ -72,6 +127,8 @@ for each in file:
             bIMM = format(tempIMM, '#014b')
             bOpcode = format(580, '#012b')
             print(bRN + bRD + bIMM)
+            Im = Iformat(bOpcode, bIMM, bRN, bRD)
+            instructionList.append(Im)
         elif instructionType == 'SUB':
             instructionType, RM, RN, RD = each.split()
             tempRN = int(RN)
@@ -83,6 +140,8 @@ for each in file:
             bRM = format(tempRM, '#07b')
             bOpcode = format(1624, '#013b')
             print(bRN + bRD + bRM)
+            r = Rformat(bRM,bRN,bRD,bOpcode)
+            instructionList.append(r)
         elif instructionType == 'SUBI':
             instructionType, IMM, RN, RD = each.split()
             tempRN = int(RN)
@@ -93,6 +152,8 @@ for each in file:
             bIMM = format(tempIMM, '#014b')
             bOpcode = format(836, '#012b')
             print(bRN + bRD + bIMM)
+            Im = Iformat(bOpcode, bIMM, bRN, bRD)
+            instructionList.append(Im)
         elif instructionType == 'ORR':
             instructionType, RM, RN, RD = each.split()
             tempRN = int(RN)
@@ -122,6 +183,8 @@ for each in file:
             bADD = format(tempADD, '#011b')
             bOpcode = format(1986, '#013b')
             print(bRT + bRN + bADD)
+            d = Dformat(bOpcode, bADD, bRN, bRT)
+            instructionList.append(d)
         elif instructionType == 'STUR':
             instructionType, ADD, RN, RT = each.split()
             tempRT = int(RT)
@@ -133,20 +196,26 @@ for each in file:
             bADD = format(tempADD, '#011b')
             bOpcode = format(1984, '#013b')
             print(bRT + bRD + bADD)
+            d = Dformat(bOpcode, bADD, bRN, bRT)
+            instructionList.append(d)
         elif instructionType == 'CBZ':
             instructionType, ADD, RT = each.split()
             tempRT = int(RT)
             tempADD = int(ADD)
             bRT = format(tempRT,'#07b')
             bADD = format(tempADD,'#021b')
-            bOpcode = format(180, '#010b')
+            opcode = format(180, '#010b')
             print(bRT + bADD)
+            c = CBformat(opcode, bADD, bRT)
+            instructionList.append(c)
         elif instructionType == 'B':
             instructionType, ADD = each.split()
             tempADD = int(ADD)
             bOpcode = format(5, '#08b')
             bADD = format(tempADD,'#028b')
             print(bADD)
+            b = Bformat(bADD)
+            instructionList.append(b)
         else:
             print('no instruction match')
 
@@ -203,7 +272,8 @@ class instrcutiondecode:
             self.type = "B"
 
         #register fetch
-
+for i in range(len(instructionList)):
+    print(instructionList[i].opcode)
 #step 3:
 
 #execute
