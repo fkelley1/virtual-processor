@@ -64,7 +64,7 @@ class CBformat:
 
 #class b format
 class Bformat:
-    opcode = format(5, '#07b')
+    opcode = 5
     add = 0
     def __init__(self, o, adr):
         self.address = adr
