@@ -1,42 +1,6 @@
 #code for stupid stuff
 storedValues = [0] * 32
 instructionList = []
-file = open('input.txt', 'r')#class Rformat
-class Rformat:
-    def __init__(self, bRM, bRN, bRD, bOpcode):
-        self.opcode  = bOpcode
-        self.rm = bRM
-        self.shmnt = format(0, '#04b')
-        self.rn = bRN
-        self.rd = bRD
-        self.writebackValue = 0
-
-#class Iformat
-class Iformat:
-    def __init__(self, op, im, brn, brd):
-        self.opcode = op
-        self.immediate = im
-        self.rn = brn
-        self.rd = brd
-        self.writebackValue = 0
-
-#class Dformat
-class Dformat:
-    def __init__(self, o, ad, brn, brt):
-        self.opcode = o
-        self.op2 = format(0, '#02b')
-        self.rn = brn
-        self.rt = brt
-        self.writebackValue = 0
-
-#class CBformat
-class CBformat:
-    def __init__(self, o, ad, r):
-        self.opcode = o
-        self.address = ad
-        self.rt = r
-
-instructionList = []
 file = open('input.txt', 'r')
 #class Rformat
 class Rformat:
@@ -50,6 +14,7 @@ class Rformat:
         self.shmnt = format(0, '#02b')
         self.rn = bRN
         self.rd = bRD
+        self.writebackValue = 0
 
 #class Iformat
 class Iformat:
@@ -62,6 +27,7 @@ class Iformat:
         self.immediate = im
         self.rn = brn
         self.rd = brd
+        self.writebackValue = 0
 
 #class Dformat
 class Dformat:
@@ -75,6 +41,7 @@ class Dformat:
         self.op2 = format(0, '#02b')
         self.rn = bRN
         self.rt = bRT
+        self.writebackValue = 0
 
 #class CBformat
 class CBformat:
@@ -85,6 +52,7 @@ class CBformat:
         self.opcode = o
         self.address = ad
         self.rt = r
+
 #class b format
 class Bformat:
     opcode = format(5, '#07b')
