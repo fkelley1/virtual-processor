@@ -86,7 +86,7 @@ for each in file:
         each = each.replace('#','')
         each = each.replace('ZR','0')
         if instructionType == 'ADD':
-            instructionType, RM, RN, RD = each.split()#Sets the 4 parts to invdividual variables
+            instructionType, RD, RN, RM = each.split()#Sets the 4 parts to invdividual variables
             RN = int(RN)
             RD = int(RD)# Type is Str and can't be set straight to Binary so have to do int first
             RM = int(RM)
@@ -97,7 +97,7 @@ for each in file:
             instructionList.append(r)
         #Same concept is used for all instructions
         elif instructionType == 'ADDI':
-            instructionType, IMM, RN, RD = each.split()
+            instructionType, RD, RN, IMM = each.split()
             RN = int(RN)
             RD = int(RD)
             IMM = int(IMM)
@@ -106,7 +106,7 @@ for each in file:
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
             instructionList.append(Im)
         elif instructionType == 'SUB':
-            instructionType, RM, RN, RD = each.split()
+            instructionType, RD, RN, RM = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
@@ -115,7 +115,7 @@ for each in file:
             r = Rformat(RM,RN,RD,Opcode, instructionType)
             instructionList.append(r)
         elif instructionType == 'SUBI':
-            instructionType, IMM, RN, RD = each.split()
+            instructionType, RD, RN, IMM = each.split()
             RN = int(RN)
             RD = int(RD)
             IMM = int(IMM)
@@ -124,21 +124,21 @@ for each in file:
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
             instructionList.append(Im)
         elif instructionType == 'ORR':
-            instructionType, RM, RN, RD = each.split()
+            instructionType, RD, RN, RM = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
             Opcode = 1360
             r = Rformat(RM, RN, RD, Opcode, instructionType)
         elif instructionType == 'AND':
-            instructionType, RM, RN, RD = each.split()
+            instructionType, RD, RN, RM = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
             Opcode = 1104
             r = Rformat(RM, RN, RD, Opcode, instructionType)
         elif instructionType == 'LDUR':
-            instructionType, ADD, RN, RT = each.split()
+            instructionType, RT, RN, ADD = each.split()
             RT = int(RT)
             RN = int(RN)
             ADD = int(ADD)
@@ -147,7 +147,7 @@ for each in file:
             d = Dformat(bOpcode, ADD, RN, RT, instructionType)
             instructionList.append(d)
         elif instructionType == 'STUR':
-            instructionType, ADD, RN, RT = each.split()
+            instructionType, RN, RT, ADD = each.split()
             RT = int(RT)
             RN = int(RN)
             ADD = int(ADD)
@@ -156,7 +156,7 @@ for each in file:
             d = Dformat(Opcode, ADD, RN, RT, instructionType)
             instructionList.append(d)
         elif instructionType == 'CBZ':
-            instructionType, ADD, RT = each.split()
+            instructionType, RT, ADD = each.split()
             RT = int(RT)
             ADD = int(ADD)
             opcode = 180
@@ -246,7 +246,7 @@ for i in range(len(instructionList)):
         print("testing sub: ")
         print(storedValues[instructionList[i].rd])
     elif instructionList[i].opcode == 580:
-        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - storedValues[instructionList[i].immediate]
+        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] + storedValues[instructionList[i].immediate]
         print("testing addi: ")
         print(storedValues[instructionList[i].rd])
 
