@@ -1,5 +1,7 @@
 #code for stupid stuff
 storedValues = [0] * 32
+globals()
+PC = 0
 instructionList = []
 file = open('input.txt', 'r')
 #class Rformat
@@ -59,12 +61,14 @@ class Bformat:
     add = 0
     def __init__(self, o, adr):
         self.address = adr
-
+#step 1: instrcution fetch
 #Could all be put into a function but i wasn't feeling it
 for each in file:
+    PC = PC + 4
     if not each.strip():#Skips any line that is empty
         placeholder = 1
     else:
+        PC = PC +4
         instructionType = each.split(' ')[0]#Takes first variable
         each = each.replace(',','')#Removes all ,
         each = each.replace('X','')#Removes all X
@@ -161,21 +165,8 @@ for each in file:
         else:
             print('no instruction match')
 
-#step 1:
-
-#class MUX
-
-#class ALU
-PC = 0
-#step 1: instrcution fetch
-PC = PC + 4
-#instrcution memory
-
-#step 2: 
-
+#step 2:
 #instruction decode
-#if statement for each option, add, sub, addi
-#ib (instriction bit)
 class instrcutiondecode:
     def __init__(self):
         #add
@@ -211,24 +202,26 @@ class instrcutiondecode:
             self.type = "CBZ"
         #b
         else:
-            bnewPC = self.address
-            decnewPC = int(bnewPC, 2)
+            newPC = self.address
 
 
-        #register fetch
+# step 4:
+# memory access
+# if branch new PC
+#address calc for loads/stores
+class memoryaccess:
+    def __init__(self, PC):
+        if self.opcode == 5:
+            PC = PC - 4 + self.address
+
+# step 5:
+# write back
+# only loads and R format
+
+
 for i in range(len(instructionList)):
     print(instructionList[i].opcode)
-#step 3:
-
-#execute
-#address calculation
-
-#step 4:
-#memory access
-#if branch new PC
 
 
-#step 5:
-#write back
-#only loads and R format
+
 
