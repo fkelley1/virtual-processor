@@ -1,7 +1,5 @@
 #code for stupid stuff
-storedValues = []
-for x in 32:
-    storedValues[x] = 0
+storedValues = [0] * 32
 instructionList = []
 file = open('input.txt', 'r')#class Rformat
 class Rformat:
