@@ -18,7 +18,6 @@ for each in file:
             tempRN = int(RN)
             tempRD = int(RD)# Type is Str and can't be set straight to Binary so have to do int first
             tempRM = int(RM)
-            shiftAmt = 0
             bSA = format(shiftAmt,'#08b')
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')# Convert To Binary
@@ -41,7 +40,6 @@ for each in file:
             tempRN = int(RN)
             tempRD = int(RD)
             tempRM = int(RM)
-            shiftAmt = 0
             bSA = format(shiftAmt,'#08b')
             bRN = format(tempRN,'#07b')
             bRD = format(tempRD, '#07b')
@@ -58,27 +56,31 @@ for each in file:
             bIMM = format(tempIMM, '#014b')
             bOpcode = format(836, '#010b')
             print(bRN + bRD + bIMM)
+        elif instructionType == 'ORR':
+            bOpcode = format(1360, '#011b')
+        elif instructionType == 'AND':
+            bOpcode = format(1104, '#011b')
         elif instructionType == 'LDUR':
             instructionType, ADD, RN, RT = each.split()
             tempRT = int(RT)
             tempRN = int(RN)
             tempADD = int(ADD)
-            OP2 = 0
             bOP = format(OP2, '#04b')
             bRT = format(tempRT,'#07b')
             bRN = format(tempRN,'#07b')
             bADD = format(tempADD, '#011b')
+            bOpcode = format(1986, '#011b')
             print(bRT + bRN + bADD)
         elif instructionType == 'STUR':
             instructionType, ADD, RN, RT = each.split()
             tempRT = int(RT)
             tempRN = int(RN)
             tempADD = int(ADD)
-            OP2 = 0
             bOP = format(OP2, '#04b')
             bRT = format(tempRT,'#07b')
             bRN = format(tempRN,'#07b')
             bADD = format(tempADD, '#011b')
+            bOpcode = format(1984, '#011b')
             print(bRT + bRD + bADD)
         elif instructionType == 'CBZ':
             instructionType, ADD, RT = each.split()
@@ -112,6 +114,7 @@ class Rformat:
 
 #class Iformat
 class Iformat:
+<<<<<<< HEAD
     opcode = 0
     immediate = 0
     rn = 0
@@ -131,12 +134,26 @@ class Dformat:
     def __init__(self, o, ad, brn, brt):
         self.opcode = o
         self.address = ad
+=======
+    def __init__(self, bOpcode, bImm, bRN, bRD):
+        self.opcode
+        self.immediate
+        self.rn
+        self.rd
+
+#class Dformat
+class Dformat:
+    def __init__(self, bOpcode, dAddress, bRN, bRT):
+        self.opcode
+        self.address
+>>>>>>> 025d2dd1fdb0a8fc5e319491153e9cf471edd235
         self.op2 = format(0, '#02b')
         self.rn = brn
         self.rt = brt
 
 #class CBformat
 class CBformat:
+<<<<<<< HEAD
     opcode = 0
     address = 0
     rt = 0
@@ -144,6 +161,12 @@ class CBformat:
         self.opcode = o
         self.address = ad
         self.rt = r
+=======
+    def __init__(self, bOpcode, bAddress, bRT):
+        self.opcode
+        self.address
+        self.rt
+>>>>>>> 025d2dd1fdb0a8fc5e319491153e9cf471edd235
 
 #class MUX
 
