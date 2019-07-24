@@ -236,6 +236,7 @@ class writeback:
 
 for i in range(len(instructionList)):
     print(instructionList[i].opcode)
+    #figure out how to run
 
 
 
