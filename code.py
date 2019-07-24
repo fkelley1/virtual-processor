@@ -1,104 +1,6 @@
 #code for stupid stuff
 instructionList = []
 file = open('input.txt', 'r')
-#Could all be put into a function but i wasn't feeling it
-for each in file:
-    if not each.strip():#Skips any line that is empty
-        placeholder = 1
-    else:
-        instructionType = each.split(' ')[0]#Takes first variable
-        each = each.replace(',','')#Removes all ,
-        each = each.replace('X','')#Removes all X
-        each = each.replace('[','')
-        each = each.replace(']','')
-        each = each.replace('#','')
-        each = each.replace('ZR','0')
-        if instructionType == 'ADD':
-            instructionType, RM, RN, RD = each.split()#Sets the 4 parts to invdividual variables
-            tempRN = int(RN)
-            tempRD = int(RD)# Type is Str and can't be set straight to Binary so have to do int first
-            tempRM = int(RM)
-            # bSA = format(shiftAmt,'#08b')
-            bRN = format(tempRN,'#07b')
-            bRD = format(tempRD, '#07b')# Convert To Binary
-            bRM = format(tempRM, '#07b')
-            bOpcode = format(1112, '#011b')
-            print(bRN + bRD + bRM)
-        #Same concept is used for all instructions
-        elif instructionType == 'ADDI':
-            instructionType, IMM, RN, RD = each.split()
-            tempRN = int(RN)
-            tempRD = int(RD)
-            tempIMM = int(IMM)
-            bRN = format(tempRN,'#07b')
-            bRD = format(tempRD, '#07b')
-            bIMM = format(tempIMM, '#014b')
-            bOpcode = format(580, '#010b')
-            print(bRN + bRD + bIMM)
-        elif instructionType == 'SUB':
-            instructionType, RM, RN, RD = each.split()
-            tempRN = int(RN)
-            tempRD = int(RD)
-            tempRM = int(RM)
-            # bSA = format(shiftAmt,'#08b')
-            bRN = format(tempRN,'#07b')
-            bRD = format(tempRD, '#07b')
-            bRM = format(tempRM, '#07b')
-            bOpcode = format(1624, '#011b')
-            print(bRN + bRD + bRM)
-        elif instructionType == 'SUBI':
-            instructionType, IMM, RN, RD = each.split()
-            tempRN = int(RN)
-            tempRD = int(RD)
-            tempIMM = int(IMM)
-            bRN = format(tempRN,'#07b')
-            bRD = format(tempRD, '#07b')
-            bIMM = format(tempIMM, '#014b')
-            bOpcode = format(836, '#010b')
-            print(bRN + bRD + bIMM)
-        elif instructionType == 'ORR':
-            bOpcode = format(1360, '#011b')
-        elif instructionType == 'AND':
-            bOpcode = format(1104, '#011b')
-        elif instructionType == 'LDUR':
-            instructionType, ADD, RN, RT = each.split()
-            tempRT = int(RT)
-            tempRN = int(RN)
-            tempADD = int(ADD)
-            # bOP = format(OP2, '#04b')
-            bRT = format(tempRT,'#07b')
-            bRN = format(tempRN,'#07b')
-            bADD = format(tempADD, '#011b')
-            bOpcode = format(1986, '#011b')
-            print(bRT + bRN + bADD)
-        elif instructionType == 'STUR':
-            instructionType, ADD, RN, RT = each.split()
-            tempRT = int(RT)
-            tempRN = int(RN)
-            tempADD = int(ADD)
-            # bOP = format(OP2, '#04b')
-            bRT = format(tempRT,'#07b')
-            bRN = format(tempRN,'#07b')
-            bADD = format(tempADD, '#011b')
-            bOpcode = format(1984, '#011b')
-            print(bRT + bRD + bADD)
-        elif instructionType == 'CBZ':
-            instructionType, ADD, RT = each.split()
-            tempRT = int(RT)
-            tempADD = int(ADD)
-            bRT = format(tempRT,'#07b')
-            bADD = format(tempADD,'#021b')
-            print(bRT + bADD)
-        elif instructionType == 'B':
-            instructionType, ADD = each.split()
-            tempADD = int(ADD)
-            bADD = format(tempADD,'#028b')
-            print(bADD)
-        else:
-            print('no instruction match')
-
-#step 1:
-
 #class Rformat
 class Rformat:
     opcode = 0
@@ -131,8 +33,8 @@ class Dformat:
     rn = 0
     rt = 0
     def __init__(self, bOpcode, dAddress, bRN, bRT):
-        self.opcode
-        self.address
+        self.opcode = bOpcode
+        self.address = dAddress
         self.op2 = format(0, '#02b')
         self.rn = bRN
         self.rt = bRT
@@ -146,6 +48,127 @@ class CBformat:
         self.opcode = o
         self.address = ad
         self.rt = r
+#class b format
+class Bformat:
+    opcode = format(5, '#07b')
+    add = 0
+    def __init__(self, adr):
+        self.add = adr
+#Could all be put into a function but i wasn't feeling it
+for each in file:
+    if not each.strip():#Skips any line that is empty
+        placeholder = 1
+    else:
+        instructionType = each.split(' ')[0]#Takes first variable
+        each = each.replace(',','')#Removes all ,
+        each = each.replace('X','')#Removes all X
+        each = each.replace('[','')
+        each = each.replace(']','')
+        each = each.replace('#','')
+        each = each.replace('ZR','0')
+        if instructionType == 'ADD':
+            instructionType, RM, RN, RD = each.split()#Sets the 4 parts to invdividual variables
+            tempRN = int(RN)
+            tempRD = int(RD)# Type is Str and can't be set straight to Binary so have to do int first
+            tempRM = int(RM)
+            # bSA = format(shiftAmt,'#08b')
+            bRN = format(tempRN,'#07b')
+            bRD = format(tempRD, '#07b')# Convert To Binary
+            bRM = format(tempRM, '#07b')
+            bOpcode = format(1112, '#011b')
+            print(bRN + bRD + bRM)
+            r = Rformat(bRM, bRN, bRD, bOpcode)
+            instructionList.append(r)
+        #Same concept is used for all instructions
+        elif instructionType == 'ADDI':
+            instructionType, IMM, RN, RD = each.split()
+            tempRN = int(RN)
+            tempRD = int(RD)
+            tempIMM = int(IMM)
+            bRN = format(tempRN,'#07b')
+            bRD = format(tempRD, '#07b')
+            bIMM = format(tempIMM, '#014b')
+            bOpcode = format(580, '#010b')
+            print(bRN + bRD + bIMM)
+            Im = Iformat(bOpcode, bIMM, bRN, bRD)
+            instructionList.append(Im)
+        elif instructionType == 'SUB':
+            instructionType, RM, RN, RD = each.split()
+            tempRN = int(RN)
+            tempRD = int(RD)
+            tempRM = int(RM)
+            # bSA = format(shiftAmt,'#08b')
+            bRN = format(tempRN,'#07b')
+            bRD = format(tempRD, '#07b')
+            bRM = format(tempRM, '#07b')
+            bOpcode = format(1624, '#011b')
+            print(bRN + bRD + bRM)
+            r = Rformat(bRM,bRN,bRD,bOpcode)
+            instructionList.append(r)
+        elif instructionType == 'SUBI':
+            instructionType, IMM, RN, RD = each.split()
+            tempRN = int(RN)
+            tempRD = int(RD)
+            tempIMM = int(IMM)
+            bRN = format(tempRN,'#07b')
+            bRD = format(tempRD, '#07b')
+            bIMM = format(tempIMM, '#014b')
+            bOpcode = format(836, '#010b')
+            print(bRN + bRD + bIMM)
+            Im = Iformat(bOpcode, bIMM, bRN, bRD)
+            instructionList.append(Im)
+        elif instructionType == 'ORR':
+            bOpcode = format(1360, '#011b')
+        elif instructionType == 'AND':
+            bOpcode = format(1104, '#011b')
+        elif instructionType == 'LDUR':
+            instructionType, ADD, RN, RT = each.split()
+            tempRT = int(RT)
+            tempRN = int(RN)
+            tempADD = int(ADD)
+            # bOP = format(OP2, '#04b')
+            bRT = format(tempRT,'#07b')
+            bRN = format(tempRN,'#07b')
+            bADD = format(tempADD, '#011b')
+            bOpcode = format(1986, '#011b')
+            print(bRT + bRN + bADD)
+            d = Dformat(bOpcode, bADD, bRN, bRT)
+            instructionList.append(d)
+        elif instructionType == 'STUR':
+            instructionType, ADD, RN, RT = each.split()
+            tempRT = int(RT)
+            tempRN = int(RN)
+            tempADD = int(ADD)
+            # bOP = format(OP2, '#04b')
+            bRT = format(tempRT,'#07b')
+            bRN = format(tempRN,'#07b')
+            bADD = format(tempADD, '#011b')
+            bOpcode = format(1984, '#011b')
+            print(bRT + bRD + bADD)
+            d = Dformat(bOpcode, bADD, bRN, bRT)
+            instructionList.append(d)
+        elif instructionType == 'CBZ':
+            instructionType, ADD, RT = each.split()
+            tempRT = int(RT)
+            tempADD = int(ADD)
+            bRT = format(tempRT,'#07b')
+            bADD = format(tempADD,'#021b')
+            opcode = format(180, '#010b')
+            print(bRT + bADD)
+            c = CBformat(opcode, bADD, bRT)
+            instructionList.append(c)
+        elif instructionType == 'B':
+            instructionType, ADD = each.split()
+            tempADD = int(ADD)
+            bADD = format(tempADD,'#028b')
+            print(bADD)
+            b = Bformat(bADD)
+            instructionList.append(b)
+        else:
+            print('no instruction match')
+
+#step 1:
+
 
 #class MUX
 
@@ -215,7 +238,8 @@ class instrcutiondecode:
         #everything else
 
         #register fetch
-
+for i in range(len(instructionList)):
+    print(instructionList[i].opcode)
 #step 3:
 
 #execute
