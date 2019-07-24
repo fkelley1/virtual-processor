@@ -65,8 +65,8 @@ class CBformat:
 #class b format
 class Bformat:
     opcode = 5
-    add = 0
-    def __init__(self, o, adr):
+    address = 0
+    def __init__(self, adr):
         self.address = adr
         self.format = "B"
 
@@ -166,9 +166,8 @@ for each in file:
         elif instructionType == 'B':
             instructionType, ADD = each.split()
             ADD = int(ADD)
-            Opcode = 5
             print(ADD)
-            b = Bformat(Opcode, ADD)
+            b = Bformat(ADD)
             instructionList.append(b)
         else:
             print('no instruction match')
