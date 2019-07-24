@@ -92,7 +92,9 @@ for each in file:
             RM = int(RM)
             # bSA = format(shiftAmt,'#08b')
             Opcode = 1112
-            print(RN + RD + RM)
+            print(RN)
+            print(RD)
+            print(RM)
             r = Rformat(RM, RN, RD, Opcode, instructionType)
             instructionList.append(r)
         #Same concept is used for all instructions
@@ -102,7 +104,9 @@ for each in file:
             RD = int(RD)
             IMM = int(IMM)
             Opcode = 580
-            print(RN + RD + IMM)
+            print(RN)
+            print(RD)
+            print(IMM)
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
             instructionList.append(Im)
         elif instructionType == 'SUB':
@@ -235,6 +239,7 @@ class writeback:
 
 for i in range(len(instructionList)):
     # print(instructionList[i].opcode)
+
     #figure out how to run
     if instructionList[i].opcode == 1112:
         storedValues[instructionList[i].rd] = storedValues[instructionList[i].rm] + storedValues[instructionList[i].rn]
@@ -245,8 +250,8 @@ for i in range(len(instructionList)):
         storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - storedValues[instructionList[i].rm]
         print("testing sub: ")
         print(storedValues[instructionList[i].rd])
-    elif instructionList[i].opcode == 580:
-        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] + storedValues[instructionList[i].immediate]
-        print("testing addi: ")
-        print(storedValues[instructionList[i].rd])
+    # elif instructionList[i].opcode == 580:
+    #     storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] + storedValues[instructionList[i].immediate]
+    #     print("testing addi: ")
+    #     print(storedValues[instructionList[i].rd])
 
