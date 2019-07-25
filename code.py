@@ -232,13 +232,6 @@ class memoryaccess:
 # step 5:
 # write back
 # only loads and R format
-class writeback:
-    def __init__(self):
-        print(self.form)
-        if self.form == "R":
-            storedValues[self.rt] = self.writebackValue
-            print(storedValues[self.rt])
-        #TO DO FOR LOADS(STORES??) IDK WHICH ONE
 
 for i in range(len(instructionList)):
     print(instructionList[i].opcode)
@@ -251,16 +244,25 @@ for i in range(len(instructionList)):
         #storedValues[instructionList[i].rd] = instructionList[i].writebackValue
        # print(instructionList[i].type)
        # print(storedValues[instructionList[i].rd])
-    elif instructionList[i].opcode == 580:
-        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] + instructionList[i].immediate
-        print("testing addi: ")
+    if instructionList[i].opcode == 1112:
+        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rm] + storedValues[instructionList[i].rn]
+        # print(instructionList[i].rd)
+        print("this is stored value")
         print(storedValues[instructionList[i].rd])
-    elif instructionList[i].opcode == 836:
-        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - instructionList[i].immediate
-        print("testing subi: ")
-        print(storedValues[instructionList[i].rn])
-        print(instructionList[i].immediate)
-        print(storedValues[instructionList[i].rd])
+    if instructionList[i].opcode == 1624:
+            storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - storedValues[instructionList[i].rm]
+            print("testing sub: ")
+            print(storedValues[instructionList[i].rd])
+   # elif instructionList[i].opcode == 580:
+     #   storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] + instructionList[i].immediate
+      #  print("testing addi: ")
+       # print(storedValues[instructionList[i].rd])
+    #elif instructionList[i].opcode == 836:
+      #  storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - instructionList[i].immediate
+       # print("testing subi: ")
+        #print(storedValues[instructionList[i].rn])
+    #    print(instructionList[i].immediate)
+     #   print(storedValues[instructionList[i].rd])
 
 
 
