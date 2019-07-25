@@ -1,6 +1,6 @@
 #code for stupid stuff
-storedValues = [0] * 32
-globals()
+RegFile = [0] * 32
+DataMemory = [0]*200
 PC = 0
 instructionList = []
 file = open('input.txt', 'r')
@@ -16,9 +16,8 @@ class Rformat:
         self.shmnt = format(0, '#02b')
         self.rn = bRN
         self.rd = bRD
-        self.type = itype
         self.form = "R"
-        self.writebackValue = 0
+        self.type = itype
 
 #class Iformat
 class Iformat:
@@ -33,7 +32,6 @@ class Iformat:
         self.rd = brd
         self.type = itype
         self.form = "I"
-        self.writebackValue = 0
 
 #class Dformat
 class Dformat:
@@ -47,9 +45,8 @@ class Dformat:
         self.op2 = format(0, '#02b')
         self.rn = bRN
         self.rt = bRT
-        self.type = itype
         self.form = "D"
-        self.writebackValue = 0
+        self.type = itype
 
 #class CBformat
 class CBformat:
@@ -92,9 +89,6 @@ for each in file:
             RM = int(RM)
             # bSA = format(shiftAmt,'#08b')
             Opcode = 1112
-            print(RN)
-            print(RD)
-            print(IMM)
             r = Rformat(RM, RN, RD, Opcode, instructionType)
             instructionList.append(r)
         #Same concept is used for all instructions
@@ -104,9 +98,6 @@ for each in file:
             RD = int(RD)
             IMM = int(IMM)
             Opcode = 580
-            print(RN)
-            print(RD)
-            print(IMM)
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
             instructionList.append(Im)
         elif instructionType == 'SUB':
@@ -115,7 +106,6 @@ for each in file:
             RD = int(RD)
             RM = int(RM)
             Opcode = 1624
-            print(RN + RD + RM)
             r = Rformat(RM,RN,RD,Opcode, instructionType)
             instructionList.append(r)
         elif instructionType == 'SUBI':
@@ -124,7 +114,6 @@ for each in file:
             RD = int(RD)
             IMM = int(IMM)
             Opcode = 836
-            print(RN + RD + IMM)
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
             instructionList.append(Im)
         elif instructionType == 'ORR':
@@ -147,7 +136,6 @@ for each in file:
             RN = int(RN)
             ADD = int(ADD)
             bOpcode = 1986
-            print(RT + RN + ADD)
             d = Dformat(Opcode, ADD, RN, RT, instructionType)
             instructionList.append(d)
         elif instructionType == 'STUR':
@@ -156,7 +144,6 @@ for each in file:
             RN = int(RN)
             ADD = int(ADD)
             Opcode = 1984
-            print(RT + RD + ADD)
             d = Dformat(Opcode, ADD, RN, RT, instructionType)
             instructionList.append(d)
         elif instructionType == 'CBZ':
@@ -164,14 +151,12 @@ for each in file:
             RT = int(RT)
             ADD = int(ADD)
             opcode = 180
-            print(RT + ADD)
             c = CBformat(opcode, ADD, RT)
             instructionList.append(c)
         elif instructionType == 'B':
             instructionType, ADD = each.split()
             ADD = int(ADD)
             Opcode = 5
-            print(ADD)
             b = Bformat(Opcode, ADD)
             instructionList.append(b)
         else:
@@ -179,45 +164,6 @@ for each in file:
 
 #step 2:
 #instruction decode
-class instrcutiondecode:
-    def __init__(self):
-        #add
-        if self.type == "ADD":
-            writebackValue = storedValues[self.rn] + storedValues[self.rm]
-        #sub
-        elif self.type == "SUB":
-            writebackValue = storedValues[self.rn] - storedValues[self.rm]
-        #addi
-        elif self.type == "ADDI":
-            writebackValue = storedValues[self.rn] + self.immediate
-        #subi
-        elif self.type == "SUBI":
-            writebackValue = storedValues[self.rn] - self.immediate
-        #ldur
-        elif self.type == "LDUR":
-        #need to do
-            self.alucontrol = 0b0010
-            self.aluop = 0
-        #stur
-        elif self.type == "STUR":
-            #NEED TO DO
-            self.alucontrol = 0b0010
-            self.aluop = 00
-        #and
-        elif self.type == "AND":
-            writebackValue = storedValues[self.rn] and storedValues[self.rm]
-        #orr
-        elif self.type == "ORR":
-            writebackValue = storedValues[self.rn] or storedValues[self.rm]
-        #cbz
-        elif self.type == "CBZ":
-            #NEED TO DO
-
-            self.type = "CBZ"
-        #b
-        else:
-            newPC = self.address
-
 
 #data memmory
 #stored values - reg file
@@ -229,46 +175,62 @@ class instrcutiondecode:
 # memory access
 # if branch new PC
 #address calc for loads/stores
-class memoryaccess:
-    def __init__(self, PC):
-        if self.type == "B":
-            PC = PC - 4 + self.address
-        #TO DO FOR LOADS/STORES
+
 
 # step 5:
 # write back
 # only loads and R format
-
+print("starting")
 for i in range(len(instructionList)):
-    print(instructionList[i].opcode)
-    #if instructionList[i].form == "R":
-       # storedValues[instructionList[i].rd] = instructionList[i].writebackValue
-        #print(instructionList[i].type)
-        #print(storedValues[instructionList[i].rd])
-    #causing issues when running
-    #elif instructionList[i].form == "I":
-        #storedValues[instructionList[i].rd] = instructionList[i].writebackValue
-       # print(instructionList[i].type)
-       # print(storedValues[instructionList[i].rd])
-    if instructionList[i].opcode == 1112:
-        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rm] + storedValues[instructionList[i].rn]
-        # print(instructionList[i].rd)
-        print("this is stored value")
-        print(storedValues[instructionList[i].rd])
-    if instructionList[i].opcode == 1624:
-            storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - storedValues[instructionList[i].rm]
+    #print(instructionList[i].opcode)
+    if instructionList[i].form == "R":
+        if instructionList[i].type == "ADD":
+            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + RegFile[instructionList[i].rm]
+            print("ADD")
+            print(RegFile[instructionList[i].rd])
+        # sub
+        elif instructionList[i].type == "SUB":
+            RegFile[instructionList[i].rd]= RegFile[instructionList[i].rn] - RegFile[instructionList[i].rm]
             print("testing sub: ")
-            print(storedValues[instructionList[i].rd])
-   # elif instructionList[i].opcode == 580:
-     #   storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] + instructionList[i].immediate
-      #  print("testing addi: ")
-       # print(storedValues[instructionList[i].rd])
-    #elif instructionList[i].opcode == 836:
-      #  storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - instructionList[i].immediate
-       # print("testing subi: ")
-        #print(storedValues[instructionList[i].rn])
-    #    print(instructionList[i].immediate)
-     #   print(storedValues[instructionList[i].rd])
+            print(RegFile[instructionList[i].rd])
+        # and
+        elif instructionList[i].type == "AND":
+            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] and RegFile[
+                instructionList[i].rm]
+        # orr
+        elif instructionList[i].type == "ORR":
+            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] or RegFile[
+                instructionList[i].rm]
+    elif instructionList[i].form == "I":
+         # addi
+         if instructionList[i].type == "ADDI":
+             print("addi")
+             print(instructionList[i].immediate)
+             print(RegFile[instructionList[i].rd])
+             RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + instructionList[i].immediate
+             print(RegFile[instructionList[i].rd])
+        # subi
+         elif instructionList[i].type == "SUBI":
+             RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] - instructionList[i].immediate
+             print(RegFile[instructionList[i].rd])
+    elif instructionList[i].form == "D":
+        # ldur
+        if instructionList[i].type == "LDUR":
+            print("LDUR")
+            # need to do
+        # stur
+        elif instructionList[i].type == "STUR":
+            # NEED TO DO
+            print("STUR")
+        # cbz
+    elif instructionList[i].form == "CBZ":
+        # NEED TO DO
+        print("CBZ")
+        instructionList[i].type = "CBZ"
+    # b
+    else:
+        print("B")
+        newPC = instructionList[i].address
 
 
 
