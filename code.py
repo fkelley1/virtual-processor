@@ -1,5 +1,5 @@
 #code for stupid stuff
-storedValues = [10] * 32
+storedValues = [0] * 32
 globals()
 PC = 0
 instructionList = []
@@ -17,7 +17,7 @@ class Rformat:
         self.rn = bRN
         self.rd = bRD
         self.type = itype
-        self.format = "R"
+        self.form = "R"
         self.writebackValue = 0
 
 #class Iformat
@@ -32,7 +32,7 @@ class Iformat:
         self.rn = brn
         self.rd = brd
         self.type = itype
-        self.format = "I"
+        self.form = "I"
         self.writebackValue = 0
 
 #class Dformat
@@ -48,7 +48,7 @@ class Dformat:
         self.rn = bRN
         self.rt = bRT
         self.type = itype
-        self.format = "D"
+        self.form = "D"
         self.writebackValue = 0
 
 #class CBformat
@@ -60,15 +60,15 @@ class CBformat:
         self.opcode = o
         self.address = ad
         self.rt = r
-        self.format = "CBZ"
+        self.form = "CBZ"
 
 #class b format
 class Bformat:
-    opcode = 5
-    address = 0
-    def __init__(self, adr):
+    opcode = format(5, '#07b')
+    add = 0
+    def __init__(self, o, adr):
         self.address = adr
-        self.format = "B"
+        self.form = "B"
 
 #step 1: instrcution fetch
 #Could all be put into a function but i wasn't feeling it
@@ -86,7 +86,7 @@ for each in file:
         each = each.replace('#','')
         each = each.replace('ZR','0')
         if instructionType == 'ADD':
-            instructionType, RD, RN, RM = each.split()#Sets the 4 parts to invdividual variables
+            instructionType, RM, RN, RD = each.split()#Sets the 4 parts to invdividual variables
             RN = int(RN)
             RD = int(RD)# Type is Str and can't be set straight to Binary so have to do int first
             RM = int(RM)
@@ -94,12 +94,12 @@ for each in file:
             Opcode = 1112
             print(RN)
             print(RD)
-            print(RM)
+            print(IMM)
             r = Rformat(RM, RN, RD, Opcode, instructionType)
             instructionList.append(r)
         #Same concept is used for all instructions
         elif instructionType == 'ADDI':
-            instructionType, RD, RN, IMM = each.split()
+            instructionType, IMM, RN, RD = each.split()
             RN = int(RN)
             RD = int(RD)
             IMM = int(IMM)
@@ -110,7 +110,7 @@ for each in file:
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
             instructionList.append(Im)
         elif instructionType == 'SUB':
-            instructionType, RD, RN, RM = each.split()
+            instructionType, RM, RN, RD = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
@@ -119,7 +119,7 @@ for each in file:
             r = Rformat(RM,RN,RD,Opcode, instructionType)
             instructionList.append(r)
         elif instructionType == 'SUBI':
-            instructionType, RD, RN, IMM = each.split()
+            instructionType, IMM, RN, RD = each.split()
             RN = int(RN)
             RD = int(RD)
             IMM = int(IMM)
@@ -128,39 +128,39 @@ for each in file:
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
             instructionList.append(Im)
         elif instructionType == 'ORR':
-            instructionType, RD, RN, RM = each.split()
+            instructionType, RM, RN, RD = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
             Opcode = 1360
             r = Rformat(RM, RN, RD, Opcode, instructionType)
         elif instructionType == 'AND':
-            instructionType, RD, RN, RM = each.split()
+            instructionType, RM, RN, RD = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
             Opcode = 1104
             r = Rformat(RM, RN, RD, Opcode, instructionType)
         elif instructionType == 'LDUR':
-            instructionType, RT, RN, ADD = each.split()
+            instructionType, ADD, RN, RT = each.split()
             RT = int(RT)
             RN = int(RN)
             ADD = int(ADD)
             bOpcode = 1986
             print(RT + RN + ADD)
-            d = Dformat(bOpcode, ADD, RN, RT, instructionType)
+            d = Dformat(Opcode, ADD, RN, RT, instructionType)
             instructionList.append(d)
         elif instructionType == 'STUR':
-            instructionType, RN, RT, ADD = each.split()
+            instructionType, ADD, RN, RT = each.split()
             RT = int(RT)
             RN = int(RN)
             ADD = int(ADD)
             Opcode = 1984
-            print(RT + RN + ADD)
+            print(RT + RD + ADD)
             d = Dformat(Opcode, ADD, RN, RT, instructionType)
             instructionList.append(d)
         elif instructionType == 'CBZ':
-            instructionType, RT, ADD = each.split()
+            instructionType, ADD, RT = each.split()
             RT = int(RT)
             ADD = int(ADD)
             opcode = 180
@@ -170,8 +170,9 @@ for each in file:
         elif instructionType == 'B':
             instructionType, ADD = each.split()
             ADD = int(ADD)
+            Opcode = 5
             print(ADD)
-            b = Bformat(ADD)
+            b = Bformat(Opcode, ADD)
             instructionList.append(b)
         else:
             print('no instruction match')
@@ -233,23 +234,23 @@ class memoryaccess:
 # only loads and R format
 class writeback:
     def __init__(self):
-        if self.format == "R":
+        print(self.form)
+        if self.form == "R":
             storedValues[self.rt] = self.writebackValue
+            print(storedValues[self.rt])
         #TO DO FOR LOADS(STORES??) IDK WHICH ONE
 
 for i in range(len(instructionList)):
-    # print(instructionList[i].opcode)
-
-    #figure out how to run
-    if instructionList[i].opcode == 1112:
-        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rm] + storedValues[instructionList[i].rn]
-        # print(instructionList[i].rd)
-        print("this is stored value")
-        print(storedValues[instructionList[i].rd])
-    elif instructionList[i].opcode == 1624:
-        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - storedValues[instructionList[i].rm]
-        print("testing sub: ")
-        print(storedValues[instructionList[i].rd])
+    print(instructionList[i].opcode)
+    #if instructionList[i].form == "R":
+       # storedValues[instructionList[i].rd] = instructionList[i].writebackValue
+        #print(instructionList[i].type)
+        #print(storedValues[instructionList[i].rd])
+    #causing issues when running
+    #elif instructionList[i].form == "I":
+        #storedValues[instructionList[i].rd] = instructionList[i].writebackValue
+       # print(instructionList[i].type)
+       # print(storedValues[instructionList[i].rd])
     elif instructionList[i].opcode == 580:
         storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] + instructionList[i].immediate
         print("testing addi: ")
@@ -260,5 +261,9 @@ for i in range(len(instructionList)):
         print(storedValues[instructionList[i].rn])
         print(instructionList[i].immediate)
         print(storedValues[instructionList[i].rd])
+
+
+
+
 
 
