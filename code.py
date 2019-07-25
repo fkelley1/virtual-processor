@@ -250,8 +250,15 @@ for i in range(len(instructionList)):
         storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - storedValues[instructionList[i].rm]
         print("testing sub: ")
         print(storedValues[instructionList[i].rd])
-    # elif instructionList[i].opcode == 580:
-    #     storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] + storedValues[instructionList[i].immediate]
-    #     print("testing addi: ")
-    #     print(storedValues[instructionList[i].rd])
+    elif instructionList[i].opcode == 580:
+        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] + instructionList[i].immediate
+        print("testing addi: ")
+        print(storedValues[instructionList[i].rd])
+    elif instructionList[i].opcode == 836:
+        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - instructionList[i].immediate
+        print("testing subi: ")
+        print(storedValues[instructionList[i].rn])
+        print(instructionList[i].immediate)
+        print(storedValues[instructionList[i].rd])
+
 
