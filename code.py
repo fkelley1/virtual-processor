@@ -162,7 +162,7 @@ for each in file:
             d = Dformat(Opcode, ADD, RN, RT, instructionType)
             instructionList.append(d)
         elif instructionType == 'CBZ':
-            instructionType, ADD, RT = each.split()
+            instructionType, RT, ADD = each.split()
             RT = int(RT)
             ADD = int(ADD)
             opcode = 180
@@ -194,7 +194,7 @@ for each in file:
 # write back
 # only loads and R format
 print("starting")
-for i in range(len(instructionList)):
+for i in range(len(instructionList)+1):
     #print(instructionList[i].opcode)
     if instructionList[i].form == "R":
         if instructionList[i].type == "ADD":
@@ -252,9 +252,17 @@ for i in range(len(instructionList)):
     elif instructionList[i].form == "CBZ":
         # NEED TO DO
         print("CBZ")
+        print(i)
+        if RegFile[instructionList[i].rt] > instructionList[i].address:
+            print("exit loop")
         instructionList[i].type = "CBZ"
         # b
     else:
         print("B")
-        i = i - instructionList[i].add
-        newPC = instructionList[i].add
+        print(i)
+        print(instructionList[i].address)
+        i = i + instructionList[i].address
+        print(i)
+        print(instructionList[i].address)
+
+
