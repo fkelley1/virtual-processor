@@ -1,12 +1,17 @@
-#code for stupid stuff
+#creates register file
 RegFile = [0] * 32
+#creates data memory
 dataMemory = [0] * 100
+#stores 10 into data memory at 0
 dataMemory[0]=10
+#stores 13 into data memory at 1
 dataMemory[1]=13
 globals()
 PC = 0
 instructionList = []
 file = open('input.txt', 'r')
+
+#template for all R instructions
 #class Rformat
 class Rformat:
     opcode = 0
@@ -21,8 +26,8 @@ class Rformat:
         self.rd = bRD
         self.type = itype
         self.form = "R"
-        self.writebackValue = 0
 
+#template for all I instructions
 #class Iformat
 class Iformat:
     opcode = 0
@@ -36,8 +41,8 @@ class Iformat:
         self.rd = brd
         self.type = itype
         self.form = "I"
-        self.writebackValue = 0
 
+#template for all D instructions
 #class Dformat
 class Dformat:
     opcode = 0
@@ -52,7 +57,6 @@ class Dformat:
         self.rt = bRT
         self.type = itype
         self.form = "D"
-        self.writebackValue = 0
 
 #class CBformat
 class CBformat:
@@ -91,125 +95,127 @@ for each in file:
         if instructionType == 'ADD':
             instructionType, RD, RN, RM = each.split()#Sets the 4 parts to invdividual variables
             RN = int(RN)
-            RD = int(RD)# Type is Str and can't be set straight to Binary so have to do int first
+            RD = int(RD)
             RM = int(RM)
-            # bSA = format(shiftAmt,'#08b')
             Opcode = 1112
             print(RM)
-            #print(RD)
+            #creates R instrcution object
             r = Rformat(RM, RN, RD, Opcode, instructionType)
+            # adds new object to list
             instructionList.append(r)
         #Same concept is used for all instructions
         elif instructionType == 'ADDI':
+            # splits the registers/numbers into perspective feilds per each instruction format
             instructionType, RD, RN, IMM = each.split()
             RN = int(RN)
             RD = int(RD)
             IMM = int(IMM)
             Opcode = 580
-            #print(RN)
-            #print(RD)
-            #print(IMM)
+            # creates I instruction object
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
+            # adds new object to list
             instructionList.append(Im)
         elif instructionType == 'SUB':
+            # splits the registers/numbers into perspective feilds per each instruction format
             instructionType, RD, RN, RM = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
             Opcode = 1624
-            #print(RN + RD + RM)
+            # creates R instruction object
             r = Rformat(RM,RN,RD,Opcode, instructionType)
+            # adds new object to list
             instructionList.append(r)
         elif instructionType == 'SUBI':
+            #splits the registers/numbers into perspective feilds per each instruction format
             instructionType, RD, RN, IMM = each.split()
             RN = int(RN)
             RD = int(RD)
             IMM = int(IMM)
             Opcode = 836
-            #print(RN + RD + IMM)
+            # creates I instruction object
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
+            # adds new object to list
             instructionList.append(Im)
         elif instructionType == 'ORR':
+            # splits the registers/numbers into perspective feilds per each instruction format
             instructionType, RM, RN, RD = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
             Opcode = 1360
+            # creates R instruction object
             r = Rformat(RM, RN, RD, Opcode, instructionType)
+            # adds new object to list
+            instructionList.append(r)
         elif instructionType == 'AND':
+            # splits the registers/numbers into perspective feilds per each instruction format
             instructionType, RM, RN, RD = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
             Opcode = 1104
+            # creates R instruction object
             r = Rformat(RM, RN, RD, Opcode, instructionType)
+            # adds new object to list
+            instructionList.append(r)
         elif instructionType == 'LDUR':
+            # splits the registers/numbers into perspective feilds per each instruction format
             instructionType, RT, RN, ADD = each.split()
             RT = int(RT)
             RN = int(RN)
             ADD = int(ADD)
             bOpcode = 1986
-            #print(RT + RN + ADD)
+            # creates D instruction object
             d = Dformat(Opcode, ADD, RN, RT, instructionType)
+            #adds new object to list
             instructionList.append(d)
         elif instructionType == 'STUR':
+            # splits the registers/numbers into perspective feilds per each instruction format
             instructionType, RT, RN, ADD = each.split()
             RT = int(RT)
             RN = int(RN)
             ADD = int(ADD)
             Opcode = 1984
-            #print(RT + RD + ADD)
+            # creates D instruction object
             d = Dformat(Opcode, ADD, RN, RT, instructionType)
+            # adds new object to list
             instructionList.append(d)
         elif instructionType == 'CBZ':
+            # splits the registers/numbers into perspective feilds per each instruction format
             instructionType, RT, ADD = each.split()
             RT = int(RT)
             ADD = int(ADD)
             opcode = 180
-            #print(RT + ADD)
+            # creates CB instruction object
             c = CBformat(opcode, ADD, RT)
+            # adds new object to list
             instructionList.append(c)
         elif instructionType == 'B':
+            # splits the registers/numbers into perspective feilds per each instruction format
             instructionType, ADD = each.split()
             ADD = int(ADD)
             Opcode = 5
-            #print(ADD)
+            # creates B instruction object
             b = Bformat(Opcode, ADD)
+            # adds new object to list
             instructionList.append(b)
         else:
             print('no instruction match')
 
-
-#data memmory
-#stored values - reg file
-#another array for memory - holds where in the memory array to get the value from
-#load - get address - stored value of rn - has index for memory array
-#4 levels of complexity memarray[regfile[instruction]] -> rt
-
-# step 4:
-# memory access
-# if branch new PC
-#address calc for loads/stores
-# step 5:
-# write back
-# only loads and R format
-print("starting")
+print("start")
 for i in range(len(instructionList)+1):
     #print(instructionList[i].opcode)
     if instructionList[i].form == "R":
         if instructionList[i].type == "ADD":
             print("ADD")
-            print(RegFile[instructionList[i].rn])
-            print(RegFile[instructionList[i].rm])
+            # saves the addition of the 2 values(stored in RegFile) in the registers into the result register
             RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + RegFile[instructionList[i].rm]
-            print(RegFile[instructionList[i].rd])
         # sub
         elif instructionList[i].type == "SUB":
-            print("testing sub: ")
-            print(RegFile[instructionList[i].rn])
-            print(RegFile[instructionList[i].rm])
+            print("sub: ")
+            # saves the subtraction f the 2 values(stored in RegFile) in the registers into the result register
             RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] - RegFile[instructionList[i].rm]
-            print(RegFile[instructionList[i].rd])
         # and
         elif instructionList[i].type == "AND":
             RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] and RegFile[instructionList[i].rm]
@@ -220,34 +226,28 @@ for i in range(len(instructionList)+1):
         # addi
         if instructionList[i].type == "ADDI":
             print("addi")
-            #print(instructionList[i].immediate)
-            #print(instructionList[i].rd)
-            print(RegFile[instructionList[i].rd])
+            # saves the addition of the register stored value(in RegFile) and  the immediate into the result register
             RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + instructionList[i].immediate
-            print(RegFile[instructionList[i].rd])
         # subi
         elif instructionList[i].type == "SUBI":
+            # saves the subtraction of the register stored value(in RegFile) and  the immediate into the result register
             RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] - instructionList[i].immediate
             print(RegFile[instructionList[i].rd])
     elif instructionList[i].form == "D":
         # ldur
         if instructionList[i].type == "LDUR":
             print("LDUR")
-            #reg to be loaded from -> instuctionList[i].rt
-            memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
-            RegFile[instructionList[i].rt] = dataMemory[memoryadd]
-            print(RegFile[instructionList[i].rt])
-            # need to do
+            #memoryaddress is the base + the offset that will be used in the dataMemory to get the value at that index
+            memoryaddress = RegFile[instructionList[i].rn] + instructionList[i].address
+            #loads the rt register with the value from data memory
+            RegFile[instructionList[i].rt] = dataMemory[memoryaddress]
         # stur
         elif instructionList[i].type == "STUR":
             print("STUR")
-            # NEED TO DO
-            #reg to get from ->
+            # memoryaddress is the base + the offset that will be used in the dataMemory to store the value at that index
             memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
-            print(dataMemory[memoryadd])
+            #stores the value into the data memory
             dataMemory[memoryadd] = RegFile[instructionList[i].rt]
-            print(dataMemory[memoryadd])
-
     # cbz
     elif instructionList[i].form == "CBZ":
         # NEED TO DO
@@ -258,11 +258,11 @@ for i in range(len(instructionList)+1):
         instructionList[i].type = "CBZ"
         # b
     else:
+        # NEED TO DO
         print("B")
-        print(i)
         print(instructionList[i].address)
+        #gets the address to branch back to
         i = i + instructionList[i].address
         print(i)
-        print(instructionList[i].address)
 
 
