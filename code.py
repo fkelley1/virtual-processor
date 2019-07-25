@@ -93,21 +93,21 @@ for each in file:
             RM = int(RM)
             # bSA = format(shiftAmt,'#08b')
             Opcode = 1112
-            print(RN)
-            print(RD)
-            print(IMM)
+            #print(RN)
+            #print(RD)
+            #print(IMM)
             r = Rformat(RM, RN, RD, Opcode, instructionType)
             instructionList.append(r)
         #Same concept is used for all instructions
         elif instructionType == 'ADDI':
-            instructionType, IMM, RN, RD = each.split()
+            instructionType, RD, RN, IMM = each.split()
             RN = int(RN)
             RD = int(RD)
             IMM = int(IMM)
             Opcode = 580
-            print(RN)
-            print(RD)
-            print(IMM)
+            #print(RN)
+            #print(RD)
+            #print(IMM)
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
             instructionList.append(Im)
         elif instructionType == 'SUB':
@@ -116,16 +116,16 @@ for each in file:
             RD = int(RD)
             RM = int(RM)
             Opcode = 1624
-            print(RN + RD + RM)
+            #print(RN + RD + RM)
             r = Rformat(RM,RN,RD,Opcode, instructionType)
             instructionList.append(r)
         elif instructionType == 'SUBI':
-            instructionType, IMM, RN, RD = each.split()
+            instructionType, RD, RN, IMM = each.split()
             RN = int(RN)
             RD = int(RD)
             IMM = int(IMM)
             Opcode = 836
-            print(RN + RD + IMM)
+            #print(RN + RD + IMM)
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
             instructionList.append(Im)
         elif instructionType == 'ORR':
@@ -148,7 +148,7 @@ for each in file:
             RN = int(RN)
             ADD = int(ADD)
             bOpcode = 1986
-            print(RT + RN + ADD)
+            #print(RT + RN + ADD)
             d = Dformat(Opcode, ADD, RN, RT, instructionType)
             instructionList.append(d)
         elif instructionType == 'STUR':
@@ -157,7 +157,7 @@ for each in file:
             RN = int(RN)
             ADD = int(ADD)
             Opcode = 1984
-            print(RT + RD + ADD)
+            #print(RT + RD + ADD)
             d = Dformat(Opcode, ADD, RN, RT, instructionType)
             instructionList.append(d)
         elif instructionType == 'CBZ':
@@ -165,14 +165,14 @@ for each in file:
             RT = int(RT)
             ADD = int(ADD)
             opcode = 180
-            print(RT + ADD)
+            #print(RT + ADD)
             c = CBformat(opcode, ADD, RT)
             instructionList.append(c)
         elif instructionType == 'B':
             instructionType, ADD = each.split()
             ADD = int(ADD)
             Opcode = 5
-            print(ADD)
+            #print(ADD)
             b = Bformat(Opcode, ADD)
             instructionList.append(b)
         else:
@@ -192,18 +192,22 @@ for each in file:
 # step 5:
 # write back
 # only loads and R format
-
+print("starting")
 for i in range(len(instructionList)):
-    print(instructionList[i].opcode)
+    #print(instructionList[i].opcode)
     if instructionList[i].form == "R":
         if instructionList[i].type == "ADD":
-            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + RegFile[instructionList[i].rm]
             print("ADD")
+            print(RegFile[instructionList[i].rn])
+            print(RegFile[instructionList[i].rm])
+            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + RegFile[instructionList[i].rm]
             print(RegFile[instructionList[i].rd])
         # sub
         elif instructionList[i].type == "SUB":
-            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] - RegFile[instructionList[i].rm]
             print("testing sub: ")
+            print(RegFile[instructionList[i].rn])
+            print(RegFile[instructionList[i].rm])
+            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] - RegFile[instructionList[i].rm]
             print(RegFile[instructionList[i].rd])
         # and
         elif instructionList[i].type == "AND":
@@ -215,7 +219,8 @@ for i in range(len(instructionList)):
         # addi
         if instructionList[i].type == "ADDI":
             print("addi")
-            print(instructionList[i].immediate)
+            #print(instructionList[i].immediate)
+            #print(instructionList[i].rd)
             print(RegFile[instructionList[i].rd])
             RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + instructionList[i].immediate
             print(RegFile[instructionList[i].rd])
@@ -228,16 +233,16 @@ for i in range(len(instructionList)):
         if instructionList[i].type == "LDUR":
             print("LDUR")
             #reg to be loaded from -> instuctionList[i].rt
-            memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
-            dataMemory[memoryadd] = instructionList[i].rt
+            #memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
+            #dataMemory[memoryadd] = instructionList[i].rt
             # need to do
         # stur
         elif instructionList[i].type == "STUR":
             print("STUR")
             # NEED TO DO
             #reg to get from ->
-            memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
-            instructionList[i].rt = dataMemory[RegFile[memoryadd]]
+            #memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
+            #instructionList[i].rt = dataMemory[RegFile[memoryadd]]
     # cbz
     elif instructionList[i].form == "CBZ":
         # NEED TO DO
