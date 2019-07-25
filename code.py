@@ -189,10 +189,10 @@ class instrcutiondecode:
             writebackValue = storedValues[self.rn] - storedValues[self.rm]
         #addi
         elif self.type == "ADDI":
-            writebackValue = storedValues[self.rn] + storedValues[self.immediate]
+            writebackValue = storedValues[self.rn] + self.immediate
         #subi
         elif self.type == "SUBI":
-            writebackValue = storedValues[self.rn] - storedValues[self.immediate]
+            writebackValue = storedValues[self.rn] - self.immediate
         #ldur
         elif self.type == "LDUR":
         #need to do
@@ -218,6 +218,12 @@ class instrcutiondecode:
         else:
             newPC = self.address
 
+
+#data memmory
+#stored values - reg file
+#another array for memory - holds where in the memory array to get the value from
+#load - get address - stored value of rn - has index for memory array
+#4 levels of complexity memarray[regfile[instruction]] -> rt
 
 # step 4:
 # memory access
