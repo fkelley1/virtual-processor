@@ -178,47 +178,6 @@ for each in file:
         else:
             print('no instruction match')
 
-#step 2:
-#instruction decode
-class instrcutiondecode:
-    def __init__(self):
-        #add
-        if self.type == "ADD":
-            writebackValue = storedValues[self.rn] + storedValues[self.rm]
-        #sub
-        elif self.type == "SUB":
-            writebackValue = storedValues[self.rn] - storedValues[self.rm]
-        #addi
-        elif self.type == "ADDI":
-            writebackValue = storedValues[self.rn] + self.immediate
-        #subi
-        elif self.type == "SUBI":
-            writebackValue = storedValues[self.rn] - self.immediate
-        #ldur
-        elif self.type == "LDUR":
-        #need to do
-            self.alucontrol = 0b0010
-            self.aluop = 0
-        #stur
-        elif self.type == "STUR":
-            #NEED TO DO
-            self.alucontrol = 0b0010
-            self.aluop = 00
-        #and
-        elif self.type == "AND":
-            writebackValue = storedValues[self.rn] and storedValues[self.rm]
-        #orr
-        elif self.type == "ORR":
-            writebackValue = storedValues[self.rn] or storedValues[self.rm]
-        #cbz
-        elif self.type == "CBZ":
-            #NEED TO DO
-
-            self.type = "CBZ"
-        #b
-        else:
-            newPC = self.address
-
 
 #data memmory
 #stored values - reg file
@@ -230,12 +189,6 @@ class instrcutiondecode:
 # memory access
 # if branch new PC
 #address calc for loads/stores
-class memoryaccess:
-    def __init__(self, PC):
-        if self.type == "B":
-            PC = PC - 4 + self.address
-        #TO DO FOR LOADS/STORES
-
 # step 5:
 # write back
 # only loads and R format
@@ -254,12 +207,10 @@ for i in range(len(instructionList)):
             print(RegFile[instructionList[i].rd])
         # and
         elif instructionList[i].type == "AND":
-            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] and RegFile[
-                instructionList[i].rm]
+            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] and RegFile[instructionList[i].rm]
         # orr
         elif instructionList[i].type == "ORR":
-            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] or RegFile[
-                instructionList[i].rm]
+            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] or RegFile[instructionList[i].rm]
     elif instructionList[i].form == "I":
         # addi
         if instructionList[i].type == "ADDI":
@@ -276,12 +227,18 @@ for i in range(len(instructionList)):
         # ldur
         if instructionList[i].type == "LDUR":
             print("LDUR")
+            #reg to be loaded from -> instuctionList[i].rt
+            memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
+            dataMemory[memoryadd] = instructionList[i].rt
             # need to do
         # stur
         elif instructionList[i].type == "STUR":
-            # NEED TO DO
             print("STUR")
-        # cbz
+            # NEED TO DO
+            #reg to get from ->
+            memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
+            instructionList[i].rt = dataMemory[RegFile[memoryadd]]
+    # cbz
     elif instructionList[i].form == "CBZ":
         # NEED TO DO
         print("CBZ")
@@ -289,4 +246,5 @@ for i in range(len(instructionList)):
         # b
     else:
         print("B")
-        newPC = instructionList[i].address
+        i = i - instructionList[i].add
+        newPC = instructionList[i].add
