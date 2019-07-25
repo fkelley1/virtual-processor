@@ -242,25 +242,27 @@ class writeback:
 
 for i in range(len(instructionList)):
     print(instructionList[i].opcode)
-    if instructionList[i].form == "R":
-        storedValues[instructionList[i].rd] = instructionList[i].writebackValue
-        print(instructionList[i].type)
-        print(storedValues[instructionList[i].rd])
+    #if instructionList[i].form == "R":
+       # storedValues[instructionList[i].rd] = instructionList[i].writebackValue
+        #print(instructionList[i].type)
+        #print(storedValues[instructionList[i].rd])
     #causing issues when running
-    elif instructionList[i].form == "I":
-        storedValues[instructionList[i].rd] = instructionList[i].writebackValue
-        print(instructionList[i].type)
+    #elif instructionList[i].form == "I":
+        #storedValues[instructionList[i].rd] = instructionList[i].writebackValue
+       # print(instructionList[i].type)
+       # print(storedValues[instructionList[i].rd])
+    elif instructionList[i].opcode == 580:
+        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] + instructionList[i].immediate
+        print("testing addi: ")
+        print(storedValues[instructionList[i].rd])
+    elif instructionList[i].opcode == 836:
+        storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - instructionList[i].immediate
+        print("testing subi: ")
+        print(storedValues[instructionList[i].rn])
+        print(instructionList[i].immediate)
         print(storedValues[instructionList[i].rd])
 
-    #if instructionList[i].opcode == 1112:
-    #    storedValues[instructionList[i].rd] = storedValues[instructionList[i].rm] + storedValues[instructionList[i].rn]
-    #   storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - storedValues[instructionList[i].rm]
-      #  print("testing sub: ")
-      #  print(storedValues[instructionList[i].rd])
-    # elif instructionList[i].opcode == 580:
-    #     storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] + storedValues[instructionList[i].immediate]
-    #     print("testing addi: ")
-    #     print(storedValues[instructionList[i].rd])
+
 
 
 
