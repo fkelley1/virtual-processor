@@ -1,6 +1,8 @@
 #code for stupid stuff
 RegFile = [0] * 32
-dataMemory = []
+dataMemory = [0] * 100
+dataMemory[0]=10
+dataMemory[1]=13
 globals()
 PC = 0
 instructionList = []
@@ -87,15 +89,14 @@ for each in file:
         each = each.replace('#','')
         each = each.replace('ZR','0')
         if instructionType == 'ADD':
-            instructionType, RM, RN, RD = each.split()#Sets the 4 parts to invdividual variables
+            instructionType, RD, RN, RM = each.split()#Sets the 4 parts to invdividual variables
             RN = int(RN)
             RD = int(RD)# Type is Str and can't be set straight to Binary so have to do int first
             RM = int(RM)
             # bSA = format(shiftAmt,'#08b')
             Opcode = 1112
-            #print(RN)
+            print(RM)
             #print(RD)
-            #print(IMM)
             r = Rformat(RM, RN, RD, Opcode, instructionType)
             instructionList.append(r)
         #Same concept is used for all instructions
@@ -111,7 +112,7 @@ for each in file:
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
             instructionList.append(Im)
         elif instructionType == 'SUB':
-            instructionType, RM, RN, RD = each.split()
+            instructionType, RD, RN, RM = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
@@ -143,7 +144,7 @@ for each in file:
             Opcode = 1104
             r = Rformat(RM, RN, RD, Opcode, instructionType)
         elif instructionType == 'LDUR':
-            instructionType, ADD, RN, RT = each.split()
+            instructionType, RT, RN, ADD = each.split()
             RT = int(RT)
             RN = int(RN)
             ADD = int(ADD)
@@ -152,7 +153,7 @@ for each in file:
             d = Dformat(Opcode, ADD, RN, RT, instructionType)
             instructionList.append(d)
         elif instructionType == 'STUR':
-            instructionType, ADD, RN, RT = each.split()
+            instructionType, RT, RN, ADD = each.split()
             RT = int(RT)
             RN = int(RN)
             ADD = int(ADD)
@@ -233,16 +234,20 @@ for i in range(len(instructionList)):
         if instructionList[i].type == "LDUR":
             print("LDUR")
             #reg to be loaded from -> instuctionList[i].rt
-            #memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
-            #dataMemory[memoryadd] = instructionList[i].rt
+            memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
+            RegFile[instructionList[i].rt] = dataMemory[memoryadd]
+            print(RegFile[instructionList[i].rt])
             # need to do
         # stur
         elif instructionList[i].type == "STUR":
             print("STUR")
             # NEED TO DO
             #reg to get from ->
-            #memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
-            #instructionList[i].rt = dataMemory[RegFile[memoryadd]]
+            memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
+            print(dataMemory[memoryadd])
+            dataMemory[memoryadd] = RegFile[instructionList[i].rt]
+            print(dataMemory[memoryadd])
+
     # cbz
     elif instructionList[i].form == "CBZ":
         # NEED TO DO
