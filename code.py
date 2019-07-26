@@ -205,80 +205,82 @@ for each in file:
             print('no instruction match')
 
 print("start")
-for i in range(len(instructionList)+1):
-    print(i)
-    #print(instructionList[i].opcode)
-    if instructionList[i].form == "R":
-        if instructionList[i].type == "ADD":
-            print("ADD")
-            # saves the addition of the 2 values(stored in RegFile) in the registers into the result register
-            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + RegFile[instructionList[i].rm]
-        # sub
-        elif instructionList[i].type == "SUB":
-            print("sub: ")
-            # saves the subtraction f the 2 values(stored in RegFile) in the registers into the result register
-            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] - RegFile[instructionList[i].rm]
-        # and
-        elif instructionList[i].type == "AND":
-            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] and RegFile[instructionList[i].rm]
-        # orr
-        elif instructionList[i].type == "ORR":
-            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] or RegFile[instructionList[i].rm]
-    elif instructionList[i].form == "I":
-        # addi
-        if instructionList[i].type == "ADDI":
-            print("addi")
-            # saves the addition of the register stored value(in RegFile) and  the immediate into the result register
-            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + instructionList[i].immediate
-        # subi
-        elif instructionList[i].type == "SUBI":
-            # saves the subtraction of the register stored value(in RegFile) and  the immediate into the result register
-            RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] - instructionList[i].immediate
-            print(RegFile[instructionList[i].rd])
-    elif instructionList[i].form == "D":
-        # ldur
-        if instructionList[i].type == "LDUR":
-            print("LDUR")
-            #memoryaddress is the base + the offset that will be used in the dataMemory to get the value at that index
-            memoryaddress = RegFile[instructionList[i].rn] + instructionList[i].address
-            #loads the rt register with the value from data memory
-            RegFile[instructionList[i].rt] = dataMemory[memoryaddress]
-        # stur
-        elif instructionList[i].type == "STUR":
-            print("STUR")
-            # memoryaddress is the base + the offset that will be used in the dataMemory to store the value at that index
-            memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
-            #stores the value into the data memory
-#            print("LDUR")
-            #reg to be loaded from -> instuctionList[i].rt
-            memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
-            RegFile[instructionList[i].rt] = dataMemory[memoryadd]
-            print(RegFile[instructionList[i].rt])
-            # need to do
-        # stur
-        elif instructionList[i].type == "STUR":
-            print("STUR")
-            #reg to load into data memory
-            memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
-            #print(dataMemory[memoryadd])
-            dataMemory[memoryadd] = RegFile[instructionList[i].rt]
-    # cbz
-    elif instructionList[i].form == "CBZ":
-         print("CBZ")
-#        print(i)
-         if RegFile[instructionList[i].rt] > instructionList[i].address:
-            print("exit loop")
-        # b
-    elif instructionList[i].form == "B":
-        print("B")
-#        print(i)
-        print(instructionList[i].address)
-        #gets the address to branch back to
-        i = i + instructionList[i].address
+for i in range(len(instructionList)):
+    i = 0
+    while i in range((len(instructionList))):
         print(i)
-        print(instructionList[i].address)
-    else:
-        #if none of the formats
-        print("Invalid Format")
+        #print(instructionList[i].opcode)
+        if instructionList[i].form == "R":
+            if instructionList[i].type == "ADD":
+                print("ADD")
+                # saves the addition of the 2 values(stored in RegFile) in the registers into the result register
+                RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + RegFile[instructionList[i].rm]
+            # sub
+            elif instructionList[i].type == "SUB":
+                print("sub: ")
+                print(RegFile)
+                # saves the subtraction f the 2 values(stored in RegFile) in the registers into the result register
+                RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] - RegFile[instructionList[i].rm]
+            # and
+            elif instructionList[i].type == "AND":
+                RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] and RegFile[instructionList[i].rm]
+            # orr
+            elif instructionList[i].type == "ORR":
+                RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] or RegFile[instructionList[i].rm]
+        elif instructionList[i].form == "I":
+            # addi
+            if instructionList[i].type == "ADDI":
+                print("addi")
+                print(RegFile)
+                # saves the addition of the register stored value(in RegFile) and  the immediate into the result register
+                RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + instructionList[i].immediate
+                #print(instructionList[i].rd)
+                #print(RegFile[instructionList[i].rd])
+                print(RegFile)
+            # subi
+            elif instructionList[i].type == "SUBI":
+                print("subi")
+                # saves the subtraction of the register stored value(in RegFile) and  the immediate into the result register
+                RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] - instructionList[i].immediate
+                print(RegFile[instructionList[i].rd])
+        elif instructionList[i].form == "D":
+            # ldur
+            if instructionList[i].type == "LDUR":
+                print("LDUR")
+                #memoryaddress is the base + the offset that will be used in the dataMemory to get the value at that index
+                memoryaddress = RegFile[instructionList[i].rn] + instructionList[i].address
+                #loads the rt register with the value from data memory
+                RegFile[instructionList[i].rt] = dataMemory[memoryaddress]
+                print(RegFile)
+            # stur
+            elif instructionList[i].type == "STUR":
+                print("STUR")
+                #reg to load into data memory
+                memoryaddress = RegFile[instructionList[i].rn] + instructionList[i].address
+                #print(dataMemory[memoryadd])
+                dataMemory[memoryaddress] = RegFile[instructionList[i].rt]
+                print(RegFile)
+        # cbz
+        elif instructionList[i].form == "CBZ":
+            print("CBZ")
+            print(RegFile)
+            print(instructionList[i].rt)
+            print(RegFile[instructionList[i].rt])
+            print(instructionList[i].address)
+            if RegFile[instructionList[i].rt]  == 0:
+                print("exit loop")
+                break
+                break
+        # b
+        elif instructionList[i].form == "B":
+            print("B")
+#           print(i)
+            print(instructionList[i].address)
+            #gets the address to branch back to
+            i = i + instructionList[i].address -1
+            print(i)
+        else:
+            #if none of the formats
+            print("Invalid Format")
 
-
+        i = i + 1
