@@ -1,7 +1,7 @@
 #creates register file
 RegFile = [0] * 32
 #creates data memory
-dataMemory = [0] * 100
+dataMemory = [0] * 32
 #stores 10 into data memory at 0
 dataMemory[0]=10
 #stores 13 into data memory at 1
@@ -202,30 +202,40 @@ for each in file:
         else:
             print('no instruction match')
     #start at PC = 0
-    PC = 0
-    while PC in range((len(instructionList))):
+PC = 0
+while PC in range((len(instructionList))):
         # print(PC)
         #outer if checks for format and inner if checks specific type
         if instructionList[PC].form == "R":
             if instructionList[PC].type == "ADD":
+                print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
+                    instructionList[PC].rn) + ", X" + str(instructionList[PC].rm))
                 # print("ADD")
                 # saves the addition of the 2 values(stored in RegFile) in the registers into the result register
                 RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] + RegFile[instructionList[PC].rm]
             # sub
             elif instructionList[PC].type == "SUB":
+                print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
+                    instructionList[PC].rn) + ", X" + str(instructionList[PC].rm))
                 # print("sub: ")
                 # print(RegFile)
                 # saves the subtraction f the 2 values(stored in RegFile) in the registers into the result register
                 RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] - RegFile[instructionList[PC].rm]
             # and
             elif instructionList[PC].type == "AND":
+                print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
+                    instructionList[PC].rn) + ", X" + str(instructionList[PC].rm))
                 RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] and RegFile[instructionList[PC].rm]
             # orr
             elif instructionList[PC].type == "ORR":
+                print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
+                    instructionList[PC].rn) + ", X" + str(instructionList[PC].rm))
                 RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] or RegFile[instructionList[PC].rm]
         elif instructionList[PC].form == "I":
             # addi
             if instructionList[PC].type == "ADDI":
+                print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
+                    instructionList[PC].rn) + ", #" + str(instructionList[PC].immediate))
                 # print("addi")
                 # print(RegFile)
                 # saves the addition of the register stored value(in RegFile) and  the immediate into the result register
@@ -233,6 +243,8 @@ for each in file:
                 # print(RegFile)
             # subi
             elif instructionList[PC].type == "SUBI":
+                print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
+                    instructionList[PC].rn) + ", #" + str(instructionList[PC].immediate))
                 # print("subi")
                 # saves the subtraction of the register stored value(in RegFile) and  the immediate into the result register
                 RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] - instructionList[PC].immediate
@@ -240,6 +252,8 @@ for each in file:
         elif instructionList[PC].form == "D":
             # ldur
             if instructionList[PC].type == "LDUR":
+                print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rt) + ", [X " + str(
+                    instructionList[PC].rn) + ", #" + str(instructionList[PC].address))
                 # print("LDUR")
                 #memoryaddress is the base + the offset that will be used in the dataMemory to get the value at that index
                 memoryaddress = RegFile[instructionList[PC].rn] + instructionList[PC].address
@@ -248,6 +262,8 @@ for each in file:
                 # print(RegFile)
             # stur
             elif instructionList[PC].type == "STUR":
+                print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rt) + ", [X " + str(
+                    instructionList[PC].rn) + ", #" + str(instructionList[PC].address))
                 # print("STUR")
                 #reg to load into data memory
                 memoryaddress = RegFile[instructionList[PC].rn] + instructionList[PC].address
@@ -256,6 +272,7 @@ for each in file:
                 # print(RegFile)
         # cbz
         elif instructionList[PC].form == "CBZ":
+            print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rt) + ", " + str(instructionList[PC].address))
             # print("CBZ")
             # print(RegFile)
             # print(instructionList[PC].rt)
@@ -267,16 +284,17 @@ for each in file:
                 break
         # b
         elif instructionList[PC].form == "B":
+            print(str(instructionList[PC].type) + " " + str(instructionList[PC].address))
             #gets the address to branch to
             PC = PC + instructionList[PC].address - 1
         else:
             #if none of the formats
             print("Invalid Format")
-        print("At instruction: ")
-        print(instructionList[PC].type)
+        print("At instruction: " + str(PC))
         print("regFile:")
         print(RegFile)
         print("Data memory:")
         print(dataMemory)
         #increment PC for next instruction
         PC = PC + 1
+        print(PC)
