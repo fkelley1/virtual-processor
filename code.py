@@ -229,10 +229,6 @@ for i in range(len(instructionList)+1):
         if instructionList[i].type == "ADDI":
             print("addi")
             # saves the addition of the register stored value(in RegFile) and  the immediate into the result register
-            #print("addi")
-            #print(instructionList[i].immediate)
-            #print(instructionList[i].rd)
-            #print(RegFile[instructionList[i].rd])
             RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + instructionList[i].immediate
         # subi
         elif instructionList[i].type == "SUBI":
@@ -261,9 +257,8 @@ for i in range(len(instructionList)+1):
             # need to do
         # stur
         elif instructionList[i].type == "STUR":
-#            print("STUR")
-            # NEED TO DO
-            #reg to get from ->
+            print("STUR")
+            #reg to load into data memory
             memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
             #print(dataMemory[memoryadd])
             dataMemory[memoryadd] = RegFile[instructionList[i].rt]
