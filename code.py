@@ -6,6 +6,7 @@ dataMemory = [0] * 100
 dataMemory[0]=10
 #stores 13 into data memory at 1
 dataMemory[1]=13
+dataMemory[2]=11
 globals()
 PC = 0
 instructionList = []
@@ -205,6 +206,7 @@ for each in file:
 
 print("start")
 for i in range(len(instructionList)+1):
+    print(i)
     #print(instructionList[i].opcode)
     if instructionList[i].form == "R":
         if instructionList[i].type == "ADD":
@@ -227,6 +229,10 @@ for i in range(len(instructionList)+1):
         if instructionList[i].type == "ADDI":
             print("addi")
             # saves the addition of the register stored value(in RegFile) and  the immediate into the result register
+            #print("addi")
+            #print(instructionList[i].immediate)
+            #print(instructionList[i].rd)
+            #print(RegFile[instructionList[i].rd])
             RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + instructionList[i].immediate
         # subi
         elif instructionList[i].type == "SUBI":
@@ -247,22 +253,37 @@ for i in range(len(instructionList)+1):
             # memoryaddress is the base + the offset that will be used in the dataMemory to store the value at that index
             memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
             #stores the value into the data memory
+#            print("LDUR")
+            #reg to be loaded from -> instuctionList[i].rt
+            memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
+            RegFile[instructionList[i].rt] = dataMemory[memoryadd]
+            print(RegFile[instructionList[i].rt])
+            # need to do
+        # stur
+        elif instructionList[i].type == "STUR":
+#            print("STUR")
+            # NEED TO DO
+            #reg to get from ->
+            memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
+            #print(dataMemory[memoryadd])
             dataMemory[memoryadd] = RegFile[instructionList[i].rt]
     # cbz
     elif instructionList[i].form == "CBZ":
-        # NEED TO DO
-        print("CBZ")
-        print(i)
-        if RegFile[instructionList[i].rt] > instructionList[i].address:
+         print("CBZ")
+#        print(i)
+         if RegFile[instructionList[i].rt] > instructionList[i].address:
             print("exit loop")
-        instructionList[i].type = "CBZ"
         # b
-    else:
-        # NEED TO DO
+    elif instructionList[i].form == "B":
         print("B")
+#        print(i)
         print(instructionList[i].address)
         #gets the address to branch back to
         i = i + instructionList[i].address
         print(i)
+        print(instructionList[i].address)
+    else:
+        #if none of the formats
+        print("Invalid Format")
 
 
