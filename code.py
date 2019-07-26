@@ -3,6 +3,7 @@ RegFile = [0] * 32
 dataMemory = [0] * 100
 dataMemory[0]=10
 dataMemory[1]=13
+dataMemory[2]=11
 globals()
 PC = 0
 instructionList = []
@@ -95,7 +96,7 @@ for each in file:
             RM = int(RM)
             # bSA = format(shiftAmt,'#08b')
             Opcode = 1112
-            print(RM)
+            #print(RM)
             #print(RD)
             r = Rformat(RM, RN, RD, Opcode, instructionType)
             instructionList.append(r)
@@ -195,19 +196,20 @@ for each in file:
 # only loads and R format
 print("starting")
 for i in range(len(instructionList)+1):
+    print(i)
     #print(instructionList[i].opcode)
     if instructionList[i].form == "R":
         if instructionList[i].type == "ADD":
-            print("ADD")
-            print(RegFile[instructionList[i].rn])
-            print(RegFile[instructionList[i].rm])
+#            print("ADD")
+#            print(RegFile[instructionList[i].rn])
+#            print(RegFile[instructionList[i].rm])
             RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + RegFile[instructionList[i].rm]
             print(RegFile[instructionList[i].rd])
         # sub
         elif instructionList[i].type == "SUB":
-            print("testing sub: ")
-            print(RegFile[instructionList[i].rn])
-            print(RegFile[instructionList[i].rm])
+#            print("testing sub: ")
+#            print(RegFile[instructionList[i].rn])
+#            print(RegFile[instructionList[i].rm])
             RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] - RegFile[instructionList[i].rm]
             print(RegFile[instructionList[i].rd])
         # and
@@ -219,10 +221,10 @@ for i in range(len(instructionList)+1):
     elif instructionList[i].form == "I":
         # addi
         if instructionList[i].type == "ADDI":
-            print("addi")
+            #print("addi")
             #print(instructionList[i].immediate)
             #print(instructionList[i].rd)
-            print(RegFile[instructionList[i].rd])
+            #print(RegFile[instructionList[i].rd])
             RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + instructionList[i].immediate
             print(RegFile[instructionList[i].rd])
         # subi
@@ -232,7 +234,7 @@ for i in range(len(instructionList)+1):
     elif instructionList[i].form == "D":
         # ldur
         if instructionList[i].type == "LDUR":
-            print("LDUR")
+#            print("LDUR")
             #reg to be loaded from -> instuctionList[i].rt
             memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
             RegFile[instructionList[i].rt] = dataMemory[memoryadd]
@@ -240,29 +242,31 @@ for i in range(len(instructionList)+1):
             # need to do
         # stur
         elif instructionList[i].type == "STUR":
-            print("STUR")
+#            print("STUR")
             # NEED TO DO
             #reg to get from ->
             memoryadd = RegFile[instructionList[i].rn] + instructionList[i].address
-            print(dataMemory[memoryadd])
+            #print(dataMemory[memoryadd])
             dataMemory[memoryadd] = RegFile[instructionList[i].rt]
             print(dataMemory[memoryadd])
 
     # cbz
     elif instructionList[i].form == "CBZ":
         # NEED TO DO
-        print("CBZ")
-        print(i)
+#        print("CBZ")
+#        print(i)
         if RegFile[instructionList[i].rt] > instructionList[i].address:
             print("exit loop")
         instructionList[i].type = "CBZ"
         # b
-    else:
+    elif instructionList[i].form == "B":
         print("B")
-        print(i)
+#        print(i)
         print(instructionList[i].address)
         i = i + instructionList[i].address
-        print(i)
+#        print(i)
         print(instructionList[i].address)
+    else:
+        print("Invalid Format")
 
 
