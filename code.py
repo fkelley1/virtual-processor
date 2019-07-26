@@ -1,10 +1,21 @@
-#code for stupid stuff
+#
 storedValues = [0] * 32
 dataMemory = []
+#creates register file
+RegFile = [0] * 32
+#creates data memory
+dataMemory = [0] * 100
+#stores 10 into data memory at 0
+dataMemory[0]=10
+#stores 13 into data memory at 1
+dataMemory[1]=13
+dataMemory[2]=11
 globals()
 PC = 0
 instructionList = []
 file = open('input.txt', 'r')
+
+#template for all R instructions
 #class Rformat
 class Rformat:
     opcode = 0
@@ -19,8 +30,8 @@ class Rformat:
         self.rd = bRD
         self.type = itype
         self.form = "R"
-        self.writebackValue = 0
 
+#template for all I instructions
 #class Iformat
 class Iformat:
     opcode = 0
@@ -34,8 +45,8 @@ class Iformat:
         self.rd = brd
         self.type = itype
         self.form = "I"
-        self.writebackValue = 0
 
+#template for all D instructions
 #class Dformat
 class Dformat:
     opcode = 0
@@ -50,7 +61,6 @@ class Dformat:
         self.rt = bRT
         self.type = itype
         self.form = "D"
-        self.writebackValue = 0
 
 #class CBformat
 class CBformat:
@@ -87,197 +97,188 @@ for each in file:
         each = each.replace('#','')
         each = each.replace('ZR','0')
         if instructionType == 'ADD':
-            instructionType, RM, RN, RD = each.split()#Sets the 4 parts to invdividual variables
+            instructionType, RD, RN, RM = each.split()#Sets the 4 parts to invdividual variables
             RN = int(RN)
-            RD = int(RD)# Type is Str and can't be set straight to Binary so have to do int first
+            RD = int(RD)
             RM = int(RM)
-            # bSA = format(shiftAmt,'#08b')
             Opcode = 1112
-            print(RN)
-            print(RD)
-            print(IMM)
+            print(RM)
+            #creates R instrcution object
             r = Rformat(RM, RN, RD, Opcode, instructionType)
+            # adds new object to list
             instructionList.append(r)
         #Same concept is used for all instructions
         elif instructionType == 'ADDI':
-            instructionType, IMM, RN, RD = each.split()
+            # splits the registers/numbers into perspective feilds per each instruction format
+            instructionType, RD, RN, IMM = each.split()
             RN = int(RN)
             RD = int(RD)
             IMM = int(IMM)
             Opcode = 580
-            print(RN)
-            print(RD)
-            print(IMM)
+            # creates I instruction object
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
+            # adds new object to list
             instructionList.append(Im)
         elif instructionType == 'SUB':
-            instructionType, RM, RN, RD = each.split()
+            # splits the registers/numbers into perspective feilds per each instruction format
+            instructionType, RD, RN, RM = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
             Opcode = 1624
-            print(RN + RD + RM)
+            # creates R instruction object
             r = Rformat(RM,RN,RD,Opcode, instructionType)
+            # adds new object to list
             instructionList.append(r)
         elif instructionType == 'SUBI':
-            instructionType, IMM, RN, RD = each.split()
+            #splits the registers/numbers into perspective feilds per each instruction format
+            instructionType, RD, RN, IMM = each.split()
             RN = int(RN)
             RD = int(RD)
             IMM = int(IMM)
             Opcode = 836
-            print(RN + RD + IMM)
+            # creates I instruction object
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
+            # adds new object to list
             instructionList.append(Im)
         elif instructionType == 'ORR':
+            # splits the registers/numbers into perspective feilds per each instruction format
             instructionType, RM, RN, RD = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
             Opcode = 1360
+            # creates R instruction object
             r = Rformat(RM, RN, RD, Opcode, instructionType)
+            # adds new object to list
+            instructionList.append(r)
         elif instructionType == 'AND':
+            # splits the registers/numbers into perspective feilds per each instruction format
             instructionType, RM, RN, RD = each.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
             Opcode = 1104
+            # creates R instruction object
             r = Rformat(RM, RN, RD, Opcode, instructionType)
+            # adds new object to list
+            instructionList.append(r)
         elif instructionType == 'LDUR':
-            instructionType, ADD, RN, RT = each.split()
+            # splits the registers/numbers into perspective feilds per each instruction format
+            instructionType, RT, RN, ADD = each.split()
             RT = int(RT)
             RN = int(RN)
             ADD = int(ADD)
             bOpcode = 1986
-            print(RT + RN + ADD)
+            # creates D instruction object
             d = Dformat(Opcode, ADD, RN, RT, instructionType)
+            #adds new object to list
             instructionList.append(d)
         elif instructionType == 'STUR':
-            instructionType, ADD, RN, RT = each.split()
+            # splits the registers/numbers into perspective feilds per each instruction format
+            instructionType, RT, RN, ADD = each.split()
             RT = int(RT)
             RN = int(RN)
             ADD = int(ADD)
             Opcode = 1984
-            print(RT + RD + ADD)
+            # creates D instruction object
             d = Dformat(Opcode, ADD, RN, RT, instructionType)
+            # adds new object to list
             instructionList.append(d)
         elif instructionType == 'CBZ':
-            instructionType, ADD, RT = each.split()
+            # splits the registers/numbers into perspective feilds per each instruction format
+            instructionType, RT, ADD = each.split()
             RT = int(RT)
             ADD = int(ADD)
             opcode = 180
-            print(RT + ADD)
+            # creates CB instruction object
             c = CBformat(opcode, ADD, RT)
+            # adds new object to list
             instructionList.append(c)
         elif instructionType == 'B':
+            # splits the registers/numbers into perspective feilds per each instruction format
             instructionType, ADD = each.split()
             ADD = int(ADD)
             Opcode = 5
-            print(ADD)
+            # creates B instruction object
             b = Bformat(Opcode, ADD)
+            # adds new object to list
             instructionList.append(b)
         else:
             print('no instruction match')
 
-#step 2:
-#instruction decode
-class instrcutiondecode:
-    def __init__(self):
-        #add
-        if self.type == "ADD":
-            writebackValue = storedValues[self.rn] + storedValues[self.rm]
-        #sub
-        elif self.type == "SUB":
-            writebackValue = storedValues[self.rn] - storedValues[self.rm]
-        #addi
-        elif self.type == "ADDI":
-            writebackValue = storedValues[self.rn] + self.immediate
-        #subi
-        elif self.type == "SUBI":
-            writebackValue = storedValues[self.rn] - self.immediate
-        #ldur
-        elif self.type == "LDUR":
-        #need to do
-            self.alucontrol = 0b0010
-            self.aluop = 0
-        #stur
-        elif self.type == "STUR":
-            #NEED TO DO
-            self.alucontrol = 0b0010
-            self.aluop = 00
-        #and
-        elif self.type == "AND":
-            writebackValue = storedValues[self.rn] and storedValues[self.rm]
-        #orr
-        elif self.type == "ORR":
-            writebackValue = storedValues[self.rn] or storedValues[self.rm]
-        #cbz
-        elif self.type == "CBZ":
-            #NEED TO DO
-
-            self.type = "CBZ"
-        #b
+    i = 0
+    while i in range((len(instructionList))):
+        print(i)
+        #outer if checks for format and inner if
+        if instructionList[i].form == "R":
+            if instructionList[i].type == "ADD":
+                print("ADD")
+                # saves the addition of the 2 values(stored in RegFile) in the registers into the result register
+                RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + RegFile[instructionList[i].rm]
+            # sub
+            elif instructionList[i].type == "SUB":
+                print("sub: ")
+                print(RegFile)
+                # saves the subtraction f the 2 values(stored in RegFile) in the registers into the result register
+                RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] - RegFile[instructionList[i].rm]
+            # and
+            elif instructionList[i].type == "AND":
+                RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] and RegFile[instructionList[i].rm]
+            # orr
+            elif instructionList[i].type == "ORR":
+                RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] or RegFile[instructionList[i].rm]
+        elif instructionList[i].form == "I":
+            # addi
+            if instructionList[i].type == "ADDI":
+                print("addi")
+                print(RegFile)
+                # saves the addition of the register stored value(in RegFile) and  the immediate into the result register
+                RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] + instructionList[i].immediate
+                print(RegFile)
+            # subi
+            elif instructionList[i].type == "SUBI":
+                print("subi")
+                # saves the subtraction of the register stored value(in RegFile) and  the immediate into the result register
+                RegFile[instructionList[i].rd] = RegFile[instructionList[i].rn] - instructionList[i].immediate
+                print(RegFile[instructionList[i].rd])
+        elif instructionList[i].form == "D":
+            # ldur
+            if instructionList[i].type == "LDUR":
+                print("LDUR")
+                #memoryaddress is the base + the offset that will be used in the dataMemory to get the value at that index
+                memoryaddress = RegFile[instructionList[i].rn] + instructionList[i].address
+                #loads the rt register with the value from data memory
+                RegFile[instructionList[i].rt] = dataMemory[memoryaddress]
+                print(RegFile)
+            # stur
+            elif instructionList[i].type == "STUR":
+                print("STUR")
+                #reg to load into data memory
+                memoryaddress = RegFile[instructionList[i].rn] + instructionList[i].address
+                #print(dataMemory[memoryadd])
+                dataMemory[memoryaddress] = RegFile[instructionList[i].rt]
+                print(RegFile)
+        # cbz
+        elif instructionList[i].form == "CBZ":
+            print("CBZ")
+            print(RegFile)
+            print(instructionList[i].rt)
+            print(RegFile[instructionList[i].rt])
+            print(instructionList[i].address)
+            if RegFile[instructionList[i].rt]  == 0:
+                print("exit loop")
+                break
+                break
+        # b
+        elif instructionList[i].form == "B":
+            print("B")
+#           print(i)
+            print(instructionList[i].address)
+            #gets the address to branch back to
+            i = i + instructionList[i].address -1
+            print(i)
         else:
-            newPC = self.address
-
-
-#data memmory
-#stored values - reg file
-#another array for memory - holds where in the memory array to get the value from
-#load - get address - stored value of rn - has index for memory array
-#4 levels of complexity memarray[regfile[instruction]] -> rt
-
-# step 4:
-# memory access
-# if branch new PC
-#address calc for loads/stores
-class memoryaccess:
-    def __init__(self, PC):
-        if self.type == "B":
-            PC = PC - 4 + self.address
-        #TO DO FOR LOADS/STORES
-
-# step 5:
-# write back
-# only loads and R format
-
-for i in range(len(instructionList)):
-    print(instructionList[i].opcode)
-    if instructionList[i].form == "R":
-        # storedValues[instructionList[i].rd] = instructionList[i].writebackValue
-        print(instructionList[i].type)
-        print(storedValues[instructionList[i].rd])
-        if instructionList[i].opcode == 1112:
-            storedValues[instructionList[i].rd] = storedValues[instructionList[i].rm] + storedValues[instructionList[i].rn]
-            # print(instructionList[i].rd)
-            print("this is stored value")
-            print(storedValues[instructionList[i].rd])
-        elif instructionList[i].opcode == 1624:
-            storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - storedValues[
-                instructionList[i].rm]
-            print("testing sub: ")
-            print(storedValues[instructionList[i].rd])
-    # causing issues when running
-    elif instructionList[i].form == "I":
-        # storedValues[instructionList[i].rd] = instructionList[i].writebackValue
-        print(instructionList[i].type)
-        print(storedValues[instructionList[i].rd])
-        if instructionList[i].opcode == 580:
-            storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] + instructionList[i].immediate
-            print("testing addi: ")
-            print(storedValues[instructionList[i].rd])
-        elif instructionList[i].opcode == 836:
-            storedValues[instructionList[i].rd] = storedValues[instructionList[i].rn] - instructionList[i].immediate
-            print("testing subi: ")
-            print(storedValues[instructionList[i].rn])
-            print(instructionList[i].immediate)
-            print(storedValues[instructionList[i].rd])
-    elif instructionList[i].form == "D":
-        if instructionList[i].opcode == 1986:
-            print("load from mem array")
-        elif instructionList[i].opcode == 1984:
-            print("store")
-
-
-
-
-
+            #if none of the formats
+            print("Invalid Format")
+        i = i + 1
