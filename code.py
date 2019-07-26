@@ -69,6 +69,7 @@ class CBformat:
         self.address = ad
         self.rt = r
         self.form = "CBZ"
+        self.type = "CBZ"
 
 #class b format
 class Bformat:
@@ -76,6 +77,7 @@ class Bformat:
         self.address = adr
         self.form = "B"
         self.opcode = 5
+        self.type = "B"
 
 #step 1: instrcution fetch
 #each is acting as PC
@@ -114,7 +116,7 @@ for each in file:
             # adds new object to list
             instructionList.append(Im)
         elif instructionType == 'SUB':
-            # splits the registers/numbers into perspective feilds per each instruction format
+            # splits the registers/numbers into perspective fields per each instruction format
             instructionType, RD, RN, RM = each.split()
             RN = int(RN)
             RD = int(RD)
@@ -125,7 +127,7 @@ for each in file:
             # adds new object to list
             instructionList.append(r)
         elif instructionType == 'SUBI':
-            #splits the registers/numbers into perspective feilds per each instruction format
+            # splits the registers/numbers into perspective feilds per each instruction format
             instructionType, RD, RN, IMM = each.split()
             RN = int(RN)
             RD = int(RD)
@@ -166,7 +168,7 @@ for each in file:
             Opcode = 1986
             # creates D instruction object
             d = Dformat(Opcode, ADD, RN, RT, instructionType)
-            #adds new object to list
+            # adds new object to list
             instructionList.append(d)
         elif instructionType == 'STUR':
             # splits the registers/numbers into perspective feilds per each instruction format
@@ -202,17 +204,17 @@ for each in file:
     #start at PC = 0
     PC = 0
     while PC in range((len(instructionList))):
-        print(PC)
+        # print(PC)
         #outer if checks for format and inner if checks specific type
         if instructionList[PC].form == "R":
             if instructionList[PC].type == "ADD":
-                print("ADD")
+                # print("ADD")
                 # saves the addition of the 2 values(stored in RegFile) in the registers into the result register
                 RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] + RegFile[instructionList[PC].rm]
             # sub
             elif instructionList[PC].type == "SUB":
-                print("sub: ")
-                print(RegFile)
+                # print("sub: ")
+                # print(RegFile)
                 # saves the subtraction f the 2 values(stored in RegFile) in the registers into the result register
                 RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] - RegFile[instructionList[PC].rm]
             # and
@@ -224,43 +226,43 @@ for each in file:
         elif instructionList[PC].form == "I":
             # addi
             if instructionList[PC].type == "ADDI":
-                print("addi")
-                print(RegFile)
+                # print("addi")
+                # print(RegFile)
                 # saves the addition of the register stored value(in RegFile) and  the immediate into the result register
                 RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] + instructionList[PC].immediate
-                print(RegFile)
+                # print(RegFile)
             # subi
             elif instructionList[PC].type == "SUBI":
-                print("subi")
+                # print("subi")
                 # saves the subtraction of the register stored value(in RegFile) and  the immediate into the result register
                 RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] - instructionList[PC].immediate
-                print(RegFile[instructionList[PC].rd])
+                # print(RegFile[instructionList[PC].rd])
         elif instructionList[PC].form == "D":
             # ldur
             if instructionList[PC].type == "LDUR":
-                print("LDUR")
+                # print("LDUR")
                 #memoryaddress is the base + the offset that will be used in the dataMemory to get the value at that index
                 memoryaddress = RegFile[instructionList[PC].rn] + instructionList[PC].address
                 #loads the rt register with the value from data memory
                 RegFile[instructionList[PC].rt] = dataMemory[memoryaddress]
-                print(RegFile)
+                # print(RegFile)
             # stur
             elif instructionList[PC].type == "STUR":
-                print("STUR")
+                # print("STUR")
                 #reg to load into data memory
                 memoryaddress = RegFile[instructionList[PC].rn] + instructionList[PC].address
                 #print(dataMemory[memoryadd])
                 dataMemory[memoryaddress] = RegFile[instructionList[PC].rt]
-                print(RegFile)
+                # print(RegFile)
         # cbz
         elif instructionList[PC].form == "CBZ":
-            print("CBZ")
-            print(RegFile)
-            print(instructionList[PC].rt)
-            print(RegFile[instructionList[PC].rt])
-            print(instructionList[PC].address)
+            # print("CBZ")
+            # print(RegFile)
+            # print(instructionList[PC].rt)
+            # print(RegFile[instructionList[PC].rt])
+            # print(instructionList[PC].address)
             if RegFile[instructionList[PC].rt] == 0:
-                print("exit loop")
+                print("CBZ says exit loop now")
                 break
                 break
         # b
@@ -270,4 +272,11 @@ for each in file:
         else:
             #if none of the formats
             print("Invalid Format")
+        print("At instruction: ")
+        print(instructionList[PC].type)
+        print("regFile:")
+        print(RegFile)
+        print("Data memory:")
+        print(dataMemory)
+        #increment PC for next instruction
         PC = PC + 1
