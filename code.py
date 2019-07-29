@@ -297,4 +297,4 @@ while PC in range((len(instructionList))):
         print(dataMemory)
         #increment PC for next instruction
         PC = PC + 1
-        print(PC)
+        #print(PC)
