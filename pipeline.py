@@ -60,6 +60,7 @@ class Dformat:
         self.rt = bRT
         self.type = itype
         self.form = "D"
+        self.mem = 0
 
 #class CBformat
 class CBformat:
@@ -272,9 +273,9 @@ class execute:
                     instructionList[PC].rn) + ", #" + str(instructionList[PC].address))
                 # print("LDUR")
                 #memoryaddress is the base + the offset that will be used in the dataMemory to get the value at that index
-                memoryaddress = RegFile[instructionList[PC].rn] + instructionList[PC].address
+                instructionList[PC].mem = RegFile[instructionList[PC].rn] + instructionList[PC].address
                 #loads the rt register with the value from data memory
-                RegFile[instructionList[PC].rt] = dataMemory[memoryaddress]
+                #RegFile[instructionList[PC].rt] = dataMemory[memoryaddress]
                 # print(RegFile)
             # stur
             elif instructionList[PC].type == "STUR":
@@ -282,9 +283,9 @@ class execute:
                     instructionList[PC].rn) + ", #" + str(instructionList[PC].address))
                 # print("STUR")
                 #reg to load into data memory
-                memoryaddress = RegFile[instructionList[PC].rn] + instructionList[PC].address
+                instructionList[PC].mem = RegFile[instructionList[PC].rn] + instructionList[PC].address
                 #print(dataMemory[memoryadd])
-                dataMemory[memoryaddress] = RegFile[instructionList[PC].rt]
+                #dataMemory[memoryaddress] = RegFile[instructionList[PC].rt]
                 # print(RegFile)
         # cbz
         elif instructionList[PC].form == "CBZ":
@@ -304,12 +305,19 @@ class execute:
         else:
             #if none of the formats
             print("Invalid Format")
-        print("At instruction: " + str(PC))
-        print("regFile:")
-        print(RegFile)
-        print("Data memory:")
-        print(dataMemory)
+        #print("At instruction: " + str(PC))
+        #print("regFile:")
+        #print(RegFile)
+        #print("Data memory:")
+        #print(dataMemory)
         #increment PC for next instruction
+
+class memory:
+    def __init__(self, memory, value):
+        if instructionList[PC].type == "STUR":
+            dataMemory[memory] = RegFile[value]
+        else:
+            RegFile[value] = dataMemory[memory]
 
 class writeback:
     def __init__(self, register, value):
@@ -325,9 +333,20 @@ for each in file:
 while PC in range((len(instructionList))):
         #outer if checks for format and inner if checks specific
         execute(instructionList[PC], PC)
+        if instructionList[PC].form == "D":
+            print("Dformat in while loop")
+            memory(instructionList[PC].mem, instructionList[PC].rt)
         if instructionList[PC].form == "R":
+            print("rformat in while loop")
+            print(instructionList[PC].writebackvalue)
             writeback(instructionList[PC].rd, instructionList[PC].writebackvalue)
-        elif instructionList[PC] == "I":
+        elif instructionList[PC].form == "I":
+            print(instructionList[PC].writebackvalue)
             writeback(instructionList[PC].rd, instructionList[PC].writebackvalue)
-
+        print("At instruction: " + str(PC))
+        print("regFile:")
+        print(RegFile)
+        print("Data memory:")
+        print(dataMemory)
+        #increment PC for next instruction
         PC = PC + 1
