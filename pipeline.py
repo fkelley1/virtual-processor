@@ -27,6 +27,7 @@ class Rformat:
         self.rd = bRD
         self.type = itype
         self.form = "R"
+        self.writebackvalue = 0
 
 #template for all I instructions
 #class Iformat
@@ -42,6 +43,7 @@ class Iformat:
         self.rd = brd
         self.type = itype
         self.form = "I"
+        self.writebackvalue = 0
 
 #template for all D instructions
 #class Dformat
@@ -221,6 +223,7 @@ class execute:
                     instructionList[PC].rn) + ", X" + str(instructionList[PC].rm))
                 # print("ADD")
                 # saves the addition of the 2 values(stored in RegFile) in the registers into the result register
+                instructionList[PC].writebackvalue = RegFile[instructionList[PC].rn] + RegFile[instructionList[PC].rm]
                 RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] + RegFile[instructionList[PC].rm]
             # sub
             elif instructionList[PC].type == "SUB":
@@ -229,11 +232,13 @@ class execute:
                 # print("sub: ")
                 # print(RegFile)
                 # saves the subtraction f the 2 values(stored in RegFile) in the registers into the result register
+                instructionList[PC].writebackvalue = RegFile[instructionList[PC].rn] - RegFile[instructionList[PC].rm]
                 RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] - RegFile[instructionList[PC].rm]
             # and
             elif instructionList[PC].type == "AND":
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
                     instructionList[PC].rn) + ", X" + str(instructionList[PC].rm))
+                instructionList[PC].writebackvalue = RegFile[instructionList[PC].rn] and RegFile[instructionList[PC].rm]
                 RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] and RegFile[instructionList[PC].rm]
             # orr
             elif instructionList[PC].type == "ORR":
@@ -248,7 +253,8 @@ class execute:
                 # print("addi")
                 # print(RegFile)
                 # saves the addition of the register stored value(in RegFile) and  the immediate into the result register
-                RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] + instructionList[PC].immediate
+                instructionList[PC].writebackvalue = RegFile[instructionList[PC].rn] + instructionList[PC].immediate
+                #RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] + instructionList[PC].immediate
                 # print(RegFile)
             # subi
             elif instructionList[PC].type == "SUBI":
@@ -256,7 +262,8 @@ class execute:
                     instructionList[PC].rn) + ", #" + str(instructionList[PC].immediate))
                 # print("subi")
                 # saves the subtraction of the register stored value(in RegFile) and  the immediate into the result register
-                RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] - instructionList[PC].immediate
+                instructionList[PC].writebackvalue = RegFile[instructionList[PC].rn] - instructionList[PC].immediate
+                #RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] - instructionList[PC].immediate
                 # print(RegFile[instructionList[PC].rd])
         elif instructionList[PC].form == "D":
             # ldur
@@ -304,7 +311,11 @@ class execute:
         print(dataMemory)
         #increment PC for next instruction
         PC = PC + 1
-        
+
+class writeback:
+    def __init__(self, register, value):
+        RegFile[register] = value
+
 for each in file:
     if not each.strip():  # Skips any line that is empty
         placeholder = 1
@@ -314,3 +325,7 @@ while PC in range((len(instructionList))):
         # print(PC)
         #outer if checks for format and inner if checks specific
         execute(instructionList[PC], PC)
+        if instructionList[PC].form == "R":
+            writeback(instructionList[PC].rd, instructionList[PC].writebackvalue)
+        elif instructionList[PC] == "I":
+            writeback(instructionList[PC].rd, instructionList[PC].writebackvalue)
