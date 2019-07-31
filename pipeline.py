@@ -217,7 +217,7 @@ PC = 0
         #outer if checks for format and inner if checks specific
 
 class execute:
-    def __init__(self, instruction, PC):
+    def __new__(self, instruction, PC):
         if instructionList[PC].form == "R":
             if instructionList[PC].type == "ADD":
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
@@ -302,9 +302,11 @@ class execute:
             print(str(instructionList[PC].type) + " " + str(instructionList[PC].address))
             #gets the address to branch to
             PC = PC + instructionList[PC].address - 1
+            print(PC)
         else:
             #if none of the formats
             print("Invalid Format")
+        return PC
         #print("At instruction: " + str(PC))
         #print("regFile:")
         #print(RegFile)
@@ -332,7 +334,7 @@ for each in file:
 
 while PC in range((len(instructionList))):
         #outer if checks for format and inner if checks specific
-        execute(instructionList[PC], PC)
+        PC = execute(instructionList[PC], PC)
         if instructionList[PC].form == "D":
             print("Dformat in while loop")
             memory(instructionList[PC].mem, instructionList[PC].rt)
@@ -343,6 +345,10 @@ while PC in range((len(instructionList))):
         elif instructionList[PC].form == "I":
             print(instructionList[PC].writebackvalue)
             writeback(instructionList[PC].rd, instructionList[PC].writebackvalue)
+        if instructionList[PC].form == "CBZ":
+            RegFile[instructionList[PC].rt] == 0
+            print("Exiting loop")
+            break
         print("At instruction: " + str(PC))
         print("regFile:")
         print(RegFile)
