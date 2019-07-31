@@ -79,6 +79,9 @@ class Bformat:
         self.opcode = 5
         self.type = "B"
 
+class pipelining:
+    test = placeholder
+
 #step 1: instrcution fetch
 #each is acting as PC
 for each in file:
