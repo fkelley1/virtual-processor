@@ -88,7 +88,7 @@ class pipelining:
 #each is acting as PC
 
 
-class instrcutionfetch:
+class instructionfetch:
     def __init__(self, instruction):
         instructionType = instruction.split(' ')[0]#Takes first variable
         instruction = instruction.replace(',','')#Removes all ,
@@ -310,7 +310,6 @@ class execute:
         print("Data memory:")
         print(dataMemory)
         #increment PC for next instruction
-        PC = PC + 1
 
 class writeback:
     def __init__(self, register, value):
@@ -320,12 +319,15 @@ for each in file:
     if not each.strip():  # Skips any line that is empty
         placeholder = 1
     else:
-        instrcutionfetch(each)
+        instructionfetch(each)
+
+
 while PC in range((len(instructionList))):
-        # print(PC)
         #outer if checks for format and inner if checks specific
         execute(instructionList[PC], PC)
         if instructionList[PC].form == "R":
             writeback(instructionList[PC].rd, instructionList[PC].writebackvalue)
         elif instructionList[PC] == "I":
             writeback(instructionList[PC].rd, instructionList[PC].writebackvalue)
+
+        PC = PC + 1
