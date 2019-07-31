@@ -82,7 +82,7 @@ class Bformat:
         self.type = "B"
 
 class pipelining:
-    test = placeholder
+    placeholder = 1
 
 #step 1: instrcution fetch
 #each is acting as PC
