@@ -86,7 +86,7 @@ class pipelining:
 #each is acting as PC
 
 
-class instrcutinfetch:
+class instrcutionfetch:
     def __init__(self, instruction):
         instructionType = instruction.split(' ')[0]#Takes first variable
         instruction = instruction.replace(',','')#Removes all ,
@@ -207,14 +207,14 @@ class instrcutinfetch:
 
     # the loop of code
 
-
-
-
 #start at PC = 0
 PC = 0
-while PC in range((len(instructionList))):
+#while PC in range((len(instructionList))):
         # print(PC)
-        #outer if checks for format and inner if checks specific type
+        #outer if checks for format and inner if checks specific
+
+class execute:
+    def __init__(self, instruction, PC):
         if instructionList[PC].form == "R":
             if instructionList[PC].type == "ADD":
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
@@ -289,8 +289,6 @@ while PC in range((len(instructionList))):
             # print(instructionList[PC].address)
             if RegFile[instructionList[PC].rt] == 0:
                 print("CBZ says exit loop now")
-                break
-                break
         # b
         elif instructionList[PC].form == "B":
             print(str(instructionList[PC].type) + " " + str(instructionList[PC].address))
@@ -311,4 +309,8 @@ for each in file:
     if not each.strip():  # Skips any line that is empty
         placeholder = 1
     else:
-        instrcutinfetch(each)
+        instrcutionfetch(each)
+while PC in range((len(instructionList))):
+        # print(PC)
+        #outer if checks for format and inner if checks specific
+        execute(instructionList[PC], PC)
