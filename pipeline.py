@@ -346,9 +346,9 @@ while PC in range((len(instructionList))):
             print(instructionList[PC].writebackvalue)
             writeback(instructionList[PC].rd, instructionList[PC].writebackvalue)
         if instructionList[PC].form == "CBZ":
-            RegFile[instructionList[PC].rt] == 0
-            print("Exiting loop")
-            break
+            if RegFile[instructionList[PC].rt] == 0:
+                print("Exiting loop")
+                break
         print("At instruction: " + str(PC))
         print("regFile:")
         print(RegFile)
