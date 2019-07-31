@@ -201,7 +201,10 @@ for each in file:
             instructionList.append(b)
         else:
             print('no instruction match')
-    #start at PC = 0
+
+
+
+#start at PC = 0
 PC = 0
 while PC in range((len(instructionList))):
         # print(PC)

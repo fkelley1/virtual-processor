@@ -84,20 +84,20 @@ class pipelining:
 
 #step 1: instrcution fetch
 #each is acting as PC
-for each in file:
-    if not each.strip():#Skips any line that is empty
-        placeholder = 1
-    else:
-        instructionType = each.split(' ')[0]#Takes first variable
-        each = each.replace(',','')#Removes all ,
-        each = each.replace('X','')#Removes all X
-        each = each.replace('[','')
-        each = each.replace(']','')
-        each = each.replace('#','')
-        each = each.replace('ZR','0')
-        # each conditional sets the appropriate values for each field
+
+
+class instrcutinfetch:
+    def __init__(self, instruction):
+        instructionType = instruction.split(' ')[0]#Takes first variable
+        instruction = instruction.replace(',','')#Removes all ,
+        instruction = instruction.replace('X','')#Removes all X
+        instruction = instruction.replace('[','')
+        instruction = instruction.replace(']','')
+        instruction = instruction.replace('#','')
+        instruction = instruction.replace('ZR','0')
+        # instruction conditional sets the appropriate values for instruction field
         if instructionType == 'ADD':
-            instructionType, RD, RN, RM = each.split()#Sets the 4 parts to invdividual variables
+            instructionType, RD, RN, RM = instruction.split()#Sets the 4 parts to invdividual variables
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
@@ -108,8 +108,8 @@ for each in file:
             instructionList.append(r)
         # Same concept is used for all instructions
         elif instructionType == 'ADDI':
-            # splits the registers/numbers into perspective feilds per each instruction format
-            instructionType, RD, RN, IMM = each.split()
+            # splits the registers/numbers into perspective feilds per instruction instruction format
+            instructionType, RD, RN, IMM = instruction.split()
             RN = int(RN)
             RD = int(RD)
             IMM = int(IMM)
@@ -119,8 +119,8 @@ for each in file:
             # adds new object to list
             instructionList.append(Im)
         elif instructionType == 'SUB':
-            # splits the registers/numbers into perspective fields per each instruction format
-            instructionType, RD, RN, RM = each.split()
+            # splits the registers/numbers into perspective fields per instruction instruction format
+            instructionType, RD, RN, RM = instruction.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
@@ -130,8 +130,8 @@ for each in file:
             # adds new object to list
             instructionList.append(r)
         elif instructionType == 'SUBI':
-            # splits the registers/numbers into perspective feilds per each instruction format
-            instructionType, RD, RN, IMM = each.split()
+            # splits the registers/numbers into perspective feilds per instruction instruction format
+            instructionType, RD, RN, IMM = instruction.split()
             RN = int(RN)
             RD = int(RD)
             IMM = int(IMM)
@@ -141,8 +141,8 @@ for each in file:
             # adds new object to list
             instructionList.append(Im)
         elif instructionType == 'ORR':
-            # splits the registers/numbers into perspective feilds per each instruction format
-            instructionType, RM, RN, RD = each.split()
+            # splits the registers/numbers into perspective feilds per instruction instruction format
+            instructionType, RM, RN, RD = instruction.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
@@ -152,8 +152,8 @@ for each in file:
             # adds new object to list
             instructionList.append(r)
         elif instructionType == 'AND':
-            # splits the registers/numbers into perspective feilds per each instruction format
-            instructionType, RM, RN, RD = each.split()
+            # splits the registers/numbers into perspective feilds per instruction instruction format
+            instructionType, RM, RN, RD = instruction.split()
             RN = int(RN)
             RD = int(RD)
             RM = int(RM)
@@ -163,8 +163,8 @@ for each in file:
             # adds new object to list
             instructionList.append(r)
         elif instructionType == 'LDUR':
-            # splits the registers/numbers into perspective feilds per each instruction format
-            instructionType, RT, RN, ADD = each.split()
+            # splits the registers/numbers into perspective feilds per instruction instruction format
+            instructionType, RT, RN, ADD = instruction.split()
             RT = int(RT)
             RN = int(RN)
             ADD = int(ADD)
@@ -174,8 +174,8 @@ for each in file:
             # adds new object to list
             instructionList.append(d)
         elif instructionType == 'STUR':
-            # splits the registers/numbers into perspective feilds per each instruction format
-            instructionType, RT, RN, ADD = each.split()
+            # splits the registers/numbers into perspective feilds per instruction instruction format
+            instructionType, RT, RN, ADD = instruction.split()
             RT = int(RT)
             RN = int(RN)
             ADD = int(ADD)
@@ -185,8 +185,8 @@ for each in file:
             # adds new object to list
             instructionList.append(d)
         elif instructionType == 'CBZ':
-            # splits the registers/numbers into perspective feilds per each instruction format
-            instructionType, RT, ADD = each.split()
+            # splits the registers/numbers into perspective feilds per instruction instruction format
+            instructionType, RT, ADD = instruction.split()
             RT = int(RT)
             ADD = int(ADD)
             opcode = 180
@@ -195,8 +195,8 @@ for each in file:
             # adds new object to list
             instructionList.append(c)
         elif instructionType == 'B':
-            # splits the registers/numbers into perspective fields per each instruction format
-            instructionType, ADD = each.split()
+            # splits the registers/numbers into perspective fields per instruction instruction format
+            instructionType, ADD = instruction.split()
             ADD = int(ADD)
             # creates B instruction object
             b = Bformat(ADD)
@@ -204,7 +204,13 @@ for each in file:
             instructionList.append(b)
         else:
             print('no instruction match')
-    #start at PC = 0
+
+    # the loop of code
+
+
+
+
+#start at PC = 0
 PC = 0
 while PC in range((len(instructionList))):
         # print(PC)
@@ -301,3 +307,8 @@ while PC in range((len(instructionList))):
         #increment PC for next instruction
         PC = PC + 1
         
+for each in file:
+    if not each.strip():  # Skips any line that is empty
+        placeholder = 1
+    else:
+        instrcutinfetch(each)
