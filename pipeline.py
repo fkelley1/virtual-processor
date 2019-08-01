@@ -82,8 +82,19 @@ class Bformat:
         self.opcode = 5
         self.type = "B"
 
-class pipelining:
-    placeholder = 1
+class id:
+    def __init__(self, regRn, regRm):
+        self.rn = regRn
+        self.rm = regRm
+class ex:
+    def __init__(self):
+        self.temp = 1
+class mem:
+    def __init__(self):
+        self.temp = 1
+class wb:
+    def __init__(self):
+        self.temp = 1
 
 #step 1: instrcution fetch
 #each is acting as PC
@@ -144,7 +155,7 @@ class instructionfetch:
             # adds new object to list
             instructionList.append(Im)
         elif instructionType == 'ORR':
-            # splits the registers/numbers into perspective feilds per instruction instruction format
+            # splits the registers/numbers into perspective fields per instruction instruction format
             instructionType, RM, RN, RD = instruction.split()
             RN = int(RN)
             RD = int(RD)
@@ -334,7 +345,11 @@ for each in file:
 
 while PC in range((len(instructionList))):
         #outer if checks for format and inner if checks specific
+        #TODO check each intruction to pass correct value to id pipeline register
+        #id(instructionList[PC].rm, instructionList[PC].rn)
+
         PC = execute(instructionList[PC], PC)
+
         if instructionList[PC].form == "D":
             print("Dformat in while loop")
             memory(instructionList[PC].mem, instructionList[PC].rt)
