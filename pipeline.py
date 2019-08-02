@@ -351,6 +351,7 @@ for each in file:
         newinst = inst(each)
         instructionL.append(newinst)
 
+
 PC = 0
 while PC in range(len(instructionL)+5):
         #outer if checks for format and inner if checks specific
@@ -358,7 +359,7 @@ while PC in range(len(instructionL)+5):
         #id(instructionList[PC].rm, instructionList[PC].rn)
         print("PC" + str(PC))
         instruction = 0
-        if instructionL[PC].cyclenum == 0 and PC < len(instructionL):
+        if instructionL[PC].cyclenum == 0 and PC < len(instructionL) + 2 :
             print(instructionL[PC].instruction)
             #instructionType = instructionL[PC].instruction.split(' ')[0]  # Takes first variable
             # print(instructionType)
@@ -377,6 +378,7 @@ while PC in range(len(instructionL)+5):
             print(str(PC-2) + "mem")
             PC = (execute(instructionList[PC-2], PC-2))+2
             print(PC)
+
             #print(instructionList[PC-2].writebackvalue)
             instructionL[PC-2].cyclenum = instructionL[PC-2].cyclenum + 1
         if instructionL[PC-3].cyclenum == 3 and (PC - 3) > -1 and PC < len(instructionL):
@@ -397,14 +399,15 @@ while PC in range(len(instructionL)+5):
                 if RegFile[instructionList[PC-4].rt] == 0:
                     print("Exiting loop")
                     break
-            instructionL[PC-4].cyclenum = instructionL[PC-4].cyclenum + 1
+            #if instructionList[PC - 4].form == "B":
+            instructionL[PC-4].cyclenum = 0
 
         print("At instruction: " + str(PC))
         print("regFile:")
         print(RegFile)
         print("Data memory:")
         print(dataMemory)
+        print(PC)
         #increment PC for next instruction
-
         PC = PC + 1
 
