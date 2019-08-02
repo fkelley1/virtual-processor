@@ -132,6 +132,7 @@ class instructiondecode:
             Opcode = 1112
             # creates R instruction object
             r = Rformat(RM, RN, RD, Opcode, instructionType)
+            print(r)
             # adds new object to list
             instructionList.append(r)
         # Same concept is used for all instructions
@@ -144,6 +145,8 @@ class instructiondecode:
             Opcode = 580
             # creates I instruction object
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
+            print(IMM)
+            print(Im)
             # adds new object to list
             instructionList.append(Im)
         elif instructionType == 'SUB':
@@ -356,7 +359,6 @@ for each in file:
     else:
         newinst = inst(each)
         instructionL.append(newinst)
-        print(newinst.instruction)
 
 PC = 0
 while PC in range(len(instructionL)+5):
@@ -372,14 +374,17 @@ while PC in range(len(instructionL)+5):
             instructionL[PC].cyclenum = instructionL[PC].cyclenum + 1
             #print(instructionL[PC].cyclenum)
         if instructionL[PC-1].cyclenum == 1 and (PC - 1) > -1 and PC < len(instructionL):
+            print(instructionL[PC-1].instruction)
             instructionType = instructionL[PC-1].instruction.split(' ')[0]  # Takes first variable
-            print(str(PC-1) + str(instructionType))
+            print(str(PC-1) + str(instruction) + "id")
             instructiondecode(instruction, instructionType)
+            print(instructionList[PC-1].immediate)
             instructionList[PC-1].type = instructionType
             print(instructionList[PC-1].type)
             instructionL[PC-1].cyclenum = instructionL[PC-1].cyclenum + 1
             break
         if instructionL[PC-2].cyclenum == 2 and (PC - 2) > -1 and PC < len(instructionL):
+            print(str(PC-2) + "mem")
             PC = execute(instructionList[PC-2], PC-2)
             instructionL[PC-2].cyclenum = instructionL[PC-2].cyclenum + 1
         elif instructionL[PC-3].cyclenum == 3 and (PC - 3) > -1 and PC < len(instructionL):
