@@ -99,7 +99,7 @@ class Bformat:
 
 class instructionfetch:
     def __new__(self, instruction):
-        instructionType = instruction.split(' ')[0]#Takes first variable
+        #instructionType = instruction.split(' ')[0]#Takes first variable
         instruction = instruction.replace(',','')#Removes all ,
         instruction = instruction.replace('X','')#Removes all X
         instruction = instruction.replace('[','')
@@ -119,7 +119,6 @@ class instructiondecode:
             Opcode = 1112
             # creates R instruction object
             r = Rformat(RM, RN, RD, Opcode, instructionType)
-            print(r)
             # adds new object to list
             instructionList.append(r)
         # Same concept is used for all instructions
@@ -132,8 +131,6 @@ class instructiondecode:
             Opcode = 580
             # creates I instruction object
             Im = Iformat(Opcode, IMM, RN, RD, instructionType)
-            print(IMM)
-            print(Im)
             # adds new object to list
             instructionList.append(Im)
         elif instructionType == 'SUB':
@@ -250,7 +247,7 @@ class execute:
                 # print(RegFile)
                 # saves the subtraction f the 2 values(stored in RegFile) in the registers into the result register
                 instructionList[PC].writebackvalue = RegFile[instructionList[PC].rn] - RegFile[instructionList[PC].rm]
-                RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] - RegFile[instructionList[PC].rm]
+                #RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] - RegFile[instructionList[PC].rm]
             # and
             elif instructionList[PC].type == "AND":
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
@@ -333,6 +330,25 @@ class execute:
         #print(dataMemory)
         #increment PC for next instruction
 
+class pipeline:
+    def __init__(self, instruction, PC):
+        print("pipeline")
+        print(instructionList[PC].form)
+        if instructionList[PC].form == "R":
+            print("R")
+            if
+            if instructionList[PC-1].rd == instructionList[PC].rn:
+                instructionList[PC].rn = instructionList[PC-1].writebackvalue
+            elif instructionList[PC-1].rd == instructionList[PC].rm:
+                instructionList[PC].rm = instructionList[PC-1].writebackvalue
+        elif instructionList[PC].form == "I":
+            print("i")
+            if instructionList[PC-1].rd == instructionList[PC].rn:
+                instructionList[PC].rn = instructionList[PC-1].writebackvalue
+        else:
+            placeholder =1
+
+
 class memory:
     def __init__(self, memory, value, PC):
         if instructionList[PC].type == "STUR":
@@ -360,34 +376,43 @@ while PC in range(len(instructionL)+5):
         print("PC" + str(PC))
         instruction = 0
         if instructionL[PC].cyclenum == 0 and PC < len(instructionL) + 2 :
+            print("if")
             print(instructionL[PC].instruction)
-            #instructionType = instructionL[PC].instruction.split(' ')[0]  # Takes first variable
             # print(instructionType)
             instructionL[PC].instruction = instructionfetch(instructionL[PC].instruction)
-            print(instruction)
+            instructionType = instructionL[PC].instruction.split(' ')[0]  # Takes first variable
+            #print(instructionType)
             instructionL[PC].cyclenum = instructionL[PC].cyclenum + 1
             #print(instructionL[PC].cyclenum)
         if instructionL[PC-1].cyclenum == 1 and (PC - 1) > -1 and PC < len(instructionL):
+            print("id")
             print(instructionL[PC-1].instruction)
             instructionType = instructionL[PC-1].instruction.split(' ')[0]  # Takes first variable
             instructiondecode(instructionL[PC - 1].instruction, instructionType)
             #print(instructionList[PC-1].immediate)
             instructionList[PC-1].type = instructionType
+            if instructionList[PC -1].type == "B":
+                PC = PC + 1
+                instructionL[PC].cyclenum = instructionL[PC].cyclenum + 1
             instructionL[PC-1].cyclenum = instructionL[PC-1].cyclenum + 1
         if instructionL[PC-2].cyclenum == 2 and (PC - 2) > -1 and PC < len(instructionL):
-            print(str(PC-2) + "mem")
+            print("mem")
+            print(instructionL[PC -2].instruction)
             PC = (execute(instructionList[PC-2], PC-2))+2
+            pipeline(instructionList[PC-2], PC-2)
             print(PC)
-
             #print(instructionList[PC-2].writebackvalue)
             instructionL[PC-2].cyclenum = instructionL[PC-2].cyclenum + 1
         if instructionL[PC-3].cyclenum == 3 and (PC - 3) > -1 and PC < len(instructionL):
+            print("memory")
+            print(instructionL[PC - 3].instruction)
             if instructionList[PC-3].form == "D":
                 print("Dformat in while loop")
                 memory(instructionList[PC-3].mem, instructionList[PC-3].rt, (PC-3))
             instructionL[PC-3].cyclenum = instructionL[PC-3].cyclenum + 1
         if instructionL[PC-4].cyclenum == 4 and (PC - 4) > -1 and PC < len(instructionL):
             print("writeback")
+            print(instructionL[PC - 4].instruction)
             if instructionList[PC-4].form == "R":
                 print("rformat in while loop")
                 print(instructionList[PC-4].writebackvalue)
