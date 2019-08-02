@@ -10,6 +10,7 @@ dataMemory[2]=11
 globals()
 PC = 0
 instructionList = []
+instructionL = []
 file = open('input.txt', 'r')
 
 #template for all R instructions
@@ -339,19 +340,23 @@ class memory:
 class writeback:
     def __init__(self, register, value):
         RegFile[register] = value
-
+length = 0
 for each in file:
     if not each.strip():  # Skips any line that is empty
         placeholder = 1
     else:
-        instructionType = each.split(' ')[0]  # Takes first variable
-        instruction = instructionfetch(each)
-        instructiondecode(instruction, instructionType)
+        length = length + 1
+        instructionL.append(each)
 
-while PC in range((len(instructionList))):
+PC = 0
+while PC in range(len(instructionL)):
         #outer if checks for format and inner if checks specific
         #TODO check each intruction to pass correct value to id pipeline register
         #id(instructionList[PC].rm, instructionList[PC].rn)
+
+        instructionType = instructionL[PC].split(' ')[0]  # Takes first variable
+        instruction = instructionfetch(instructionL[PC])
+        instructiondecode(instruction, instructionType)
 
         PC = execute(instructionList[PC], PC)
 
