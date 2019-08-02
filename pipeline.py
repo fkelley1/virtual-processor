@@ -101,7 +101,7 @@ class wb:
 
 
 class instructionfetch:
-    def __init__(self, instruction):
+    def __new__(self, instruction):
         instructionType = instruction.split(' ')[0]#Takes first variable
         instruction = instruction.replace(',','')#Removes all ,
         instruction = instruction.replace('X','')#Removes all X
@@ -109,6 +109,10 @@ class instructionfetch:
         instruction = instruction.replace(']','')
         instruction = instruction.replace('#','')
         instruction = instruction.replace('ZR','0')
+        return instruction
+
+class instructiondecode:
+    def __init__(self, instruction, instructionType):
         # instruction conditional sets the appropriate values for instruction field
         if instructionType == 'ADD':
             instructionType, RD, RN, RM = instruction.split()#Sets the 4 parts to invdividual variables
@@ -340,8 +344,9 @@ for each in file:
     if not each.strip():  # Skips any line that is empty
         placeholder = 1
     else:
-        instructionfetch(each)
-
+        instructionType = each.split(' ')[0]  # Takes first variable
+        instruction = instructionfetch(each)
+        instructiondecode(instruction, instructionType)
 
 while PC in range((len(instructionList))):
         #outer if checks for format and inner if checks specific
