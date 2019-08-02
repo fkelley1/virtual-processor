@@ -335,18 +335,30 @@ class pipeline:
         print("pipeline")
         print(instructionList[PC].form)
         if instructionList[PC].form == "R":
-            print("R")
-            if
-            if instructionList[PC-1].rd == instructionList[PC].rn:
-                instructionList[PC].rn = instructionList[PC-1].writebackvalue
-            elif instructionList[PC-1].rd == instructionList[PC].rm:
-                instructionList[PC].rm = instructionList[PC-1].writebackvalue
-        elif instructionList[PC].form == "I":
-            print("i")
-            if instructionList[PC-1].rd == instructionList[PC].rn:
-                instructionList[PC].rn = instructionList[PC-1].writebackvalue
-        else:
-            placeholder =1
+            if instructionList[PC-1].form == "R" or instructionList[PC-1].form == "I":
+                if instructionList[PC].form == "R":
+                    print("R")
+                    if instructionList[PC-1].rd == instructionList[PC].rn:
+                        RegFile[instructionList[PC].rn] = instructionList[PC-1].writebackvalue
+                        print(instructionList[PC-1].writebackvalue)
+                    if instructionList[PC-1].rd == instructionList[PC].rm:
+                        RegFile[instructionList[PC].rm] = instructionList[PC-1].writebackvalue
+                        print(instructionList[PC-1].writebackvalue)
+                if instructionList[PC].form == "I":
+                    print("i")
+                    if instructionList[PC-1].rd == instructionList[PC].rn:
+                        instructionList[PC].rn = instructionList[PC-1].writebackvalue
+            if instructionList[PC-2].form == "R" or instructionList[PC-2].form == "I":
+                if instructionList[PC].form == "R":
+                    print("R")
+                    if instructionList[PC-2].rd == instructionList[PC].rn:
+                        RegFile[instructionList[PC].rn] = instructionList[PC-2].writebackvalue
+                        print(instructionList[PC-2].writebackvalue)
+                    if instructionList[PC-2].rd == instructionList[PC].rm:
+                        RegFile[instructionList[PC].rm] = instructionList[PC-2].writebackvalue
+                        print(instructionList[PC-2].writebackvalue)
+            else:
+                placeholder =1
 
 
 class memory:
@@ -396,10 +408,11 @@ while PC in range(len(instructionL)+5):
                 instructionL[PC].cyclenum = instructionL[PC].cyclenum + 1
             instructionL[PC-1].cyclenum = instructionL[PC-1].cyclenum + 1
         if instructionL[PC-2].cyclenum == 2 and (PC - 2) > -1 and PC < len(instructionL):
-            print("mem")
+            print("ex")
             print(instructionL[PC -2].instruction)
+            pipeline(instructionList[PC - 2], PC - 2)
             PC = (execute(instructionList[PC-2], PC-2))+2
-            pipeline(instructionList[PC-2], PC-2)
+
             print(PC)
             #print(instructionList[PC-2].writebackvalue)
             instructionL[PC-2].cyclenum = instructionL[PC-2].cyclenum + 1
