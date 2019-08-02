@@ -396,7 +396,15 @@ while PC in range(len(instructionL)+5):
             # print(instructionType)
             instructionL[PC].instruction = instructionfetch(instructionL[PC].instruction)
             instructionType = instructionL[PC].instruction.split(' ')[0]  # Takes first variable
-            #print(instructionType)
+            print(instructionType)
+            if instructionType == "B":
+                print("BBB")
+                instructiondecode(instructionL[PC].instruction, instructionType)
+                print(instructionList[PC-1].address)
+                PC = PC - instructionList[PC-1].address - 4
+                print(PC)
+                #instructionList[PC-1].cyclenum = 0
+                break
             instructionL[PC].cyclenum = instructionL[PC].cyclenum + 1
             #print(instructionL[PC].cyclenum)
             cyclecount = cyclecount +1
