@@ -334,7 +334,7 @@ class execute:
         #increment PC for next instruction
 
 class memory:
-    def __init__(self, memory, value):
+    def __init__(self, memory, value, PC):
         if instructionList[PC].type == "STUR":
             dataMemory[memory] = RegFile[value]
         else:
@@ -377,12 +377,12 @@ while PC in range(len(instructionL)+5):
             print(str(PC-2) + "mem")
             PC = (execute(instructionList[PC-2], PC-2))+2
             print(PC)
-            print(instructionList[PC-2].writebackvalue)
+            #print(instructionList[PC-2].writebackvalue)
             instructionL[PC-2].cyclenum = instructionL[PC-2].cyclenum + 1
         if instructionL[PC-3].cyclenum == 3 and (PC - 3) > -1 and PC < len(instructionL):
             if instructionList[PC-3].form == "D":
                 print("Dformat in while loop")
-                memory(instructionList[PC-3].mem, instructionList[PC-3].rt)
+                memory(instructionList[PC-3].mem, instructionList[PC-3].rt, (PC-3))
             instructionL[PC-3].cyclenum = instructionL[PC-3].cyclenum + 1
         if instructionL[PC-4].cyclenum == 4 and (PC - 4) > -1 and PC < len(instructionL):
             print("writeback")
