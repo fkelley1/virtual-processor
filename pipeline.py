@@ -238,7 +238,7 @@ class execute:
                 # print("ADD")
                 # saves the addition of the 2 values(stored in RegFile) in the registers into the result register
                 instructionList[PC].writebackvalue = RegFile[instructionList[PC].rn] + RegFile[instructionList[PC].rm]
-                RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] + RegFile[instructionList[PC].rm]
+                #RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] + RegFile[instructionList[PC].rm]
             # sub
             elif instructionList[PC].type == "SUB":
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
@@ -357,6 +357,10 @@ class pipeline:
                     if instructionList[PC-2].rd == instructionList[PC].rm:
                         RegFile[instructionList[PC].rm] = instructionList[PC-2].writebackvalue
                         print(instructionList[PC-2].writebackvalue)
+                if instructionList[PC].form == "I":
+                    print("i")
+                    if instructionList[PC - 2].rd == instructionList[PC].rn:
+                        instructionList[PC].rn = instructionList[PC - 2].writebackvalue
             else:
                 placeholder =1
 
