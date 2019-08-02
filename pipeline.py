@@ -383,6 +383,7 @@ for each in file:
 
 PC = 0
 cyclecount = 0
+instructioncount = 0
 while PC in range(len(instructionL)+5):
         #outer if checks for format and inner if checks specific
         #TODO check each intruction to pass correct value to id pipeline register
@@ -398,6 +399,7 @@ while PC in range(len(instructionL)+5):
             #print(instructionType)
             instructionL[PC].cyclenum = instructionL[PC].cyclenum + 1
             #print(instructionL[PC].cyclenum)
+            cyclecount = cyclecount +1
         if instructionL[PC-1].cyclenum == 1 and (PC - 1) > -1 and PC < len(instructionL):
             print("id")
             print(instructionL[PC-1].instruction)
@@ -409,6 +411,7 @@ while PC in range(len(instructionL)+5):
                 PC = PC + 1
                 instructionL[PC].cyclenum = instructionL[PC].cyclenum + 1
             instructionL[PC-1].cyclenum = instructionL[PC-1].cyclenum + 1
+            cyclecount = cyclecount + 1
         if instructionL[PC-2].cyclenum == 2 and (PC - 2) > -1 and PC < len(instructionL):
             print("ex")
             print(instructionL[PC -2].instruction)
@@ -425,6 +428,7 @@ while PC in range(len(instructionL)+5):
             #print(PC)
             #print(instructionList[PC-2].writebackvalue)
             instructionL[PC-2].cyclenum = instructionL[PC-2].cyclenum + 1
+            cyclecount = cyclecount + 1
         if (PC - 3) > -1 and instructionL[PC-3].cyclenum == 3  and PC < len(instructionL):
             print("memory")
             print(instructionL[PC - 3].instruction)
@@ -434,6 +438,7 @@ while PC in range(len(instructionL)+5):
                 memory(instructionList[PC-3].mem, instructionList[PC-3].rt, (PC-3))
 
             instructionL[PC-3].cyclenum = instructionL[PC-3].cyclenum + 1
+            cyclecount = cyclecount + 1
         if (PC - 4) > -1 and instructionL[PC-4].cyclenum == 4 and  PC < len(instructionL) :
             print("writeback")
             print(instructionL[PC - 4].instruction)
@@ -447,9 +452,11 @@ while PC in range(len(instructionL)+5):
             if instructionList[PC-4].form == "CBZ":
                 if RegFile[instructionList[PC-4].rt] == 0:
                     print("Exiting loop")
+                    print("CPI: " + str(cyclecount/instructioncount))
                     break
             #if instructionList[PC - 4].form == "B":
             instructionL[PC-4].cyclenum = 0
+            cyclecount = cyclecount + 1
 
         print("At instruction: " + str(PC))
         print("regFile:")
@@ -458,5 +465,7 @@ while PC in range(len(instructionL)+5):
         print(dataMemory)
         print(PC)
         #increment PC for next instruction
+        instructioncount = instructioncount + 1
+        #print("CPI Stats: " + str(instructioncount) + ":" + str(cyclecount))
         PC = PC + 1
 
