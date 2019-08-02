@@ -13,6 +13,10 @@ instructionList = []
 instructionL = []
 file = open('input.txt', 'r')
 
+class inst:
+    def __init__(self, instruction):
+        self.instruction = instruction
+        self.cyclenum = 0
 #template for all R instructions
 #class Rformat
 class Rformat:
@@ -29,6 +33,7 @@ class Rformat:
         self.type = itype
         self.form = "R"
         self.writebackvalue = 0
+        self.cyclenum = 0
 
 #template for all I instructions
 #class Iformat
@@ -45,6 +50,7 @@ class Iformat:
         self.type = itype
         self.form = "I"
         self.writebackvalue = 0
+        self.cyclenum = 0
 
 #template for all D instructions
 #class Dformat
@@ -62,6 +68,7 @@ class Dformat:
         self.type = itype
         self.form = "D"
         self.mem = 0
+        self.cyclenum = 0
 
 #class CBformat
 class CBformat:
@@ -74,6 +81,7 @@ class CBformat:
         self.rt = r
         self.form = "CBZ"
         self.type = "CBZ"
+        self.cyclenum = 0
 
 #class b format
 class Bformat:
@@ -82,6 +90,7 @@ class Bformat:
         self.form = "B"
         self.opcode = 5
         self.type = "B"
+        self.cyclenum = 0
 
 class id:
     def __init__(self, regRn, regRm):
@@ -345,39 +354,59 @@ for each in file:
     if not each.strip():  # Skips any line that is empty
         placeholder = 1
     else:
-        length = length + 1
-        instructionL.append(each)
+        newinst = inst(each)
+        instructionL.append(newinst)
+        print(newinst.instruction)
 
 PC = 0
-while PC in range(len(instructionL)):
+while PC in range(len(instructionL)+5):
         #outer if checks for format and inner if checks specific
         #TODO check each intruction to pass correct value to id pipeline register
         #id(instructionList[PC].rm, instructionList[PC].rn)
-
-        instructionType = instructionL[PC].split(' ')[0]  # Takes first variable
-        instruction = instructionfetch(instructionL[PC])
-        instructiondecode(instruction, instructionType)
-
-        PC = execute(instructionList[PC], PC)
-
-        if instructionList[PC].form == "D":
-            print("Dformat in while loop")
-            memory(instructionList[PC].mem, instructionList[PC].rt)
-        if instructionList[PC].form == "R":
-            print("rformat in while loop")
-            print(instructionList[PC].writebackvalue)
-            writeback(instructionList[PC].rd, instructionList[PC].writebackvalue)
-        elif instructionList[PC].form == "I":
-            print(instructionList[PC].writebackvalue)
-            writeback(instructionList[PC].rd, instructionList[PC].writebackvalue)
-        if instructionList[PC].form == "CBZ":
-            if RegFile[instructionList[PC].rt] == 0:
-                print("Exiting loop")
-                break
-        print("At instruction: " + str(PC))
-        print("regFile:")
-        print(RegFile)
-        print("Data memory:")
-        print(dataMemory)
-        #increment PC for next instruction
+        print("PC" + str(PC))
+        instruction = 0
+        if instructionL[PC].cyclenum == 0 and PC < len(instructionL):
+            #instructionType = instructionL[PC].instruction.split(' ')[0]  # Takes first variable
+            # print(instructionType)
+            instruction = instructionfetch(instructionL[PC].instruction)
+            instructionL[PC].cyclenum = instructionL[PC].cyclenum + 1
+            #print(instructionL[PC].cyclenum)
+        if instructionL[PC-1].cyclenum == 1 and (PC - 1) > -1 and PC < len(instructionL):
+            instructionType = instructionL[PC-1].instruction.split(' ')[0]  # Takes first variable
+            print(str(PC-1) + str(instructionType))
+            instructiondecode(instruction, instructionType)
+            instructionList[PC-1].type = instructionType
+            print(instructionList[PC-1].type)
+            instructionL[PC-1].cyclenum = instructionL[PC-1].cyclenum + 1
+            break
+        if instructionL[PC-2].cyclenum == 2 and (PC - 2) > -1 and PC < len(instructionL):
+            PC = execute(instructionList[PC-2], PC-2)
+            instructionL[PC-2].cyclenum = instructionL[PC-2].cyclenum + 1
+        elif instructionL[PC-3].cyclenum == 3 and (PC - 3) > -1 and PC < len(instructionL):
+            if instructionList[PC-3].form == "D":
+                print("Dformat in while loop")
+                memory(instructionList[PC-3].mem, instructionList[PC-3].rt)
+                instructionL[PC-3].cyclenum = instructionL[PC-3].cyclenum + 1
+            elif instructionL[PC-4].cyclenum == 4 and (PC - 4) > -1 and PC < len(instructionL):
+                if instructionList[PC-4].form == "R":
+                    print("rformat in while loop")
+                    print(instructionList[PC-4].writebackvalue)
+                    writeback(instructionList[PC-4].rd, instructionList[PC-4].writebackvalue)
+                elif instructionList[PC-4].form == "I":
+                    print(instructionList[PC].writebackvalue)
+                    writeback(instructionList[PC-5].rd, instructionList[PC-5].writebackvalue)
+                if instructionList[PC-5].form == "CBZ":
+                    if RegFile[instructionList[PC-5].rt] == 0:
+                        print("Exiting loop")
+                        break
+                instructionL[PC-5].cyclenum = instructionL[PC-5].cyclenum + 1
+            else:
+                print("end of cycle")
+                placeholder = 1
+            print("At instruction: " + str(PC))
+            print("regFile:")
+            print(RegFile)
+            print("Data memory:")
+            print(dataMemory)
+            #increment PC for next instruction
         PC = PC + 1
