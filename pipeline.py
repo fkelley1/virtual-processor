@@ -233,6 +233,7 @@ PC = 0
 
 class execute:
     def __new__(self, instruction, PC):
+        print("executing")
         if instructionList[PC].form == "R":
             if instructionList[PC].type == "ADD":
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
@@ -264,6 +265,7 @@ class execute:
         elif instructionList[PC].form == "I":
             # addi
             if instructionList[PC].type == "ADDI":
+                print("adding i")
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
                     instructionList[PC].rn) + ", #" + str(instructionList[PC].immediate))
 
@@ -271,6 +273,7 @@ class execute:
                 # print(RegFile)
                 # saves the addition of the register stored value(in RegFile) and  the immediate into the result register
                 instructionList[PC].writebackvalue = RegFile[instructionList[PC].rn] + instructionList[PC].immediate
+                print(instructionList[PC].writebackvalue)
                 #RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] + instructionList[PC].immediate
                 # print(RegFile)
             # subi
@@ -347,7 +350,7 @@ for each in file:
     else:
         newinst = inst(each)
         instructionL.append(newinst)
-print(len(instructionL))
+
 PC = 0
 while PC in range(len(instructionL)+5):
         #outer if checks for format and inner if checks specific
@@ -363,44 +366,45 @@ while PC in range(len(instructionL)+5):
             print(instruction)
             instructionL[PC].cyclenum = instructionL[PC].cyclenum + 1
             #print(instructionL[PC].cyclenum)
-        elif instructionL[PC-1].cyclenum == 1 and (PC - 1) > -1 and PC < len(instructionL):
+        if instructionL[PC-1].cyclenum == 1 and (PC - 1) > -1 and PC < len(instructionL):
             print(instructionL[PC-1].instruction)
             instructionType = instructionL[PC-1].instruction.split(' ')[0]  # Takes first variable
-            print(str(PC-1) + str(instructionL[PC - 1].instruction) + "id")
             instructiondecode(instructionL[PC - 1].instruction, instructionType)
-            print(instructionList[PC-1].immediate)
+            #print(instructionList[PC-1].immediate)
             instructionList[PC-1].type = instructionType
-            print(instructionList[PC-1].type)
             instructionL[PC-1].cyclenum = instructionL[PC-1].cyclenum + 1
-        elif instructionL[PC-2].cyclenum == 2 and (PC - 2) > -1 and PC < len(instructionL):
+        if instructionL[PC-2].cyclenum == 2 and (PC - 2) > -1 and PC < len(instructionL):
             print(str(PC-2) + "mem")
-            PC = execute(instructionList[PC-2], PC-2)
+            PC = (execute(instructionList[PC-2], PC-2))+2
+            print(PC)
+            print(instructionList[PC-2].writebackvalue)
             instructionL[PC-2].cyclenum = instructionL[PC-2].cyclenum + 1
-        elif instructionL[PC-3].cyclenum == 3 and (PC - 3) > -1 and PC < len(instructionL):
+        if instructionL[PC-3].cyclenum == 3 and (PC - 3) > -1 and PC < len(instructionL):
             if instructionList[PC-3].form == "D":
                 print("Dformat in while loop")
                 memory(instructionList[PC-3].mem, instructionList[PC-3].rt)
-                instructionL[PC-3].cyclenum = instructionL[PC-3].cyclenum + 1
-        elif instructionL[PC-4].cyclenum == 4 and (PC - 4) > -1 and PC < len(instructionL):
+            instructionL[PC-3].cyclenum = instructionL[PC-3].cyclenum + 1
+        if instructionL[PC-4].cyclenum == 4 and (PC - 4) > -1 and PC < len(instructionL):
+            print("writeback")
             if instructionList[PC-4].form == "R":
                 print("rformat in while loop")
                 print(instructionList[PC-4].writebackvalue)
                 writeback(instructionList[PC-4].rd, instructionList[PC-4].writebackvalue)
             elif instructionList[PC-4].form == "I":
-                print(instructionList[PC].writebackvalue)
+                print("wb val" + str(instructionList[PC-4].writebackvalue))
                 writeback(instructionList[PC-4].rd, instructionList[PC-4].writebackvalue)
             if instructionList[PC-4].form == "CBZ":
                 if RegFile[instructionList[PC-4].rt] == 0:
                     print("Exiting loop")
                     break
             instructionL[PC-4].cyclenum = instructionL[PC-4].cyclenum + 1
-        else:
-            print("end of cycle")
-            placeholder = 1
+
         print("At instruction: " + str(PC))
         print("regFile:")
         print(RegFile)
         print("Data memory:")
         print(dataMemory)
         #increment PC for next instruction
+
         PC = PC + 1
+
