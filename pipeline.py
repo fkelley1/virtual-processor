@@ -235,19 +235,14 @@ class execute:
             if instructionList[PC].type == "ADD":
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
                     instructionList[PC].rn) + ", X" + str(instructionList[PC].rm))
-                # print("ADD")
+                print(instructionL[PC].instruction)
                 # saves the addition of the 2 values(stored in RegFile) in the registers into the result register
                 instructionList[PC].writebackvalue = RegFile[instructionList[PC].rn] + RegFile[instructionList[PC].rm]
-                #RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] + RegFile[instructionList[PC].rm]
             # sub
             elif instructionList[PC].type == "SUB":
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
                     instructionList[PC].rn) + ", X" + str(instructionList[PC].rm))
-                # print("sub: ")
-                # print(RegFile)
-                # saves the subtraction f the 2 values(stored in RegFile) in the registers into the result register
                 instructionList[PC].writebackvalue = RegFile[instructionList[PC].rn] - RegFile[instructionList[PC].rm]
-                #RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] - RegFile[instructionList[PC].rm]
             # and
             elif instructionList[PC].type == "AND":
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
@@ -265,44 +260,24 @@ class execute:
                 print("adding i")
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
                     instructionList[PC].rn) + ", #" + str(instructionList[PC].immediate))
-
-                # print("addi")
-                # print(RegFile)
-                # saves the addition of the register stored value(in RegFile) and  the immediate into the result register
                 instructionList[PC].writebackvalue = RegFile[instructionList[PC].rn] + instructionList[PC].immediate
                 print(instructionList[PC].writebackvalue)
-                #RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] + instructionList[PC].immediate
-                # print(RegFile)
             # subi
             elif instructionList[PC].type == "SUBI":
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
                     instructionList[PC].rn) + ", #" + str(instructionList[PC].immediate))
-                # print("subi")
-                # saves the subtraction of the register stored value(in RegFile) and  the immediate into the result register
                 instructionList[PC].writebackvalue = RegFile[instructionList[PC].rn] - instructionList[PC].immediate
-                #RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] - instructionList[PC].immediate
-                # print(RegFile[instructionList[PC].rd])
         elif instructionList[PC].form == "D":
             # ldur
             if instructionList[PC].type == "LDUR":
-                print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rt) + ", [X " + str(
-                    instructionList[PC].rn) + ", #" + str(instructionList[PC].address))
-                # print("LDUR")
-                #memoryaddress is the base + the offset that will be used in the dataMemory to get the value at that index
+                print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rt) + ", [X" + str(
+                    instructionList[PC].rn) + ", #" + str(instructionList[PC].address) + "]")
                 instructionList[PC].mem = RegFile[instructionList[PC].rn] + instructionList[PC].address
-                #loads the rt register with the value from data memory
-                #RegFile[instructionList[PC].rt] = dataMemory[memoryaddress]
-                # print(RegFile)
             # stur
             elif instructionList[PC].type == "STUR":
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rt) + ", [X " + str(
                     instructionList[PC].rn) + ", #" + str(instructionList[PC].address))
-                # print("STUR")
-                #reg to load into data memory
                 instructionList[PC].mem = RegFile[instructionList[PC].rn] + instructionList[PC].address
-                #print(dataMemory[memoryadd])
-                #dataMemory[memoryaddress] = RegFile[instructionList[PC].rt]
-                # print(RegFile)
         # cbz
         elif instructionList[PC].form == "CBZ":
             print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rt) + ", " + str(instructionList[PC].address))
@@ -324,17 +299,16 @@ class execute:
             print("Invalid Format")
         return PC
         #print("At instruction: " + str(PC))
-        #print("regFile:")
-        #print(RegFile)
-        #print("Data memory:")
-        #print(dataMemory)
-        #increment PC for next instruction
 
-class pipeline:
-    def __init__(self, instruction, PC):
-        print("pipeline")
-        print(instructionList[PC].form)
+class pipelineexe:
+    def __init__(self, PC):
+        print("pipeline exe stage")
+        print(instructionL[PC].instruction)
         if instructionList[PC].form == "R":
+            if instructionList[PC-1].form =="D":
+                print("regs")
+                print(RegFile[instructionList[PC].rn])
+                print(RegFile[instructionList[PC].rm])
             if instructionList[PC-1].form == "R" or instructionList[PC-1].form == "I":
                 if instructionList[PC].form == "R":
                     print("R")
@@ -347,7 +321,7 @@ class pipeline:
                 if instructionList[PC].form == "I":
                     print("i")
                     if instructionList[PC-1].rd == instructionList[PC].rn:
-                        instructionList[PC].rn = instructionList[PC-1].writebackvalue
+                        RegFile[instructionList[PC].rn] = instructionList[PC-1].writebackvalue
             if instructionList[PC-2].form == "R" or instructionList[PC-2].form == "I":
                 if instructionList[PC].form == "R":
                     print("R")
@@ -361,9 +335,31 @@ class pipeline:
                     print("i")
                     if instructionList[PC - 2].rd == instructionList[PC].rn:
                         instructionList[PC].rn = instructionList[PC - 2].writebackvalue
+            if instructionList[PC-1].form == "D":
+                if instructionList[PC-1].rt == instructionList[PC].rn:
+                    instructionList[PC].rn = dataMemory[instructionList[PC -1].rt]
+                if instructionList[PC - 1].rt == instructionList[PC].rm:
+                    instructionList[PC].rm = dataMemory[instructionList[PC - 1].rt]
+
             else:
+                print("else")
                 placeholder =1
 
+class pipelinemem:
+    def __init__(self, PC):
+        print("pipeline")
+        if instructionList[PC].form == "D":
+            print("D")
+            if instructionList[PC-1].form == "R" or instructionList[PC-1].form == "I":
+                print("R or i at -1")
+                if instructionList[PC-1].rd == instructionList[PC].rn:
+                    print("rd")
+                    instructionList[PC].rn = instructionList[PC-1].writebackvalue
+            if instructionList[PC - 2].form == "R" or instructionList[PC - 2].form == "I":
+                if instructionList[PC-2].rd == instructionList[PC].rn:
+                    instructionList[PC].rn = instructionList[PC-2].writebackvalue
+            print(instructionList[PC].rn)
+            instructionList[PC].mem = RegFile[instructionList[PC].rn] + instructionList[PC].address
 
 class memory:
     def __init__(self, memory, value, PC):
@@ -371,6 +367,7 @@ class memory:
             dataMemory[memory] = RegFile[value]
         else:
             RegFile[value] = dataMemory[memory]
+            print(dataMemory[memory])
 
 class writeback:
     def __init__(self, register, value):
@@ -385,6 +382,7 @@ for each in file:
 
 
 PC = 0
+cyclecount = 0
 while PC in range(len(instructionL)+5):
         #outer if checks for format and inner if checks specific
         #TODO check each intruction to pass correct value to id pipeline register
@@ -414,20 +412,29 @@ while PC in range(len(instructionL)+5):
         if instructionL[PC-2].cyclenum == 2 and (PC - 2) > -1 and PC < len(instructionL):
             print("ex")
             print(instructionL[PC -2].instruction)
-            pipeline(instructionList[PC - 2], PC - 2)
-            PC = (execute(instructionList[PC-2], PC-2))+2
+            if PC-3 > -1 and instructionList[PC -3].form == "D" and instructionList[PC -2].form == "R":
+                print("d before ex")
+                instructionList[PC-3].mem = RegFile[instructionList[PC-3].rn] + instructionList[PC-3].address
+                #memory(instructionList[PC-3].mem, instructionList[PC-3].rt, (PC-3))
+                RegFile[instructionList[PC-2].rm] = dataMemory[instructionList[PC - 3].mem]
+                PC = (execute(instructionList[PC - 2], PC - 2)) + 2
+            else:
+                pipelineexe(PC - 2)
+                PC = (execute(instructionList[PC-2], PC-2))+2
 
-            print(PC)
+            #print(PC)
             #print(instructionList[PC-2].writebackvalue)
             instructionL[PC-2].cyclenum = instructionL[PC-2].cyclenum + 1
-        if instructionL[PC-3].cyclenum == 3 and (PC - 3) > -1 and PC < len(instructionL):
+        if (PC - 3) > -1 and instructionL[PC-3].cyclenum == 3  and PC < len(instructionL):
             print("memory")
             print(instructionL[PC - 3].instruction)
             if instructionList[PC-3].form == "D":
                 print("Dformat in while loop")
+                pipelinemem(PC-3)
                 memory(instructionList[PC-3].mem, instructionList[PC-3].rt, (PC-3))
+
             instructionL[PC-3].cyclenum = instructionL[PC-3].cyclenum + 1
-        if instructionL[PC-4].cyclenum == 4 and (PC - 4) > -1 and PC < len(instructionL):
+        if (PC - 4) > -1 and instructionL[PC-4].cyclenum == 4 and  PC < len(instructionL) :
             print("writeback")
             print(instructionL[PC - 4].instruction)
             if instructionList[PC-4].form == "R":
