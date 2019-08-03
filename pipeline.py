@@ -474,6 +474,6 @@ while PC in range(len(instructionL)+5):
         print(PC)
         #increment PC for next instruction
         instructioncount = instructioncount + 1
-        #print("CPI Stats: " + str(instructioncount) + ":" + str(cyclecount))
+        print("CPI Stats: " + "CPI: " + str(cyclecount/instructioncount) + " Instructions: " + str(instructioncount) + " Cycles: " + str(cyclecount))
         PC = PC + 1
 
