@@ -240,7 +240,6 @@ while PC in range((len(instructionList))):
                 # print(RegFile)
                 # saves the addition of the register stored value(in RegFile) and  the immediate into the result register
                 RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] + instructionList[PC].immediate
-                # print(RegFile)
             # subi
             elif instructionList[PC].type == "SUBI":
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rd) + ", X" + str(
@@ -248,7 +247,6 @@ while PC in range((len(instructionList))):
                 # print("subi")
                 # saves the subtraction of the register stored value(in RegFile) and  the immediate into the result register
                 RegFile[instructionList[PC].rd] = RegFile[instructionList[PC].rn] - instructionList[PC].immediate
-                # print(RegFile[instructionList[PC].rd])
         elif instructionList[PC].form == "D":
             # ldur
             if instructionList[PC].type == "LDUR":
@@ -257,9 +255,8 @@ while PC in range((len(instructionList))):
                 # print("LDUR")
                 #memoryaddress is the base + the offset that will be used in the dataMemory to get the value at that index
                 memoryaddress = RegFile[instructionList[PC].rn] + instructionList[PC].address
-                #loads the rt register with the value from data memory
+                # loads the rt register with the value from data memory
                 RegFile[instructionList[PC].rt] = dataMemory[memoryaddress]
-                # print(RegFile)
             # stur
             elif instructionList[PC].type == "STUR":
                 print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rt) + ", [X " + str(
@@ -267,17 +264,12 @@ while PC in range((len(instructionList))):
                 # print("STUR")
                 #reg to load into data memory
                 memoryaddress = RegFile[instructionList[PC].rn] + instructionList[PC].address
-                #print(dataMemory[memoryadd])
                 dataMemory[memoryaddress] = RegFile[instructionList[PC].rt]
-                # print(RegFile)
         # cbz
         elif instructionList[PC].form == "CBZ":
             print(str(instructionList[PC].type) + " X" + str(instructionList[PC].rt) + ", " + str(instructionList[PC].address))
             # print("CBZ")
-            # print(RegFile)
-            # print(instructionList[PC].rt)
-            # print(RegFile[instructionList[PC].rt])
-            # print(instructionList[PC].address)
+            # exit if rt = 0
             if RegFile[instructionList[PC].rt] == 0:
                 print("CBZ says exit loop now")
                 break
@@ -288,13 +280,13 @@ while PC in range((len(instructionList))):
             #gets the address to branch to
             PC = PC + instructionList[PC].address - 1
         else:
-            #if none of the formats
+            # if none of the formats
             print("Invalid Format")
         print("At instruction: " + str(PC))
         print("regFile:")
         print(RegFile)
         print("Data memory:")
         print(dataMemory)
-        #increment PC for next instruction
+        # increment PC for next instruction
         PC = PC + 1
         #print(PC)
